@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\ProjectTypeEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * App\Models\Project
@@ -45,14 +46,28 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereSupportSite($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereType($value)
  *
+ * @property string $name
+ * @property string $slug
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|Project onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Project withoutTrashed()
+ *
+ * @property bool $is_active
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereIsActive($value)
+ *
  * @mixin \Eloquent
  */
 class Project extends Model
 {
-    use HasFactory;
+    use HasFactory , SoftDeletes;
 
     protected $casts = [
         'is_recommended' => 'boolean',
+        'is_active' => 'boolean',
         'type' => ProjectTypeEnum::class,
     ];
 }

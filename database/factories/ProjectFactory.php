@@ -18,7 +18,12 @@ class ProjectFactory extends Factory
      */
     public function definition(): array
     {
+        /* @var $name string */
+        $name = fake()->unique()->words(rand(3, 6), true);
+
         return [
+            'name' => $name,
+            'slug' => Str::slug($name),
             'package_name' => Str::reverse(fake()->unique()->domainName()).'.'.fake()->word(),
             'type' => ProjectTypeEnum::randomValue(),
             'description' => fake()->realText(rand(200, 600)),
@@ -27,6 +32,7 @@ class ProjectFactory extends Factory
             'support_site' => fake()->boolean() ? fake()->url() : null,
             'donate_site' => fake()->boolean() ? fake()->url() : null,
             'is_recommended' => fake()->boolean(30),
+            'is_active' => fake()->boolean(80),
         ];
     }
 }
