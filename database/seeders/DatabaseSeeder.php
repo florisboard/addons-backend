@@ -17,5 +17,9 @@ class DatabaseSeeder extends Seeder
         User::factory()->create(['email' => 'admin@email.com', 'is_admin' => true]);
         User::factory(20)->create();
         Category::factory(20)->create();
+
+        $this->call([
+            ProjectSeeder::class,
+        ]);
     }
 }

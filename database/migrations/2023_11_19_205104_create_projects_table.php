@@ -17,6 +17,15 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Category::class)->nullable()->constrained()->nullOnDelete();
+            $table->string('package_name')->unique();
+            $table->tinyInteger('type');
+            $table->text('description')->nullable();
+            $table->string('home_page')->nullable();
+            $table->string('support_email')->nullable();
+            $table->string('support_site')->nullable();
+            $table->string('donate_site')->nullable();
+            $table->boolean('is_recommended')->default(false);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

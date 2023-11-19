@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "81fa9c0263625ecde72e052af2cccc28",
+    "content-hash": "b860da8712aa64bd76c61d126c94d8a7",
     "packages": [
         {
             "name": "blade-ui-kit/blade-heroicons",
@@ -1030,6 +1030,56 @@
                 }
             ],
             "time": "2023-10-06T06:47:41+00:00"
+        },
+        {
+            "name": "emreyarligan/enum-concern",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/emreyarligan/enum-concern.git",
+                "reference": "2a67fec4dc423fd0bb27def41c5d9cb06df1cdc9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/emreyarligan/enum-concern/zipball/2a67fec4dc423fd0bb27def41c5d9cb06df1cdc9",
+                "reference": "2a67fec4dc423fd0bb27def41c5d9cb06df1cdc9",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/collections": "^8.65 || ^9.0 || ^10.0",
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^10.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "EmreYarligan\\EnumConcern\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Emre Yarlıgan"
+                }
+            ],
+            "description": "A PHP package for effortless Enumeration handling with Laravel Collections 📦 ✨",
+            "homepage": "https://github.com/emreyarligan/enum-concern",
+            "keywords": [
+                "concern",
+                "enum",
+                "enumeration",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/emreyarligan/enum-concern/issues",
+                "source": "https://github.com/emreyarligan/enum-concern/tree/1.0.2"
+            },
+            "time": "2023-11-09T21:06:32+00:00"
         },
         {
             "name": "filament/actions",

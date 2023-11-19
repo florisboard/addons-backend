@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ProjectTypeEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,9 +23,36 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereUserId($value)
  *
+ * @property int|null $category_id
+ * @property string $package_name
+ * @property string $type
+ * @property string|null $description
+ * @property string|null $home_page
+ * @property string|null $support_email
+ * @property string|null $support_site
+ * @property string|null $donate_site
+ * @property int $is_recommended
+ * @property string|null $deleted_at
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereCategoryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereDonateSite($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereHomePage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereIsRecommended($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project wherePackageName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereSupportEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereSupportSite($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereType($value)
+ *
  * @mixin \Eloquent
  */
 class Project extends Model
 {
     use HasFactory;
+
+    protected $casts = [
+        'is_recommended' => 'boolean',
+        'type' => ProjectTypeEnum::class,
+    ];
 }
