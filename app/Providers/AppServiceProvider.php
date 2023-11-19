@@ -48,7 +48,7 @@ class AppServiceProvider extends ServiceProvider
         }
 
         Gate::define('viewLogViewer', function (?User $user) {
-            return true;
+            return $user->isAdministrator();
         });
     }
 }
