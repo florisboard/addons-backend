@@ -3,6 +3,11 @@
 namespace App\Filament\Resources;
 
 use App\Enums\ProjectTypeEnum;
+use App\Filament\Forms\Components\ImageInput;
+use App\Filament\Forms\Layouts\BasicSection;
+use App\Filament\Forms\Layouts\ComplexForm;
+use App\Filament\Forms\Layouts\ImagesSection;
+use App\Filament\Forms\Layouts\StatusSection;
 use App\Filament\Resources\ProjectResource\Pages;
 use App\Models\Project;
 use Filament\Forms;
@@ -22,44 +27,52 @@ class ProjectResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->maxLength(255)
-                    ->live(onBlur: true)
-                    ->afterStateUpdated(fn (string $operation, $state, Forms\Set $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null)
-                    ->columnSpanFull()
-                    ->required(),
-                Forms\Components\TextInput::make('slug')
-                    ->required()
-                    ->maxLength(255)
-                    ->columnSpanFull()
-                    ->unique(ignoreRecord: true),
-                Forms\Components\TextInput::make('package_name')
-                    ->maxLength(255)
-                    ->required()
-                    ->unique(ignoreRecord: true),
-                Forms\Components\Select::make('type')
-                    ->options(ProjectTypeEnum::class)
-                    ->required(),
-                Forms\Components\TextInput::make('home_page')
-                    ->url()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('support_email')
-                    ->email()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('support_site')
-                    ->url()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('donate_site')
-                    ->url()
-                    ->maxLength(255),
-                Forms\Components\MarkdownEditor::make('description')
-                    ->columnSpanFull()
-                    ->required(),
-                Forms\Components\Toggle::make('is_active'),
-                Forms\Components\Toggle::make('is_recommended'),
-            ]);
+        $basicSection = BasicSection::make([
+            Forms\Components\TextInput::make('name')
+                ->maxLength(255)
+                ->live(onBlur: true)
+                ->afterStateUpdated(fn (string $operation, $state, Forms\Set $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null)
+                ->columnSpanFull()
+                ->required(),
+            Forms\Components\TextInput::make('slug')
+                ->required()
+                ->maxLength(255)
+                ->columnSpanFull()
+                ->unique(ignoreRecord: true),
+            Forms\Components\TextInput::make('package_name')
+                ->maxLength(255)
+                ->required()
+                ->unique(ignoreRecord: true),
+            Forms\Components\Select::make('type')
+                ->options(ProjectTypeEnum::class)
+                ->required(),
+            Forms\Components\TextInput::make('home_page')
+                ->url()
+                ->maxLength(255),
+            Forms\Components\TextInput::make('support_email')
+                ->email()
+                ->maxLength(255),
+            Forms\Components\TextInput::make('support_site')
+                ->url()
+                ->maxLength(255),
+            Forms\Components\TextInput::make('donate_site')
+                ->url()
+                ->maxLength(255),
+            Forms\Components\MarkdownEditor::make('description')
+                ->columnSpanFull()
+                ->required(),
+        ]);
+
+        $imagesSection = ImagesSection::make([
+            ImageInput::make('image'),
+            ImageInput::make('screenshots', true),
+        ]);
+
+        $statusSection = StatusSection::make([
+            Forms\Components\Toggle::make('is_recommended'),
+        ]);
+
+        return ComplexForm::make($form, [$basicSection, $imagesSection], [$statusSection]);
     }
 
     public static function table(Table $table): Table

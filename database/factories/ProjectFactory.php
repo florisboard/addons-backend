@@ -32,7 +32,6 @@ class ProjectFactory extends Factory
             'support_site' => fake()->boolean() ? fake()->url() : null,
             'donate_site' => fake()->boolean() ? fake()->url() : null,
             'is_recommended' => fake()->boolean(30),
-            'is_active' => fake()->boolean(80),
         ];
     }
 }

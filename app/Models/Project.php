@@ -72,7 +72,14 @@ class Project extends Model implements HasMedia
 
     protected $casts = [
         'is_recommended' => 'boolean',
-        'is_active' => 'boolean',
         'type' => ProjectTypeEnum::class,
     ];
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('image')
+            ->singleFile();
+
+        $this->addMediaCollection('screenshots');
+    }
 }

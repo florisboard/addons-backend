@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Forms\Layouts\BasicForm;
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
 use Filament\Forms;
@@ -20,21 +21,20 @@ class UserResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('name')->required()->maxLength(100),
-                Forms\Components\TextInput::make('email')->email()->required()->maxLength(255),
-                Forms\Components\DateTimePicker::make('email_verified_at'),
-                Password::make('password')
-                    ->copyable()
-                    ->regeneratePassword()
-                    ->dehydrateStateUsing(fn ($state) => Hash::make($state))
-                    ->dehydrated(fn ($state) => filled($state))
-                    ->required(fn (string $context): bool => $context === 'create'),
-                Password::make('password_confirmation')
-                    ->dehydrated(false)
-                    ->requiredWith('password'),
-            ]);
+        return BasicForm::make($form, [
+            Forms\Components\TextInput::make('name')->required()->maxLength(100),
+            Forms\Components\TextInput::make('email')->email()->required()->maxLength(255),
+            Forms\Components\DateTimePicker::make('email_verified_at'),
+            Password::make('password')
+                ->copyable()
+                ->regeneratePassword()
+                ->dehydrateStateUsing(fn ($state) => Hash::make($state))
+                ->dehydrated(fn ($state) => filled($state))
+                ->required(fn (string $context): bool => $context === 'create'),
+            Password::make('password_confirmation')
+                ->dehydrated(false)
+                ->requiredWith('password'),
+        ]);
     }
 
     public static function table(Table $table): Table
