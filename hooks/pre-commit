@@ -1,5 +1,10 @@
-#!/bin/sh
-files=$(git diff --cached --name-only --diff-filter=ACM -- '*.php');
-vendor/bin/pint $files -q
+ #!/bin/bash
 
-git add $files
+ # Run Laravel Pint
+ # This script will run Laravel Pint on newly staged PHP Files.
+
+ files=$(git diff --cached --name-only --diff-filter=AMCR | grep "\.php$")
+ if echo "$files" | grep --quiet "\.php$"; then
+     echo "Running Laravel Pint..."
+     docker-compose exec -T php /var/www/html/vendor/bin/pint $files && git add $files
+ fi
