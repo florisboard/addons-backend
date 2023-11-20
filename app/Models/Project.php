@@ -6,6 +6,8 @@ use App\Enums\ProjectTypeEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
 /**
  * App\Models\Project
@@ -59,11 +61,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereIsActive($value)
  *
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \App\Models\Media> $media
+ * @property-read int|null $media_count
+ *
  * @mixin \Eloquent
  */
-class Project extends Model
+class Project extends Model implements HasMedia
 {
-    use HasFactory , SoftDeletes;
+    use HasFactory , InteractsWithMedia , SoftDeletes;
 
     protected $casts = [
         'is_recommended' => 'boolean',
