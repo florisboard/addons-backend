@@ -51,7 +51,8 @@
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi",
-            "@php artisan filament:upgrade"
+            "@php artisan filament:upgrade",
+            "echo Adding Git hooks && git config core.hooksPath .hooks"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
