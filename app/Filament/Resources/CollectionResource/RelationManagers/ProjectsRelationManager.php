@@ -1,27 +1,17 @@
 <?php
 
-namespace App\Filament\Resources\UserResource\RelationManagers;
+namespace App\Filament\Resources\CollectionResource\RelationManagers;
 
 use App\Filament\Custom\AutoRelationManager;
 use App\Filament\Resources\ProjectResource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class MaintainingRelationManager extends AutoRelationManager
+class ProjectsRelationManager extends AutoRelationManager
 {
-    protected static string $relationship = 'maintaining';
+    protected static string $relationship = 'projects';
 
     protected static ?string $resource = ProjectResource::class;
-
-    protected static function getPluralRecordLabel(): ?string
-    {
-        return 'Maintainings';
-    }
-
-    protected static function getRecordLabel(): ?string
-    {
-        return 'Maintaining';
-    }
 
     public function table(Table $table): Table
     {

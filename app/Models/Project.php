@@ -69,6 +69,8 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @property-read int|null $maintainers_count
  * @property-read \App\Models\User $user
  * @property-read \App\Models\Category|null $category
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Collection> $collections
+ * @property-read int|null $collections_count
  *
  * @mixin \Eloquent
  */
@@ -95,6 +97,14 @@ class Project extends Model implements HasMedia
     public function maintainers(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'maintainers');
+    }
+
+    /**
+     * @return BelongsToMany<Collection>
+     */
+    public function collections(): BelongsToMany
+    {
+        return $this->belongsToMany(Collection::class);
     }
 
     /**

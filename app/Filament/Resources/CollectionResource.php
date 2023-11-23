@@ -6,6 +6,7 @@ use App\Filament\Forms\Layouts\BasicSection;
 use App\Filament\Forms\Layouts\ComplexForm;
 use App\Filament\Forms\Layouts\StatusSection;
 use App\Filament\Resources\CollectionResource\Pages;
+use App\Filament\Resources\CollectionResource\RelationManagers;
 use App\Filament\Tables\Components\TimestampsColumn;
 use App\Models\Collection;
 use Filament\Forms;
@@ -71,7 +72,7 @@ class CollectionResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\ProjectsRelationManager::class,
         ];
     }
 
