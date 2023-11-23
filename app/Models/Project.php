@@ -68,6 +68,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Maintainer> $maintainers
  * @property-read int|null $maintainers_count
  * @property-read \App\Models\User $user
+ * @property-read \App\Models\Category|null $category
  *
  * @mixin \Eloquent
  */
@@ -102,5 +103,13 @@ class Project extends Model implements HasMedia
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return BelongsTo<Category,Project>
+     */
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
     }
 }

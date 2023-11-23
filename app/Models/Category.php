@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
 
@@ -32,9 +33,20 @@ use Spatie\EloquentSortable\SortableTrait;
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereUpdatedAt($value)
  *
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Project> $projects
+ * @property-read int|null $projects_count
+ *
  * @mixin \Eloquent
  */
 class Category extends Model implements Sortable
 {
     use HasFactory , SortableTrait;
+
+    /**
+     * @return HasMany<Project>
+     */
+    public function projects(): HasMany
+    {
+        return $this->hasMany(Project::class);
+    }
 }

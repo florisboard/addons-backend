@@ -50,6 +50,8 @@ use Laravel\Sanctum\HasApiTokens;
  * @property-read int|null $maintaining_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Project> $projects
  * @property-read int|null $projects_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Collection> $collections
+ * @property-read int|null $collections_count
  *
  * @mixin \Eloquent
  */
@@ -102,5 +104,13 @@ class User extends Authenticatable implements FilamentUser
     public function maintaining(): BelongsToMany
     {
         return $this->belongsToMany(Project::class, 'maintainers');
+    }
+
+    /**
+     * @return HasMany<Collection>
+     */
+    public function collections(): HasMany
+    {
+        return $this->hasMany(Collection::class);
     }
 }

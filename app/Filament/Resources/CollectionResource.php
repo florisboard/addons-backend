@@ -5,20 +5,18 @@ namespace App\Filament\Resources;
 use App\Filament\Forms\Layouts\BasicSection;
 use App\Filament\Forms\Layouts\ComplexForm;
 use App\Filament\Forms\Layouts\StatusSection;
-use App\Filament\Resources\CategoryResource\Pages;
-use App\Filament\Resources\CategoryResource\RelationManagers;
+use App\Filament\Resources\CollectionResource\Pages;
 use App\Filament\Tables\Components\TimestampsColumn;
-use App\Models\Category;
+use App\Models\Collection;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Support\Str;
 
-class CategoryResource extends Resource
+class CollectionResource extends Resource
 {
-    protected static ?string $model = Category::class;
+    protected static ?string $model = Collection::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -27,18 +25,20 @@ class CategoryResource extends Resource
         $basicSection = BasicSection::make([
             Forms\Components\TextInput::make('name')
                 ->maxLength(255)
-                ->live(onBlur: true)
-                ->afterStateUpdated(fn (string $operation, $state, Forms\Set $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null)
                 ->columnSpanFull()
                 ->required(),
-            Forms\Components\TextInput::make('slug')
-                ->required()
-                ->maxLength(255)
+            Forms\Components\Select::make('user_id')
+                ->searchable()
+                ->preload()
                 ->columnSpanFull()
-                ->unique(ignoreRecord: true),
+                ->hiddenOn(UserResource\RelationManagers\CollectionsRelationManager::class)
+                ->relationship('user', 'name')
+                ->required(),
         ]);
 
-        $statusSection = StatusSection::make(includeIsActive: true);
+        $statusSection = StatusSection::make([
+            Forms\Components\Toggle::make('is_public'),
+        ]);
 
         return ComplexForm::make($form, [$basicSection], [$statusSection]);
     }
@@ -46,16 +46,17 @@ class CategoryResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->reorderable('order_column')
-            ->defaultSort('order_column')
             ->columns([
-                Tables\Columns\IconColumn::make('is_active')->boolean(),
-                Tables\Columns\TextColumn::make('name')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('slug')->sortable()->searchable(),
+                Tables\Columns\IconColumn::make('is_public')
+                    ->boolean(),
+                Tables\Columns\TextColumn::make('name')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('user.name'),
                 ...TimestampsColumn::make(),
             ])
             ->filters([
-                Tables\Filters\TernaryFilter::make('is_active'),
+                Tables\Filters\TernaryFilter::make('is_public'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -70,16 +71,16 @@ class CategoryResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\ProjectsRelationManager::class,
+            //
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCategories::route('/'),
-            'create' => Pages\CreateCategory::route('/create'),
-            'edit' => Pages\EditCategory::route('/{record}/edit'),
+            'index' => Pages\ListCollections::route('/'),
+            'create' => Pages\CreateCollection::route('/create'),
+            'edit' => Pages\EditCollection::route('/{record}/edit'),
         ];
     }
 }

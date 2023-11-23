@@ -9,6 +9,7 @@ use App\Filament\Forms\Layouts\ComplexForm;
 use App\Filament\Forms\Layouts\ImagesSection;
 use App\Filament\Forms\Layouts\StatusSection;
 use App\Filament\Resources\ProjectResource\Pages;
+use App\Filament\Tables\Components\TimestampsColumn;
 use App\Models\Project;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -43,6 +44,13 @@ class ProjectResource extends Resource
                 ->searchable()
                 ->preload()
                 ->relationship('user', 'name')
+                ->hiddenOn([UserResource\RelationManagers\ProjectsRelationManager::class])
+                ->required(),
+            Forms\Components\Select::make('category_id')
+                ->searchable()
+                ->preload()
+                ->relationship('category', 'name')
+                ->hiddenOn([CategoryResource\RelationManagers\ProjectsRelationManager::class])
                 ->required(),
             Forms\Components\TextInput::make('package_name')
                 ->maxLength(255)
@@ -100,8 +108,7 @@ class ProjectResource extends Resource
                 Tables\Columns\TextColumn::make('support_email')->searchable(isIndividual: true)->toggleable()->toggledHiddenByDefault()->limit(30),
                 Tables\Columns\TextColumn::make('support_site')->searchable(isIndividual: true)->toggleable()->toggledHiddenByDefault()->limit(30),
                 Tables\Columns\TextColumn::make('donate_site')->searchable(isIndividual: true)->toggleable()->toggledHiddenByDefault()->limit(30),
-                Tables\Columns\TextColumn::make('created_at')->dateTime(),
-                Tables\Columns\TextColumn::make('updated_at')->dateTime(),
+                ...TimestampsColumn::make(),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),

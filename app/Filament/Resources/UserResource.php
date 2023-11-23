@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Forms\Layouts\BasicForm;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
+use App\Filament\Tables\Components\TimestampsColumn;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -46,8 +47,7 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('name')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('email')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('email_verified_at')->dateTime(),
-                Tables\Columns\TextColumn::make('created_at')->dateTime(),
-                Tables\Columns\TextColumn::make('updated_at')->dateTime(),
+                ...TimestampsColumn::make(),
             ])
             ->filters([
                 Tables\Filters\TernaryFilter::make('is_admin'),
@@ -68,6 +68,7 @@ class UserResource extends Resource
         return [
             RelationManagers\ProjectsRelationManager::class,
             RelationManagers\MaintainingRelationManager::class,
+            RelationManagers\CollectionsRelationManager::class,
         ];
     }
 
