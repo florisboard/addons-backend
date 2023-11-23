@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Enums\ProjectTypeEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -63,6 +65,9 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  *
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \App\Models\Media> $media
  * @property-read int|null $media_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Maintainer> $maintainers
+ * @property-read int|null $maintainers_count
+ * @property-read \App\Models\User $user
  *
  * @mixin \Eloquent
  */
@@ -81,5 +86,21 @@ class Project extends Model implements HasMedia
             ->singleFile();
 
         $this->addMediaCollection('screenshots');
+    }
+
+    /**
+     * @return BelongsToMany<User>
+     */
+    public function maintainers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'maintainers');
+    }
+
+    /**
+     * @return BelongsTo<User,Project>
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }

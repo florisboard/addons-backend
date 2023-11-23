@@ -39,6 +39,11 @@ class ProjectResource extends Resource
                 ->maxLength(255)
                 ->columnSpanFull()
                 ->unique(ignoreRecord: true),
+            Forms\Components\Select::make('user_id')
+                ->searchable()
+                ->preload()
+                ->relationship('user', 'name')
+                ->required(),
             Forms\Components\TextInput::make('package_name')
                 ->maxLength(255)
                 ->required()
@@ -61,6 +66,11 @@ class ProjectResource extends Resource
             Forms\Components\MarkdownEditor::make('description')
                 ->columnSpanFull()
                 ->required(),
+            Forms\Components\Select::make('maintainers')
+                ->searchable()
+                ->preload()
+                ->multiple()
+                ->relationship('maintainers', 'name'),
         ]);
 
         $imagesSection = ImagesSection::make([
