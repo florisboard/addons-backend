@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Category;
 use App\Models\Maintainer;
 use App\Models\Project;
+use App\Models\Release;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -36,6 +37,11 @@ class ProjectSeeder extends Seeder
             Maintainer::factory(count($maintainerIds))
                 ->for($project)
                 ->forEachSequence(...$maintainerIds)
+                ->create();
+
+            Release::factory(rand(0, 10))
+                ->for($project)
+                ->sequence(fn () => ['user_id' => collect([$ownerId, ...$maintainerIds])->flatten()->random()])
                 ->create();
         }
     }

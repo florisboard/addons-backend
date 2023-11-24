@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -71,6 +72,8 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @property-read \App\Models\Category|null $category
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Collection> $collections
  * @property-read int|null $collections_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Release> $releases
+ * @property-read int|null $releases_count
  *
  * @mixin \Eloquent
  */
@@ -121,5 +124,13 @@ class Project extends Model implements HasMedia
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    /**
+     * @return HasMany<Release>
+     */
+    public function releases(): HasMany
+    {
+        return $this->hasMany(Release::class);
     }
 }

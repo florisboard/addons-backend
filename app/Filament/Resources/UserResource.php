@@ -69,6 +69,7 @@ class UserResource extends Resource
             RelationManagers\ProjectsRelationManager::class,
             RelationManagers\MaintainingRelationManager::class,
             RelationManagers\CollectionsRelationManager::class,
+            RelationManagers\ReleasesRelationManager::class,
         ];
     }
 
