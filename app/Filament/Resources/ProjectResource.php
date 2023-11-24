@@ -133,6 +133,7 @@ class ProjectResource extends Resource
         return [
             RelationManagers\ReleasesRelationManager::class,
             RelationManagers\CollectionsRelationManager::class,
+            RelationManagers\ReviewsRelationManager::class,
         ];
     }
 

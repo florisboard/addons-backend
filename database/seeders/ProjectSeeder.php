@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Maintainer;
 use App\Models\Project;
 use App\Models\Release;
+use App\Models\Review;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -42,6 +43,15 @@ class ProjectSeeder extends Seeder
             Release::factory(rand(0, 10))
                 ->for($project)
                 ->sequence(fn () => ['user_id' => collect([$ownerId, ...$maintainerIds])->flatten()->random()])
+                ->create();
+
+            $reviewUsers = $users->random(rand(0, 10))
+                ->map(fn (User $user) => ['user_id' => $user->id])
+                ->toArray();
+
+            Review::factory(count($reviewUsers))
+                ->for($project)
+                ->forEachSequence(...$reviewUsers)
                 ->create();
         }
     }

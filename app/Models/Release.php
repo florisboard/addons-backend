@@ -30,6 +30,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Release whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Release whereVersion($value)
  *
+ * @property int $user_id
+ * @property-read \App\Models\User $user
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|Release whereUserId($value)
+ *
  * @mixin \Eloquent
  */
 class Release extends Model

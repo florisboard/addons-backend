@@ -52,6 +52,10 @@ use Laravel\Sanctum\HasApiTokens;
  * @property-read int|null $projects_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Collection> $collections
  * @property-read int|null $collections_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Release> $releases
+ * @property-read int|null $releases_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Review> $reviews
+ * @property-read int|null $reviews_count
  *
  * @mixin \Eloquent
  */
@@ -120,5 +124,13 @@ class User extends Authenticatable implements FilamentUser
     public function releases(): HasMany
     {
         return $this->hasMany(Release::class);
+    }
+
+    /**
+     * @return HasMany<Review>
+     */
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
     }
 }
