@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -41,6 +42,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|Review withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Review withoutTrashed()
  *
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Report> $reports
+ * @property-read int|null $reports_count
+ *
  * @mixin \Eloquent
  */
 class Review extends Model
@@ -65,5 +69,13 @@ class Review extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return MorphToMany<Report>
+     */
+    public function reports(): MorphToMany
+    {
+        return $this->morphedByMany(Report::class, 'reportable');
     }
 }

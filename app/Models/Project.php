@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -76,6 +77,8 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @property-read int|null $releases_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Review> $reviews
  * @property-read int|null $reviews_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Report> $reports
+ * @property-read int|null $reports_count
  *
  * @mixin \Eloquent
  */
@@ -142,5 +145,13 @@ class Project extends Model implements HasMedia
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class);
+    }
+
+    /**
+     * @return MorphToMany<Report>
+     */
+    public function reports(): MorphToMany
+    {
+        return $this->morphedByMany(Report::class, 'reportable');
     }
 }
