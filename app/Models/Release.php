@@ -11,12 +11,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *
  * @property int $id
  * @property int $project_id
+ * @property int $user_id
  * @property string $version
  * @property string|null $description
  * @property int $downloads_count
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Project $project
+ * @property-read \App\Models\User $user
  *
  * @method static \Database\Factories\ReleaseFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Release newModelQuery()
@@ -28,12 +30,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Release whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Release whereProjectId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Release whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Release whereVersion($value)
- *
- * @property int $user_id
- * @property-read \App\Models\User $user
- *
  * @method static \Illuminate\Database\Eloquent\Builder|Release whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Release whereVersion($value)
  *
  * @mixin \Eloquent
  */

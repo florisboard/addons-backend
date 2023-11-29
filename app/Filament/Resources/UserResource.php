@@ -7,6 +7,7 @@ use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Filament\Tables\Components\TimestampsColumn;
 use App\Models\User;
+use App\Rules\Username;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -24,9 +25,10 @@ class UserResource extends Resource
     public static function form(Form $form): Form
     {
         return BasicForm::make($form, [
-            Forms\Components\TextInput::make('name')->required()->maxLength(100),
+            Forms\Components\TextInput::make('username')->unique(ignoreRecord: true)->required()->rules([new Username]),
             Forms\Components\TextInput::make('email')->email()->required()->maxLength(255),
             Forms\Components\DateTimePicker::make('email_verified_at'),
+            Forms\Components\DateTimePicker::make('username_changed_at'),
             Password::make('password')
                 ->copyable()
                 ->regeneratePassword()
@@ -44,14 +46,16 @@ class UserResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\IconColumn::make('is_admin')->boolean(),
-                Tables\Columns\TextColumn::make('name')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('username')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('email')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('email_verified_at')->dateTime(),
+                Tables\Columns\TextColumn::make('email_verified_at')->toggleable()->dateTime(),
+                Tables\Columns\TextColumn::make('username_changed_at')->toggleable()->dateTime(),
                 ...TimestampsColumn::make(),
             ])
             ->filters([
                 Tables\Filters\TernaryFilter::make('is_admin'),
                 Tables\Filters\TernaryFilter::make('email_verified_at')->nullable(),
+                Tables\Filters\TernaryFilter::make('username_changed_at')->nullable(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

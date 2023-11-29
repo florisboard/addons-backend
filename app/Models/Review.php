@@ -22,6 +22,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Project $project
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Report> $reports
+ * @property-read int|null $reports_count
  * @property-read \App\Models\User $user
  *
  * @method static \Database\Factories\ReviewFactory factory($count = null, $state = [])
@@ -41,9 +43,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|Review whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Review withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Review withoutTrashed()
- *
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Report> $reports
- * @property-read int|null $reports_count
  *
  * @mixin \Eloquent
  */

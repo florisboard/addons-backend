@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property bool $is_public
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Project> $projects
+ * @property-read int|null $projects_count
  * @property-read \App\Models\User $user
  *
  * @method static \Database\Factories\CollectionFactory factory($count = null, $state = [])
@@ -28,9 +30,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Collection whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Collection whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Collection whereUserId($value)
- *
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Project> $projects
- * @property-read int|null $projects_count
  *
  * @mixin \Eloquent
  */

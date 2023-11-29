@@ -47,7 +47,11 @@ class AppServiceProvider extends ServiceProvider
             $this->app->register(TelescopeServiceProvider::class);
         }
 
-        Gate::define('viewLogViewer', function (?User $user) {
+        Gate::before(function (?User $user) {
+            return $user?->isAdministrator();
+        });
+
+        Gate::define('viewLogViewer', function (User $user) {
             return $user->isAdministrator();
         });
     }

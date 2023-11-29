@@ -18,67 +18,58 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  *
  * @property int $id
  * @property int $user_id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- *
- * @method static \Database\Factories\ProjectFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Project newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Project newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Project query()
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereUserId($value)
- *
  * @property int|null $category_id
+ * @property string $name
+ * @property string $slug
  * @property string $package_name
- * @property string $type
+ * @property ProjectTypeEnum $type
  * @property string|null $description
  * @property string|null $home_page
  * @property string|null $support_email
  * @property string|null $support_site
  * @property string|null $donate_site
- * @property int $is_recommended
- * @property string|null $deleted_at
+ * @property bool $is_recommended
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Category|null $category
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Collection> $collections
+ * @property-read int|null $collections_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $maintainers
+ * @property-read int|null $maintainers_count
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \App\Models\Media> $media
+ * @property-read int|null $media_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Release> $releases
+ * @property-read int|null $releases_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Report> $reports
+ * @property-read int|null $reports_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Review> $reviews
+ * @property-read int|null $reviews_count
+ * @property-read \App\Models\User $user
  *
+ * @method static \Database\Factories\ProjectFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|Project newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Project newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Project onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Project query()
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereCategoryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereDonateSite($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereHomePage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereIsRecommended($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project wherePackageName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereSupportEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereSupportSite($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereType($value)
- *
- * @property string $name
- * @property string $slug
- *
- * @method static \Illuminate\Database\Eloquent\Builder|Project onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Project withoutTrashed()
- *
- * @property bool $is_active
- *
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereIsActive($value)
- *
- * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \App\Models\Media> $media
- * @property-read int|null $media_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Maintainer> $maintainers
- * @property-read int|null $maintainers_count
- * @property-read \App\Models\User $user
- * @property-read \App\Models\Category|null $category
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Collection> $collections
- * @property-read int|null $collections_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Release> $releases
- * @property-read int|null $releases_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Review> $reviews
- * @property-read int|null $reviews_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Report> $reports
- * @property-read int|null $reports_count
  *
  * @mixin \Eloquent
  */
