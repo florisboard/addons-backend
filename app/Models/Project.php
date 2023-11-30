@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
@@ -71,6 +73,8 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @method static \Illuminate\Database\Eloquent\Builder|Project withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Project withoutTrashed()
  *
+ * @property-read \App\Models\Media|null $image
+ *
  * @mixin \Eloquent
  */
 class Project extends Model implements HasMedia
@@ -82,12 +86,26 @@ class Project extends Model implements HasMedia
         'type' => ProjectTypeEnum::class,
     ];
 
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('image')
             ->singleFile();
 
         $this->addMediaCollection('screenshots');
+    }
+
+    /**
+     * @return MorphOne<Media>
+     */
+    public function image(): MorphOne
+    {
+        return $this->morphOne(Media::class, 'model')
+            ->where('collection_name', 'image');
     }
 
     /**
@@ -128,6 +146,14 @@ class Project extends Model implements HasMedia
     public function releases(): HasMany
     {
         return $this->hasMany(Release::class);
+    }
+
+    /**
+     * @return HasOne<Release>
+     */
+    public function latestRelease(): HasOne
+    {
+        return $this->hasOne(Release::class)->latestOfMany();
     }
 
     /**
