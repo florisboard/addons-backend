@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Enums\ProjectTypeEnum;
+use App\Filament\Custom\CustomResource;
 use App\Filament\Forms\Components\ImageInput;
 use App\Filament\Forms\Layouts\BasicSection;
 use App\Filament\Forms\Layouts\ComplexForm;
@@ -14,14 +15,11 @@ use App\Filament\Tables\Components\TimestampsColumn;
 use App\Models\Project;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
 
-class ProjectResource extends Resource
+class ProjectResource extends CustomResource
 {
     protected static ?string $model = Project::class;
 
@@ -144,16 +142,5 @@ class ProjectResource extends Resource
             'create' => Pages\CreateProject::route('/create'),
             'edit' => Pages\EditProject::route('/{record}/edit'),
         ];
-    }
-
-    /**
-     * @return Builder<Project>
-     */
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Custom\CustomResource;
 use App\Filament\Forms\Layouts\BasicForm;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
@@ -10,13 +11,12 @@ use App\Models\User;
 use App\Rules\Username;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Hash;
 use Rawilk\FilamentPasswordInput\Password;
 
-class UserResource extends Resource
+class UserResource extends CustomResource
 {
     protected static ?string $model = User::class;
 

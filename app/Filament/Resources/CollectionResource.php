@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Custom\CustomResource;
 use App\Filament\Forms\Layouts\BasicSection;
 use App\Filament\Forms\Layouts\ComplexForm;
 use App\Filament\Forms\Layouts\StatusSection;
@@ -11,11 +12,10 @@ use App\Filament\Tables\Components\TimestampsColumn;
 use App\Models\Collection;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class CollectionResource extends Resource
+class CollectionResource extends CustomResource
 {
     protected static ?string $model = Collection::class;
 

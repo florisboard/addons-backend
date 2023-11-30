@@ -14,13 +14,15 @@
         "filament/filament": "^3.0-stable",
         "filament/spatie-laravel-media-library-plugin": "^3.0-stable",
         "guzzlehttp/guzzle": "^7.2",
+        "hammerstone/fast-paginate": "^1.0",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "opcodesio/log-viewer": "^3.1",
         "rawilk/filament-password-input": "^1.1",
         "spatie/eloquent-sortable": "^4.0",
-        "spatie/laravel-medialibrary": "^10.0.0"
+        "spatie/laravel-medialibrary": "^10.0.0",
+        "spatie/laravel-query-builder": "^5.6"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.13",
@@ -34,6 +36,7 @@
         "nunomaduro/larastan": "^2.0",
         "pestphp/pest": "^2.0",
         "pestphp/pest-plugin-laravel": "^2.0",
+        "plannr/laravel-fast-refresh-database": "^1.1",
         "spatie/laravel-ignition": "^2.0"
     },
     "autoload": {

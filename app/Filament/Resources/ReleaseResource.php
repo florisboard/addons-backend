@@ -2,17 +2,17 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Custom\CustomResource;
 use App\Filament\Forms\Layouts\BasicForm;
 use App\Filament\Resources\ReleaseResource\Pages;
 use App\Filament\Tables\Components\TimestampsColumn;
 use App\Models\Release;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class ReleaseResource extends Resource
+class ReleaseResource extends CustomResource
 {
     protected static ?string $model = Release::class;
 
