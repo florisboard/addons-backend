@@ -48,7 +48,9 @@ class AppServiceProvider extends ServiceProvider
         }
 
         Gate::before(function (?User $user) {
-            return $user?->isAdministrator();
+            if ($user?->isAdministrator()) {
+                return true;
+            }
         });
 
         Gate::define('viewLogViewer', function (User $user) {
