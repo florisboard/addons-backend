@@ -55,6 +55,10 @@ use Laravel\Sanctum\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUsername($value)
  *
+ * @property string|null $username_changed_at
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereUsernameChangedAt($value)
+ *
  * @mixin \Eloquent
  */
 class User extends Authenticatable implements FilamentUser, HasName
