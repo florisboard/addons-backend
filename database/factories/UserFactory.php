@@ -27,7 +27,7 @@ class UserFactory extends Factory
             'username_changed_at' => fake()->boolean() ? fake()->dateTime() : null,
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
-            'is_admin' => fake()->boolean(20),
+            'is_admin' => false,
         ];
     }
 
@@ -38,6 +38,16 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
+        ]);
+    }
+
+    /**
+     * Indicate that the model's is_admin address should be true.
+     */
+    public function admin(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'is_admin' => true,
         ]);
     }
 }

@@ -28,7 +28,7 @@ class ProjectPolicy
      */
     public function create(User $user): bool
     {
-        return true;
+        return $user->isEmailVerified();
     }
 
     /**
@@ -50,7 +50,7 @@ class ProjectPolicy
      */
     public function delete(User $user, Project $project): bool
     {
-        return $user->id === $project->id;
+        return $user->id === $project->user_id;
     }
 
     /**

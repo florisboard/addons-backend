@@ -91,6 +91,11 @@ class User extends Authenticatable implements FilamentUser, HasName
         return $this->is_admin;
     }
 
+    public function isEmailVerified(): bool
+    {
+        return (bool) $this->email_verified_at;
+    }
+
     public function canAccessPanel(Panel $panel): bool
     {
         return Auth::user()->isAdministrator();

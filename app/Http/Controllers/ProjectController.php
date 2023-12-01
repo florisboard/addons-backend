@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProjectRequest;
 use App\Http\Resources\ProjectResource;
 use App\Models\Project;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Auth;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -52,9 +54,16 @@ class ProjectController extends Controller
         return ProjectResource::collection($projects);
     }
 
-    public function store(Request $request)
+    public function store(ProjectRequest $request): JsonResponse
     {
-        //
+        $project = Project::create([
+            ...$request->safe()->except(['maintainers']),
+            'user_id' => Auth::id(),
+        ]);
+
+        $project->maintainers()->attach($request->maintainers);
+
+        return new JsonResponse($this->show($project), 201);
     }
 
     public function show(Project $project): ProjectResource
@@ -84,9 +93,13 @@ class ProjectController extends Controller
         return new ProjectResource($project);
     }
 
-    public function update(Request $request, Project $project)
+    public function update(ProjectRequest $request, Project $project): ProjectResource
     {
+        $project->update($request->safe()->except(['maintainers']));
 
+        $project->maintainers()->sync($request->maintainers);
+
+        return $this->show($project);
     }
 
     public function destroy(Project $project): JsonResponse
