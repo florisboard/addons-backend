@@ -17,4 +17,10 @@ Route::get('/login', function () {
     return redirect(route('filament.admin.auth.login'));
 })->name('login');
 
+Route::get('/test', function () {
+    \Illuminate\Support\Facades\Auth::loginUsingId(2);
+
+    return 'done';
+});
+
 require __DIR__.'/auth.php';

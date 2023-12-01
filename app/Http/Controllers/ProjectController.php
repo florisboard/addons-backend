@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\ProjectResource;
 use App\Models\Project;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -12,6 +13,11 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ProjectController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Project::class);
+    }
+
     public function index(Request $request): AnonymousResourceCollection
     {
         $request->validate([
@@ -23,7 +29,7 @@ class ProjectController extends Controller
             'filter.is_recommended' => ['nullable', 'boolean'],
             // Fields : name,package_name,created_at
             'sort' => ['nullable', 'string'],
-            // Fields : user,maintainers,screenshots,category
+            // Fields : user,category
             'include' => ['nullable', 'string'],
 
         ]);
@@ -36,9 +42,10 @@ class ProjectController extends Controller
                 AllowedFilter::partial('package_name'),
                 AllowedFilter::exact('is_recommended'),
             ])
-            ->allowedIncludes(['user', 'maintainers', 'screenshots', 'category'])
+            ->allowedIncludes(['user', 'category'])
             ->allowedSorts(['name', 'package_name', 'created_at'])
             ->with(['image', 'latestRelease'])
+            ->withSum('releases', 'downloads_count')
             ->withAvg('reviews', 'score')
             ->fastPaginate(20);
 
@@ -52,8 +59,9 @@ class ProjectController extends Controller
 
     public function show(Project $project): ProjectResource
     {
-        $project->load(['image', 'maintainers', 'latestRelease']);
+        $project->load(['image', 'maintainers', 'latestRelease', 'category']);
         $project->loadAvg('reviews', 'score');
+        $project->loadSum('releases', 'downloads_count');
         $project->loadCount([
             'reviews',
             'reviews as one_reviews_count' => function (Builder $query) {
@@ -78,11 +86,13 @@ class ProjectController extends Controller
 
     public function update(Request $request, Project $project)
     {
-        //
+
     }
 
-    public function destroy(Project $project)
+    public function destroy(Project $project): JsonResponse
     {
-        //
+        $project->delete();
+
+        return new JsonResponse(['message' => 'Project has been deleted successfully.']);
     }
 }

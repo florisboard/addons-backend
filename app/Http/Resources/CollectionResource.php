@@ -3,12 +3,12 @@
 namespace App\Http\Resources;
 
 use App\Http\Resources\User\UserResource;
-use App\Models\Release;
+use App\Models\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/** @mixin Release */
-class ReleaseResource extends JsonResource
+/** @mixin Collection */
+class CollectionResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -19,16 +19,15 @@ class ReleaseResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'project_id' => $this->project_id,
             'user_id' => $this->user_id,
-            'version' => $this->version,
-            'description' => $this->description,
-            /* @var int */
-            'downloads_count' => round($this->downloads_count),
+            'name' => $this->name,
+            'is_public' => $this->is_public,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'user' => new UserResource($this->whenLoaded('user')),
-            'project' => new ProjectResource($this->whenLoaded('project')),
+            'projects' => ProjectResource::collection($this->whenLoaded('projects')),
+            /* @var int */
+            'projects_count' => $this->whenCounted('projects'),
         ];
     }
 }

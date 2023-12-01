@@ -40,13 +40,20 @@ class ProjectResource extends JsonResource
             'category' => new CategoryResource($this->whenLoaded('category')),
             'maintainers' => UserResource::collection($this->whenLoaded('maintainers')),
             'reviews_avg_score' => $this->whenAggregated('reviews', 'score', 'avg'),
+            'releases_sum_downloads_count' => intval($this->whenAggregated('releases', 'downloads_count', 'sum') ?? 0),
             'latest_release' => new ReleaseResource($this->whenLoaded('latestRelease')),
             'releases' => ReleaseResource::collection($this->whenLoaded('releases')),
+            /* @var int */
             'reviews_count' => $this->whenCounted('reviews'),
+            /* @var int */
             'one_reviews_count' => $this->whenCounted('one_reviews'),
+            /* @var int */
             'two_reviews_count' => $this->whenCounted('two_reviews'),
+            /* @var int */
             'three_reviews_count' => $this->whenCounted('three_reviews'),
+            /* @var int */
             'four_reviews_count' => $this->whenCounted('four_reviews'),
+            /* @var int */
             'five_reviews_count' => $this->whenCounted('five_reviews'),
         ];
     }
