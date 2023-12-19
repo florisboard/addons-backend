@@ -10,5 +10,6 @@ Route::apiResource('projects', ProjectController::class);
 Route::apiResource('collections', CollectionController::class);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('users/me', [UserController::class, 'me']);
+    Route::get('users/me', [UserController::class, 'me'])->name('users.me');
+    Route::post('users/me/delete', [UserController::class, 'destroy'])->name('users.me.destroy');
 });
