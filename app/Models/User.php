@@ -86,6 +86,11 @@ class User extends Authenticatable implements FilamentUser, HasName
         'is_admin' => 'boolean',
     ];
 
+    public function getRouteKeyName(): string
+    {
+        return 'username';
+    }
+
     public function isAdministrator(): bool
     {
         return $this->is_admin;
@@ -93,7 +98,7 @@ class User extends Authenticatable implements FilamentUser, HasName
 
     public function isEmailVerified(): bool
     {
-        return (bool) $this->email_verified_at;
+        return (bool)$this->email_verified_at;
     }
 
     public function canAccessPanel(Panel $panel): bool

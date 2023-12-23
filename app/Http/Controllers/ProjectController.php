@@ -29,7 +29,7 @@ class ProjectController extends Controller
             'filter.user_id' => ['nullable', 'numeric'],
             'filter.package_name' => ['nullable', 'string'],
             'filter.is_recommended' => ['nullable', 'boolean'],
-            // Fields : name,package_name,created_at
+            // Fields : name,package_name,id
             'sort' => ['nullable', 'string'],
             // Fields : user,category
             'include' => ['nullable', 'string'],
@@ -45,7 +45,7 @@ class ProjectController extends Controller
                 AllowedFilter::exact('is_recommended'),
             ])
             ->allowedIncludes(['user', 'category'])
-            ->allowedSorts(['name', 'package_name', 'created_at'])
+            ->allowedSorts(['name', 'package_name', 'id'])
             ->with(['image', 'latestRelease'])
             ->withSum('releases', 'downloads_count')
             ->withAvg('reviews', 'score')

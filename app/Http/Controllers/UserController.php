@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\User\AuthResource;
+use App\Http\Resources\User\UserResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -17,14 +18,9 @@ class UserController extends Controller
         return new AuthResource(Auth::user());
     }
 
-    public function store(Request $request)
+    public function show(User $user): UserResource
     {
-        //
-    }
-
-    public function show(User $user)
-    {
-        //
+        return new UserResource($user);
     }
 
     public function update(Request $request, User $user)
@@ -47,6 +43,7 @@ class UserController extends Controller
             ]);
         }
 
+        Auth::guard('web')->logout();
         Auth::user()->delete();
 
         return new JsonResponse(['message' => "You've deleted your account successfully."]);
