@@ -15,51 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 
 /**
- * App\Models\User
- *
- * @property int $id
- * @property string $username
- * @property string $email
- * @property \Illuminate\Support\Carbon|null $email_verified_at
- * @property mixed $password
- * @property bool $is_admin
- * @property string|null $remember_token
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Collection> $collections
- * @property-read int|null $collections_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Project> $maintaining
- * @property-read int|null $maintaining_count
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
- * @property-read int|null $notifications_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Project> $projects
- * @property-read int|null $projects_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Release> $releases
- * @property-read int|null $releases_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Review> $reviews
- * @property-read int|null $reviews_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
- * @property-read int|null $tokens_count
- *
- * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|User query()
- * @method static \Illuminate\Database\Eloquent\Builder|User whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereEmailVerifiedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereIsAdmin($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereUsername($value)
- *
- * @property string|null $username_changed_at
- *
- * @method static \Illuminate\Database\Eloquent\Builder|User whereUsernameChangedAt($value)
- *
- * @mixin \Eloquent
+ * @mixin IdeHelperUser
  */
 class User extends Authenticatable implements FilamentUser, HasName
 {
@@ -84,6 +40,7 @@ class User extends Authenticatable implements FilamentUser, HasName
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
         'is_admin' => 'boolean',
+        'username_changed_at' => 'datetime',
     ];
 
     public function getRouteKeyName(): string
@@ -98,7 +55,7 @@ class User extends Authenticatable implements FilamentUser, HasName
 
     public function isEmailVerified(): bool
     {
-        return (bool)$this->email_verified_at;
+        return (bool) $this->email_verified_at;
     }
 
     public function canAccessPanel(Panel $panel): bool

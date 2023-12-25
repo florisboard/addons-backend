@@ -22,7 +22,6 @@ class CategoryController extends Controller
             ->allowedFilters([
                 AllowedFilter::partial('name'),
             ])
-            ->ordered()
             ->fastPaginate(20);
 
         return CategoryResource::collection($categories);

@@ -27,6 +27,7 @@ class ProjectFactory extends Factory
             'package_name' => Str::reverse(fake()->unique()->domainName()).'.'.fake()->word(),
             'type' => ProjectTypeEnum::randomValue(),
             'description' => fake()->realText(rand(200, 600)),
+            'short_description' => fake()->realText(rand(50, 200)),
             'home_page' => fake()->boolean() ? fake()->url() : null,
             'support_email' => fake()->boolean() ? fake()->email() : null,
             'support_site' => fake()->boolean() ? fake()->url() : null,

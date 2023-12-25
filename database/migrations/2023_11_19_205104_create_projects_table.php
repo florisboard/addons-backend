@@ -21,7 +21,8 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->string('package_name')->unique();
             $table->tinyInteger('type');
-            $table->text('description')->nullable();
+            $table->text('description');
+            $table->string('short_description');
             $table->string('home_page')->nullable();
             $table->string('support_email')->nullable();
             $table->string('support_site')->nullable();

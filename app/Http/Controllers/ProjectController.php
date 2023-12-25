@@ -47,6 +47,7 @@ class ProjectController extends Controller
             ->allowedIncludes(['user', 'category'])
             ->allowedSorts(['name', 'package_name', 'id'])
             ->with(['image', 'latestRelease'])
+            ->withCount('reviews')
             ->withSum('releases', 'downloads_count')
             ->withAvg('reviews', 'score')
             ->fastPaginate(20);
