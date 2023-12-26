@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\Project\ProjectResource;
 use App\Http\Resources\User\UserResource;
 use App\Models\Collection;
 use Illuminate\Http\Request;

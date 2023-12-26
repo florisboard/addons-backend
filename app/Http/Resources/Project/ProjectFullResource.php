@@ -1,15 +1,17 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Project;
 
+use App\Http\Resources\CategoryResource;
 use App\Http\Resources\Media\ImageResource;
+use App\Http\Resources\ReleaseResource;
 use App\Http\Resources\User\UserResource;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /** @mixin Project */
-class ProjectResource extends JsonResource
+class ProjectFullResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

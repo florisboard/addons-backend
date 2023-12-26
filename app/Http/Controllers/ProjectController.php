@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProjectRequest;
-use App\Http\Resources\ProjectResource;
+use App\Http\Resources\Project\ProjectResource;
 use App\Models\Project;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
