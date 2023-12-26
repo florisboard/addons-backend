@@ -2,10 +2,8 @@
 
 namespace App\Http\Resources\Project;
 
-use App\Http\Resources\CategoryResource;
 use App\Http\Resources\Media\ImageResource;
-use App\Http\Resources\ReleaseResource;
-use App\Http\Resources\User\UserResource;
+use App\Http\Resources\Release\ReleaseResource;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;

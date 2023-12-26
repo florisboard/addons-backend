@@ -17,8 +17,11 @@ namespace App\Models{
  * @property int $id
  * @property string $name
  * @property string $slug
+ * @property string $circle_bg
+ * @property string $circle_fg
  * @property int $order_column
  * @property bool $is_active
+ * @property int $is_top
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Project> $projects
@@ -28,9 +31,12 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Category newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Category ordered(string $direction = 'asc')
  * @method static \Illuminate\Database\Eloquent\Builder|Category query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Category whereCircleBg($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Category whereCircleFg($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereIsActive($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Category whereIsTop($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereOrderColumn($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereSlug($value)
@@ -157,7 +163,7 @@ namespace App\Models{
  * @property string $package_name
  * @property \App\Enums\ProjectTypeEnum $type
  * @property string $description
- * @property string|null $short_description
+ * @property string $short_description
  * @property string|null $home_page
  * @property string|null $support_email
  * @property string|null $support_site

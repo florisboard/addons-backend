@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Release;
 
 use App\Http\Resources\Project\ProjectResource;
 use App\Http\Resources\User\UserResource;
@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /** @mixin Release */
-class ReleaseResource extends JsonResource
+class ReleaseFullResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

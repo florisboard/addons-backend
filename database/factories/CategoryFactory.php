@@ -24,6 +24,9 @@ class CategoryFactory extends Factory
             'name' => $name,
             'slug' => Str::slug($name),
             'is_active' => fake()->boolean(90),
+            'is_top' => fake()->boolean(),
+            'circle_bg' => fake()->safeHexColor(),
+            'circle_fg' => fake()->safeHexColor(),
         ];
     }
 }
