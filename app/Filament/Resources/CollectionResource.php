@@ -33,7 +33,7 @@ class CollectionResource extends CustomResource
                 ->preload()
                 ->columnSpanFull()
                 ->hiddenOn(UserResource\RelationManagers\CollectionsRelationManager::class)
-                ->relationship('user', 'name')
+                ->relationship('user', 'username')
                 ->required(),
         ]);
 

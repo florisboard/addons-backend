@@ -27,7 +27,7 @@ class ReviewResource extends CustomResource
                 ->searchable()
                 ->preload()
                 ->hiddenOn([UserResource\RelationManagers\ReviewsRelationManager::class])
-                ->relationship('user', 'name')
+                ->relationship('user', 'username')
                 ->required(),
             Forms\Components\Select::make('project_id')
                 ->searchable()

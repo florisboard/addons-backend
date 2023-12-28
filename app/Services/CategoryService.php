@@ -11,7 +11,7 @@ class CategoryService
 {
     public function top(): AnonymousResourceCollection
     {
-        return Cache::tags(['categories'])->remember('categories.top', now()->addMinutes(5), function () {
+        return Cache::remember('categories.top', now()->addMinutes(5), function () {
             $projects = Category::query()
                 ->ordered()
                 ->where('is_top', true)

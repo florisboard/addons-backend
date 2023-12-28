@@ -42,7 +42,7 @@ class ProjectResource extends CustomResource
             Forms\Components\Select::make('user_id')
                 ->searchable()
                 ->preload()
-                ->relationship('user', 'name')
+                ->relationship('user', 'username')
                 ->hiddenOn([UserResource\RelationManagers\ProjectsRelationManager::class])
                 ->required(),
             Forms\Components\Select::make('category_id')
@@ -81,7 +81,7 @@ class ProjectResource extends CustomResource
                 ->searchable()
                 ->preload()
                 ->multiple()
-                ->relationship('maintainers', 'name'),
+                ->relationship('maintainers', 'username'),
         ]);
 
         $imagesSection = ImagesSection::make([

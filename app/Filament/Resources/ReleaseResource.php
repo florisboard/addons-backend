@@ -31,7 +31,7 @@ class ReleaseResource extends CustomResource
             Forms\Components\Select::make('user_id')
                 ->searchable()
                 ->preload()
-                ->relationship('user', 'name')
+                ->relationship('user', 'username')
                 ->hiddenOn([UserResource\RelationManagers\ReleasesRelationManager::class])
                 ->required(),
             Forms\Components\Select::make('project_id')
