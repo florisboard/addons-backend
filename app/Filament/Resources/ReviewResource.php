@@ -59,7 +59,7 @@ class ReviewResource extends CustomResource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user.name')
+                Tables\Columns\TextColumn::make('user.username')
                     ->hiddenOn([UserResource\RelationManagers\ReviewsRelationManager::class]),
                 Tables\Columns\TextColumn::make('project.name')
                     ->hiddenOn([ProjectResource\RelationManagers\ReviewsRelationManager::class]),

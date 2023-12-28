@@ -13,6 +13,7 @@
         "emreyarligan/enum-concern": "^1.0",
         "filament/filament": "^3.0-stable",
         "filament/spatie-laravel-media-library-plugin": "^3.0-stable",
+        "filament/spatie-laravel-settings-plugin": "^3.1",
         "guzzlehttp/guzzle": "^7.2",
         "hammerstone/fast-paginate": "^1.0",
         "laravel/framework": "^10.10",
@@ -22,7 +23,8 @@
         "rawilk/filament-password-input": "^1.1",
         "spatie/eloquent-sortable": "^4.0",
         "spatie/laravel-medialibrary": "^10.0.0",
-        "spatie/laravel-query-builder": "^5.6"
+        "spatie/laravel-query-builder": "^5.6",
+        "spatie/laravel-settings": "^3.2"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.13",

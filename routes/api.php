@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AboutController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\HomeController;
@@ -13,6 +14,7 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::get('home', HomeController::class)->name('home');
+Route::get('about', AboutController::class)->name('about');
 Route::apiResource('categories', CategoryController::class)->only(['index', 'show']);
 Route::apiResource('projects', ProjectController::class);
 Route::apiResource('collections', CollectionController::class);

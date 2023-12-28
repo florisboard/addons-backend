@@ -53,7 +53,7 @@ class CollectionResource extends CustomResource
                 Tables\Columns\TextColumn::make('name')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('user.name'),
+                Tables\Columns\TextColumn::make('user.username'),
                 ...TimestampsColumn::make(),
             ])
             ->filters([

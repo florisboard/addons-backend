@@ -50,7 +50,7 @@ class ReleaseResource extends CustomResource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user.name')
+                Tables\Columns\TextColumn::make('user.username')
                     ->hiddenOn([UserResource\RelationManagers\ReleasesRelationManager::class]),
                 Tables\Columns\TextColumn::make('project.name')
                     ->hiddenOn([ProjectResource\RelationManagers\ReleasesRelationManager::class]),
