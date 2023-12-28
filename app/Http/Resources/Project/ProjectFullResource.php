@@ -1,15 +1,17 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Project;
 
+use App\Http\Resources\CategoryResource;
 use App\Http\Resources\Media\ImageResource;
+use App\Http\Resources\Release\ReleaseResource;
 use App\Http\Resources\User\UserResource;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /** @mixin Project */
-class ProjectResource extends JsonResource
+class ProjectFullResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -25,6 +27,7 @@ class ProjectResource extends JsonResource
             'name' => $this->name,
             'slug' => $this->slug,
             'package_name' => $this->package_name,
+            'short_description' => $this->short_description,
             'type' => $this->type,
             'description' => $this->description,
             'home_page' => $this->home_page,
@@ -39,7 +42,7 @@ class ProjectResource extends JsonResource
             'user' => new UserResource($this->whenLoaded('user')),
             'category' => new CategoryResource($this->whenLoaded('category')),
             'maintainers' => UserResource::collection($this->whenLoaded('maintainers')),
-            'reviews_avg_score' => $this->whenAggregated('reviews', 'score', 'avg'),
+            'reviews_avg_score' => round($this->whenAggregated('reviews', 'score', 'avg') ?? 0),
             'releases_sum_downloads_count' => intval($this->whenAggregated('releases', 'downloads_count', 'sum') ?? 0),
             'latest_release' => new ReleaseResource($this->whenLoaded('latestRelease')),
             'releases' => ReleaseResource::collection($this->whenLoaded('releases')),

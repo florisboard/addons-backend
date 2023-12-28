@@ -42,7 +42,7 @@ class ProjectResource extends CustomResource
             Forms\Components\Select::make('user_id')
                 ->searchable()
                 ->preload()
-                ->relationship('user', 'name')
+                ->relationship('user', 'username')
                 ->hiddenOn([UserResource\RelationManagers\ProjectsRelationManager::class])
                 ->required(),
             Forms\Components\Select::make('category_id')
@@ -73,11 +73,15 @@ class ProjectResource extends CustomResource
             Forms\Components\MarkdownEditor::make('description')
                 ->columnSpanFull()
                 ->required(),
+            Forms\Components\Textarea::make('short_description')
+                ->maxLength(255)
+                ->columnSpanFull()
+                ->required(),
             Forms\Components\Select::make('maintainers')
                 ->searchable()
                 ->preload()
                 ->multiple()
-                ->relationship('maintainers', 'name'),
+                ->relationship('maintainers', 'username'),
         ]);
 
         $imagesSection = ImagesSection::make([
@@ -103,6 +107,7 @@ class ProjectResource extends CustomResource
                 Tables\Columns\TextColumn::make('slug')->sortable()->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('package_name')->sortable()->searchable(isIndividual: true)->toggleable(),
                 Tables\Columns\TextColumn::make('description')->searchable(isIndividual: true)->toggleable()->toggledHiddenByDefault()->limit(30),
+                Tables\Columns\TextColumn::make('short_description')->searchable(isIndividual: true)->toggleable()->toggledHiddenByDefault()->limit(30),
                 Tables\Columns\TextColumn::make('home_page')->searchable(isIndividual: true)->toggleable()->toggledHiddenByDefault()->limit(30),
                 Tables\Columns\TextColumn::make('support_email')->searchable(isIndividual: true)->toggleable()->toggledHiddenByDefault()->limit(30),
                 Tables\Columns\TextColumn::make('support_site')->searchable(isIndividual: true)->toggleable()->toggledHiddenByDefault()->limit(30),

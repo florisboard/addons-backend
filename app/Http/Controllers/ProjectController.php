@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProjectRequest;
-use App\Http\Resources\ProjectResource;
+use App\Http\Resources\Project\ProjectFullResource;
+use App\Http\Resources\Project\ProjectResource;
 use App\Models\Project;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
@@ -47,6 +48,7 @@ class ProjectController extends Controller
             ->allowedIncludes(['user', 'category'])
             ->allowedSorts(['name', 'package_name', 'id'])
             ->with(['image', 'latestRelease'])
+            ->withCount('reviews')
             ->withSum('releases', 'downloads_count')
             ->withAvg('reviews', 'score')
             ->fastPaginate(20);
@@ -66,9 +68,9 @@ class ProjectController extends Controller
         return new JsonResponse($this->show($project), 201);
     }
 
-    public function show(Project $project): ProjectResource
+    public function show(Project $project): ProjectFullResource
     {
-        $project->load(['image', 'maintainers', 'latestRelease', 'category']);
+        $project->load(['image', 'maintainers', 'latestRelease', 'category', 'user']);
         $project->loadAvg('reviews', 'score');
         $project->loadSum('releases', 'downloads_count');
         $project->loadCount([
@@ -90,7 +92,7 @@ class ProjectController extends Controller
             },
         ]);
 
-        return new ProjectResource($project);
+        return new ProjectFullResource($project);
     }
 
     public function update(ProjectRequest $request, Project $project): ProjectResource

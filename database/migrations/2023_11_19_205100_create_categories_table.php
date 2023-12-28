@@ -15,8 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
+            $table->string('circle_bg');
+            $table->string('circle_fg');
             $table->unsignedBigInteger('order_column');
             $table->boolean('is_active');
+            $table->boolean('is_top');
             $table->timestamps();
         });
     }
