@@ -37,13 +37,14 @@ class ProjectRequest extends FormRequest
             'slug' => ['bail', 'required', 'string', 'min:3', 'max:255', Rule::unique(Project::class)->ignore($project?->id)],
             'package_name' => ['required', 'string', 'min:3', 'max:255', 'regex:/^([A-Za-z]{1}[A-Za-z\d_]*\.)+[A-Za-z][A-Za-z\d_]*$/'],
             'type' => ['required', Rule::enum(ProjectTypeEnum::class)],
+            'short_description' => ['required', 'string', 'min:3', 'max:255'],
             'description' => ['required', 'string', 'min:3', 'max:1024'],
             'home_page' => ['nullable', 'string', 'url', 'max:255'],
             'support_email' => ['nullable', 'string', 'min:3', 'max:255', 'email'],
             'support_site' => ['nullable', 'string', 'max:255', 'url'],
             'donate_site' => ['nullable', 'string', 'max:255', 'url'],
             'maintainers' => ['bail', 'nullable', 'array', 'between:0,5'],
-            'maintainers.*' => ['bail', 'required', 'numeric', Rule::notIn([Auth::id()]),  Rule::exists(User::class, 'id')],
+            'maintainers.*' => ['bail', 'required', 'numeric', Rule::notIn([Auth::id()]), Rule::exists(User::class, 'id')],
         ];
     }
 }

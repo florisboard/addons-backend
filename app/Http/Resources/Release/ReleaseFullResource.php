@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources\Release;
 
-use App\Http\Resources\Project\ProjectResource;
 use App\Http\Resources\User\UserResource;
 use App\Models\Release;
 use Illuminate\Http\Request;
@@ -24,12 +23,10 @@ class ReleaseFullResource extends JsonResource
             'user_id' => $this->user_id,
             'version' => $this->version,
             'description' => $this->description,
-            /* @var int */
             'downloads_count' => round($this->downloads_count),
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'user' => new UserResource($this->whenLoaded('user')),
-            'project' => new ProjectResource($this->whenLoaded('project')),
+            'created_at' => (string) $this->created_at,
+            'updated_at' => (string) $this->updated_at,
+            'user' => new UserResource($this->user),
         ];
     }
 }

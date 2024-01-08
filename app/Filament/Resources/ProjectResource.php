@@ -91,6 +91,7 @@ class ProjectResource extends CustomResource
 
         $statusSection = StatusSection::make([
             Forms\Components\Toggle::make('is_recommended'),
+            Forms\Components\Toggle::make('is_active'),
         ]);
 
         return ComplexForm::make($form, [$basicSection, $imagesSection], [$statusSection]);
@@ -101,6 +102,7 @@ class ProjectResource extends CustomResource
         return $table
             ->columns([
                 Tables\Columns\IconColumn::make('is_recommended')->boolean(),
+                Tables\Columns\IconColumn::make('is_active')->boolean(),
                 Tables\Columns\IconColumn::make('is_active')->boolean(),
                 Tables\Columns\TextColumn::make('type')->badge(),
                 Tables\Columns\TextColumn::make('name')->sortable()->searchable(isIndividual: true),

@@ -7,11 +7,15 @@ use App\Models\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class CollectionController extends Controller
 {
+    /**
+     * @return AnonymousResourceCollection<LengthAwarePaginator<CollectionResource>>
+     */
     public function index(Request $request): AnonymousResourceCollection
     {
         $request->validate([

@@ -6,11 +6,14 @@ use App\Http\Requests\ProjectRequest;
 use App\Http\Resources\Project\ProjectFullResource;
 use App\Http\Resources\Project\ProjectResource;
 use App\Models\Project;
+use App\Models\Scopes\ActiveScope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -21,6 +24,9 @@ class ProjectController extends Controller
         $this->authorizeResource(Project::class);
     }
 
+    /**
+     * @return AnonymousResourceCollection<LengthAwarePaginator<ProjectResource>>
+     */
     public function index(Request $request): AnonymousResourceCollection
     {
         $request->validate([
@@ -30,11 +36,8 @@ class ProjectController extends Controller
             'filter.user_id' => ['nullable', 'numeric'],
             'filter.package_name' => ['nullable', 'string'],
             'filter.is_recommended' => ['nullable', 'boolean'],
-            // Fields : name,package_name,id
-            'sort' => ['nullable', 'string'],
-            // Fields : user,category
-            'include' => ['nullable', 'string'],
-
+            'sort' => ['nullable', 'string', Rule::in('package_name', '-package_name', 'name', '-name', 'id', '-id')],
+            'include' => ['nullable', 'string', Rule::in('user', 'category')],
         ]);
 
         $projects = QueryBuilder::for(Project::class)
@@ -48,6 +51,9 @@ class ProjectController extends Controller
             ->allowedIncludes(['user', 'category'])
             ->allowedSorts(['name', 'package_name', 'id'])
             ->with(['image', 'latestRelease'])
+            ->when($request->input('filter.user_id') == Auth::id(), function (Builder $builder) {
+                $builder->withoutGlobalScope(ActiveScope::class);
+            })
             ->withCount('reviews')
             ->withSum('releases', 'downloads_count')
             ->withAvg('reviews', 'score')
@@ -95,7 +101,7 @@ class ProjectController extends Controller
         return new ProjectFullResource($project);
     }
 
-    public function update(ProjectRequest $request, Project $project): ProjectResource
+    public function update(ProjectRequest $request, Project $project): ProjectFullResource
     {
         $project->update($request->safe()->except(['maintainers']));
 

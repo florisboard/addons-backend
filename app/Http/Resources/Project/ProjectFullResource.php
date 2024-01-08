@@ -35,29 +35,23 @@ class ProjectFullResource extends JsonResource
             'support_site' => $this->support_site,
             'donate_site' => $this->donate_site,
             'is_recommended' => $this->is_recommended,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'is_active' => $this->is_active,
+            'created_at' => (string) $this->created_at,
+            'updated_at' => (string) $this->updated_at,
             'image' => new ImageResource($this->whenLoaded('image')),
             'screenshots' => ImageResource::collection($this->whenLoaded('screenshots')),
-            'user' => new UserResource($this->whenLoaded('user')),
-            'category' => new CategoryResource($this->whenLoaded('category')),
-            'maintainers' => UserResource::collection($this->whenLoaded('maintainers')),
-            'reviews_avg_score' => round($this->whenAggregated('reviews', 'score', 'avg') ?? 0),
-            'releases_sum_downloads_count' => intval($this->whenAggregated('releases', 'downloads_count', 'sum') ?? 0),
-            'latest_release' => new ReleaseResource($this->whenLoaded('latestRelease')),
-            'releases' => ReleaseResource::collection($this->whenLoaded('releases')),
-            /* @var int */
-            'reviews_count' => $this->whenCounted('reviews'),
-            /* @var int */
-            'one_reviews_count' => $this->whenCounted('one_reviews'),
-            /* @var int */
-            'two_reviews_count' => $this->whenCounted('two_reviews'),
-            /* @var int */
-            'three_reviews_count' => $this->whenCounted('three_reviews'),
-            /* @var int */
-            'four_reviews_count' => $this->whenCounted('four_reviews'),
-            /* @var int */
-            'five_reviews_count' => $this->whenCounted('five_reviews'),
+            'user' => new UserResource($this->user),
+            'category' => new CategoryResource($this->category),
+            'maintainers' => UserResource::collection($this->maintainers),
+            'reviews_avg_score' => (int) round($this->whenAggregated('reviews', 'score', 'avg') ?? 0),
+            'releases_sum_downloads_count' => (int) ($this->whenAggregated('releases', 'downloads_count', 'sum') ?? 0),
+            'latest_release' => new ReleaseResource($this->latestRelease),
+            'reviews_count' => (int) $this->whenCounted('reviews'),
+            'one_reviews_count' => (int) $this->whenCounted('one_reviews'),
+            'two_reviews_count' => (int) $this->whenCounted('two_reviews'),
+            'three_reviews_count' => (int) $this->whenCounted('three_reviews'),
+            'four_reviews_count' => (int) $this->whenCounted('four_reviews'),
+            'five_reviews_count' => (int) $this->whenCounted('five_reviews'),
         ];
     }
 }

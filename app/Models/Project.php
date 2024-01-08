@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\ProjectTypeEnum;
+use App\Models\Scopes\ActiveScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -24,8 +25,14 @@ class Project extends Model implements HasMedia
 
     protected $casts = [
         'is_recommended' => 'boolean',
+        'is_active' => 'boolean',
         'type' => ProjectTypeEnum::class,
     ];
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new ActiveScope);
+    }
 
     public function getRouteKeyName(): string
     {

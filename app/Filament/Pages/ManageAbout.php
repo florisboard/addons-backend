@@ -20,7 +20,7 @@ class ManageAbout extends SettingsPage
         return $form
             ->schema([
                 Forms\Components\MarkdownEditor::make('content')
-                ->columnSpanFull(),
+                    ->columnSpanFull(),
             ]);
     }
 }

@@ -18,10 +18,10 @@ class ProjectService
     public function choosePicksOfTheDayIds(): array
     {
         return Cache::remember('projects.picksOfTheDay.ids', now()->endOfDay(), function () {
+
             return Project::query()
                 ->inRandomOrder()
                 ->take(10)
-                ->get('id')
                 ->pluck('id')
                 ->toArray();
         });

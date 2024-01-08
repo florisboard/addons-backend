@@ -12,7 +12,17 @@ describe('Index', function () {
         Project::factory()->forUser()->forCategory()->create();
 
         $this->getJson(route('projects.index'))
-            ->assertOk();
+            ->assertOk()
+            ->assertJsonFragment(['is_active' => true]);
+    });
+
+    test('users can get their un active projects', function () {
+        Sanctum::actingAs($user = User::factory()->create());
+        Project::factory()->for($user)->forCategory()->create(['is_active' => false]);
+
+        $this->getJson(route('projects.index', ['filter' => ['user_id' => $user->id]]))
+            ->assertOk()
+            ->assertJsonFragment(['is_active' => false]);
     });
 });
 
@@ -27,8 +37,7 @@ describe('Show', function () {
 
 describe('Delete', function () {
     test('users can delete their project', function () {
-        $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user = User::factory()->create());
         $project = Project::factory()->for($user)->forCategory()->create();
 
         $this->deleteJson(route('projects.destroy', [$project]))
@@ -46,8 +55,7 @@ describe('Delete', function () {
 
 describe('Update', function () {
     test('users can update their project', function () {
-        $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user = User::factory()->create());
         $project = Project::factory()->for($user)->forCategory()->create();
         $data = $project->toArray();
 
@@ -95,8 +103,7 @@ describe('Create', function () {
     });
 
     test('current user cannot be in the maintainers list', function () {
-        $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user = User::factory()->create());
         $data = [
             ...Project::factory()->make()->toArray(),
             'category_id' => Category::first()->id,

@@ -22,7 +22,7 @@ class VerifyEmailController extends Controller
         }
 
         if ($request->user()->markEmailAsVerified()) {
-            // @phpstan-ignore-next-line
+            /* @phpstan-ignore-next-line */
             event(new Verified($request->user()));
         }
 

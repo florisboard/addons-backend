@@ -28,14 +28,14 @@ class ProjectResource extends JsonResource
             'short_description' => $this->short_description,
             'type' => $this->type,
             'is_recommended' => $this->is_recommended,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'is_active' => $this->is_active,
+            'created_at' => (string) $this->created_at,
+            'updated_at' => (string) $this->updated_at,
             'image' => new ImageResource($this->whenLoaded('image')),
-            'reviews_avg_score' => round($this->whenAggregated('reviews', 'score', 'avg') ?? 0),
-            'releases_sum_downloads_count' => intval($this->whenAggregated('releases', 'downloads_count', 'sum') ?? 0),
-            'latest_release' => new ReleaseResource($this->whenLoaded('latestRelease')),
-            /* @var int */
-            'reviews_count' => $this->whenCounted('reviews'),
+            'reviews_avg_score' => (int) round($this->whenAggregated('reviews', 'score', 'avg') ?? 0),
+            'releases_sum_downloads_count' => (int) ($this->whenAggregated('releases', 'downloads_count', 'sum') ?? 0),
+            'latest_release' => new ReleaseResource($this->latestRelease),
+            'reviews_count' => (int) $this->reviews_count,
         ];
     }
 }

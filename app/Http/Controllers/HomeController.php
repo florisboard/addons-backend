@@ -16,6 +16,9 @@ class HomeController extends Controller
     ) {
     }
 
+    /**
+     * @return mixed[]
+     */
     public function __invoke(Request $request): array
     {
         return [

@@ -157,7 +157,7 @@ namespace App\Models{
  *
  * @property int $id
  * @property int $user_id
- * @property int|null $category_id
+ * @property int $category_id
  * @property string $name
  * @property string $slug
  * @property string $package_name
@@ -169,10 +169,11 @@ namespace App\Models{
  * @property string|null $support_site
  * @property string|null $donate_site
  * @property bool $is_recommended
+ * @property bool $is_active
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Category|null $category
+ * @property-read \App\Models\Category $category
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Collection> $collections
  * @property-read int|null $collections_count
  * @property-read \App\Models\Media|null $image
@@ -200,6 +201,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereDonateSite($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereHomePage($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereIsActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereIsRecommended($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project wherePackageName($value)
