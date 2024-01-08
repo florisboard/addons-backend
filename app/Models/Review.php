@@ -13,10 +13,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Review extends Model
 {
-    use HasFactory , SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     protected $casts = [
         'is_anonymous' => 'boolean',
+        'score' => 'int',
     ];
 
     /**

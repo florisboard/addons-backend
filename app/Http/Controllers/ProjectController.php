@@ -8,6 +8,7 @@ use App\Http\Resources\Project\ProjectResource;
 use App\Models\Project;
 use App\Models\Scopes\ActiveScope;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -76,7 +77,14 @@ class ProjectController extends Controller
 
     public function show(Project $project): ProjectFullResource
     {
-        $project->load(['image', 'maintainers', 'latestRelease', 'category', 'user']);
+        $project->load([
+            'image',
+            'maintainers',
+            'latestRelease',
+            'category',
+            'user',
+            'reviews' => fn (HasMany $builder) => $builder->with('user')->take(10),
+        ]);
         $project->loadAvg('reviews', 'score');
         $project->loadSum('releases', 'downloads_count');
         $project->loadCount([

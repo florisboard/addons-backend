@@ -5,6 +5,7 @@ namespace App\Http\Resources\Project;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\Media\ImageResource;
 use App\Http\Resources\Release\ReleaseResource;
+use App\Http\Resources\ReviewResource;
 use App\Http\Resources\User\UserResource;
 use App\Models\Project;
 use Illuminate\Http\Request;
@@ -46,6 +47,7 @@ class ProjectFullResource extends JsonResource
             'reviews_avg_score' => (int) round($this->whenAggregated('reviews', 'score', 'avg') ?? 0),
             'releases_sum_downloads_count' => (int) ($this->whenAggregated('releases', 'downloads_count', 'sum') ?? 0),
             'latest_release' => new ReleaseResource($this->latestRelease),
+            'reviews' => ReviewResource::collection($this->reviews),
             'reviews_count' => (int) $this->whenCounted('reviews'),
             'one_reviews_count' => (int) $this->whenCounted('one_reviews'),
             'two_reviews_count' => (int) $this->whenCounted('two_reviews'),
