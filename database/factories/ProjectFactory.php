@@ -23,7 +23,6 @@ class ProjectFactory extends Factory
 
         return [
             'name' => $name,
-            'slug' => Str::slug($name),
             'package_name' => Str::reverse(fake()->unique()->domainName()).'.'.fake()->word(),
             'type' => ProjectTypeEnum::randomValue(),
             'description' => fake()->realText(rand(200, 600)),

@@ -6,10 +6,10 @@ use EmreYarligan\EnumConcern\EnumConcern;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 
-enum ProjectTypeEnum: int implements HasColor, HasLabel
+enum ProjectTypeEnum: string implements HasColor, HasLabel
 {
     use EnumConcern;
-    case Extension = 1;
+    case Extension = 'EXTENSION';
 
     public function getLabel(): string
     {

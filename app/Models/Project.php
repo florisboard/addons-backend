@@ -34,11 +34,6 @@ class Project extends Model implements HasMedia
         static::addGlobalScope(new ActiveScope);
     }
 
-    public function getRouteKeyName(): string
-    {
-        return 'slug';
-    }
-
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('image')

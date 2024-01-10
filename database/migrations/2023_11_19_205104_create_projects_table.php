@@ -18,9 +18,8 @@ return new class extends Migration
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Category::class)->constrained()->cascadeOnDelete();
             $table->string('name');
-            $table->string('slug')->unique();
             $table->string('package_name')->unique();
-            $table->tinyInteger('type');
+            $table->string('type')->index();
             $table->text('description');
             $table->string('short_description');
             $table->string('home_page')->nullable();

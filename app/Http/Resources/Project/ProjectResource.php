@@ -7,6 +7,7 @@ use App\Http\Resources\Release\ReleaseResource;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Str;
 
 /** @mixin Project */
 class ProjectResource extends JsonResource
@@ -23,7 +24,7 @@ class ProjectResource extends JsonResource
             'category_id' => $this->category_id,
             'user_id' => $this->user_id,
             'name' => $this->name,
-            'slug' => $this->slug,
+            'slug' => Str::slug($this->name),
             'package_name' => $this->package_name,
             'short_description' => $this->short_description,
             'type' => $this->type,
