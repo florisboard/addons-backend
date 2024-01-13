@@ -15,6 +15,8 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -63,12 +65,18 @@ class ProjectController extends Controller
         return ProjectResource::collection($projects);
     }
 
+    /**
+     * @throws FileDoesNotExist
+     * @throws FileIsTooBig
+     */
     public function store(ProjectRequest $request): JsonResponse
     {
         $project = Project::create([
-            ...$request->safe()->except(['maintainers']),
+            ...$request->safe()->except(['maintainers', 'image_path', 'screenshots_path']),
             'user_id' => Auth::id(),
         ]);
+
+        $project->addMediaFromDisk($request->image_path)->toMediaCollection('image');
 
         $project->maintainers()->attach($request->maintainers);
 

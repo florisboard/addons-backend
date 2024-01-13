@@ -6,6 +6,7 @@ use App\Enums\ProjectTypeEnum;
 use App\Models\Category;
 use App\Models\Project;
 use App\Models\User;
+use App\Rules\FileUpload;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -42,8 +43,13 @@ class ProjectRequest extends FormRequest
             'support_email' => ['nullable', 'string', 'min:3', 'max:255', 'email'],
             'support_site' => ['nullable', 'string', 'max:255', 'url'],
             'donate_site' => ['nullable', 'string', 'max:255', 'url'],
+            /* @var int[] */
             'maintainers' => ['bail', 'nullable', 'array', 'between:0,5'],
             'maintainers.*' => ['bail', 'required', 'numeric', Rule::notIn([Auth::id()]), Rule::exists(User::class, 'id')],
+            'image_path' => ['bail', 'required', 'string', new FileUpload(['image/png', 'image/jpeg'])],
+            'screenshots_path' => ['nullable', 'array', 'between:0,5'],
+            'screenshots_path.*' => ['required', 'string', new FileUpload(['image/png', 'image/jpeg'])],
+
         ];
     }
 }

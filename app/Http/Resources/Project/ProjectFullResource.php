@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Project;
 
+use App\Enums\ProjectTypeEnum;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\Media\ImageResource;
 use App\Http\Resources\Release\ReleaseResource;
@@ -24,12 +25,15 @@ class ProjectFullResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            /* @var int */
             'category_id' => $this->category_id,
+            /* @var int */
             'user_id' => $this->user_id,
             'name' => $this->name,
             'slug' => Str::slug($this->name),
             'package_name' => $this->package_name,
             'short_description' => $this->short_description,
+            /* @var ProjectTypeEnum */
             'type' => $this->type,
             'description' => $this->description,
             'home_page' => $this->home_page,
