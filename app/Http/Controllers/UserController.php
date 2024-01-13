@@ -9,16 +9,39 @@ use App\Rules\Username;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class UserController extends Controller
 {
     public function __construct(private readonly UserService $userService)
     {
+    }
+
+    /**
+     * @return AnonymousResourceCollection<LengthAwarePaginator<UserResource>>
+     */
+    public function index(Request $request): AnonymousResourceCollection
+    {
+        $request->validate([
+            'filter' => ['nullable', 'array'],
+            'filter.username' => ['nullable', 'string'],
+        ]);
+
+        $users = QueryBuilder::for(User::class)
+            ->allowedFilters([
+                AllowedFilter::partial('username'),
+            ])
+            ->fastPaginate(20);
+
+        return UserResource::collection($users);
     }
 
     public function me(): AuthResource

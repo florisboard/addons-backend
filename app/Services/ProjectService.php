@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Http\Resources\Project\ProjectResource;
 use App\Models\Project;
 use App\Models\Release;
+use App\Models\Scopes\ActiveScope;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Cache;
@@ -20,6 +21,7 @@ class ProjectService
         return Cache::remember('projects.picksOfTheDay.ids', now()->endOfDay(), function () {
 
             return Project::query()
+                ->withGlobalScope('active', new ActiveScope)
                 ->inRandomOrder()
                 ->take(10)
                 ->pluck('id')
@@ -34,6 +36,7 @@ class ProjectService
 
             $projects = Project::query()
                 ->with(['image', 'latestRelease'])
+                ->withGlobalScope('active', new ActiveScope)
                 ->withCount('reviews')
                 ->withSum('releases', 'downloads_count')
                 ->withAvg('reviews', 'score')
@@ -53,6 +56,7 @@ class ProjectService
 
             $projects = Project::query()
                 ->with(['image', 'latestRelease'])
+                ->withGlobalScope('active', new ActiveScope)
                 ->withCount('reviews')
                 ->withSum('releases', 'downloads_count')
                 ->withAvg('reviews', 'score')
@@ -72,6 +76,7 @@ class ProjectService
         return Cache::remember('projects.latestProjects', now()->addMinutes(5), function () {
             $projects = Project::query()
                 ->with(['image', 'latestRelease'])
+                ->withGlobalScope('active', new ActiveScope)
                 ->withCount('reviews')
                 ->withSum('releases', 'downloads_count')
                 ->withAvg('reviews', 'score')
@@ -88,6 +93,7 @@ class ProjectService
         return Cache::remember('projects.recommended', now()->addMinutes(5), function () {
             $projects = Project::query()
                 ->with(['image', 'latestRelease'])
+                ->withGlobalScope('active', new ActiveScope)
                 ->withCount('reviews')
                 ->withSum('releases', 'downloads_count')
                 ->withAvg('reviews', 'score')

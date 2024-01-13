@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\Project;
 use App\Models\User;
+use Illuminate\Auth\Access\Response;
 
 class ProjectPolicy
 {
@@ -18,9 +19,11 @@ class ProjectPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(?User $user, Project $project): bool
+    public function view(?User $user, Project $project): Response
     {
-        return true;
+        return ($project->is_active || $user?->id === $project->user_id)
+            ? Response::allow()
+            : Response::denyAsNotFound();
     }
 
     /**
@@ -42,7 +45,6 @@ class ProjectPolicy
             ->exists();
 
         return $user->id === $project->user_id || $isMaintainer;
-
     }
 
     /**

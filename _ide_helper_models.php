@@ -159,7 +159,6 @@ namespace App\Models{
  * @property int $user_id
  * @property int $category_id
  * @property string $name
- * @property string $slug
  * @property string $package_name
  * @property \App\Enums\ProjectTypeEnum $type
  * @property string $description
@@ -189,6 +188,7 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Review> $reviews
  * @property-read int|null $reviews_count
  * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|Project active()
  * @method static \Database\Factories\ProjectFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Project newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Project newQuery()
@@ -206,7 +206,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project wherePackageName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereShortDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereSupportEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereSupportSite($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereType($value)

@@ -20,4 +20,4 @@ Route::get('about', AboutController::class)->name('about');
 Route::apiResource('categories', CategoryController::class)->only(['index', 'show']);
 Route::apiResource('projects', ProjectController::class);
 Route::apiResource('collections', CollectionController::class);
-Route::apiResource('users', UserController::class)->only(['show', 'update']);
+Route::apiResource('users', UserController::class)->only(['index', 'show', 'update']);
