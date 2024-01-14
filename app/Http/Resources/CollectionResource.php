@@ -26,7 +26,6 @@ class CollectionResource extends JsonResource
             'created_at' => (string) $this->created_at,
             'updated_at' => (string) $this->updated_at,
             'user' => new UserResource($this->whenLoaded('user')),
-            'projects' => ProjectResource::collection($this->whenLoaded('projects')),
             /* @var int */
             'projects_count' => $this->whenCounted('projects'),
         ];
