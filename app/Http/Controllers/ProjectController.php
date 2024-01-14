@@ -54,7 +54,7 @@ class ProjectController extends Controller
             ->allowedIncludes(['user', 'category'])
             ->allowedSorts(['name', 'package_name', 'id'])
             ->with(['image', 'latestRelease'])
-            ->unless($request->input('filter.user_id') == Auth::id(), function (Builder $builder) {
+            ->when($request->input('filter.user_id') != Auth::id(), function (Builder $builder) {
                 $builder->withGlobalScope('active', new ActiveScope);
             })
             ->withCount('reviews')

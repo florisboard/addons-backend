@@ -32,9 +32,10 @@ class ProjectResource extends JsonResource
             'is_active' => $this->is_active,
             'created_at' => (string) $this->created_at,
             'updated_at' => (string) $this->updated_at,
-            'image' => new ImageResource($this->whenLoaded('image')),
+            'image' => new ImageResource($this->image),
             'reviews_avg_score' => (int) round($this->whenAggregated('reviews', 'score', 'avg') ?? 0),
             'releases_sum_downloads_count' => (int) ($this->whenAggregated('releases', 'downloads_count', 'sum') ?? 0),
+            /* @var ReleaseResource|null */
             'latest_release' => new ReleaseResource($this->latestRelease),
             'reviews_count' => (int) $this->reviews_count,
         ];
