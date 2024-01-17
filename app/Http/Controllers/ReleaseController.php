@@ -2,38 +2,39 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\CategoryResource;
-use App\Models\Category;
+use App\Http\Resources\Release\ReleaseFullResource;
+use App\Models\Release;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
-class CategoryController extends Controller
+class ReleaseController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Release::class);
+    }
+
     /**
-     * @return AnonymousResourceCollection<LengthAwarePaginator<CategoryResource>>
+     * @return AnonymousResourceCollection<LengthAwarePaginator<ReleaseFullResource>>
      */
     public function index(Request $request): AnonymousResourceCollection
     {
         $request->validate([
             'filter' => ['nullable', 'array'],
-            'filter.name' => ['nullable', 'string'],
+            'filter.project_id' => ['nullable', 'integer'],
             'page' => ['nullable', 'integer'],
         ]);
 
-        $categories = QueryBuilder::for(Category::class)
+        $projects = QueryBuilder::for(Release::class)
             ->allowedFilters([
-                AllowedFilter::partial('name'),
+                AllowedFilter::exact('project_id'),
             ])
+            ->with('user')
             ->fastPaginate(20);
 
-        return CategoryResource::collection($categories);
-    }
-
-    public function show(Category $category): CategoryResource
-    {
-        return new CategoryResource($category);
+        return ReleaseFullResource::collection($projects);
     }
 }

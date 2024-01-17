@@ -22,6 +22,7 @@ class CollectionController extends Controller
             'filter' => ['nullable', 'array'],
             'filter.name' => ['nullable', 'string'],
             'filter.user_id' => ['nullable', 'numeric'],
+            'page' => ['nullable', 'integer'],
         ]);
 
         $collections = QueryBuilder::for(Collection::class)

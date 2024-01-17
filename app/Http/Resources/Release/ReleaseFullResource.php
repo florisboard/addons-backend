@@ -23,6 +23,7 @@ class ReleaseFullResource extends JsonResource
             'user_id' => $this->user_id,
             'version' => $this->version,
             'description' => $this->description,
+            /* @var int */
             'downloads_count' => round($this->downloads_count),
             'created_at' => (string) $this->created_at,
             'updated_at' => (string) $this->updated_at,

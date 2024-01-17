@@ -5,7 +5,7 @@ namespace App\Http\Resources\Project;
 use App\Enums\ProjectTypeEnum;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\Media\ImageResource;
-use App\Http\Resources\Release\ReleaseResource;
+use App\Http\Resources\Release\ReleaseFullResource;
 use App\Http\Resources\ReviewResource;
 use App\Http\Resources\User\UserResource;
 use App\Models\Project;
@@ -51,8 +51,8 @@ class ProjectFullResource extends JsonResource
             'maintainers' => UserResource::collection($this->maintainers),
             'reviews_avg_score' => (int) round($this->whenAggregated('reviews', 'score', 'avg') ?? 0),
             'releases_sum_downloads_count' => (int) ($this->whenAggregated('releases', 'downloads_count', 'sum') ?? 0),
-            /* @var ReleaseResource|null */
-            'latest_release' => new ReleaseResource($this->latestRelease),
+            /* @var ReleaseFullResource|null */
+            'latest_release' => new ReleaseFullResource($this->latestRelease),
             'reviews' => ReviewResource::collection($this->reviews),
             'reviews_count' => (int) $this->whenCounted('reviews'),
             'one_reviews_count' => (int) $this->whenCounted('one_reviews'),

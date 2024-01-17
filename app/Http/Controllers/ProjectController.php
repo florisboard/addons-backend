@@ -39,6 +39,7 @@ class ProjectController extends Controller
             'filter.user_id' => ['nullable', 'numeric'],
             'filter.package_name' => ['nullable', 'string'],
             'filter.is_recommended' => ['nullable', 'boolean'],
+            'page' => ['nullable', 'integer'],
             'sort' => ['nullable', 'string', Rule::in('package_name', '-package_name', 'name', '-name', 'id', '-id')],
             'include' => ['nullable', 'string', Rule::in('user', 'category')],
         ]);

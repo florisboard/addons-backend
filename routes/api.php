@@ -6,6 +6,7 @@ use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ReleaseController;
 use App\Http\Controllers\UserController;
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -21,3 +22,4 @@ Route::apiResource('categories', CategoryController::class)->only(['index', 'sho
 Route::apiResource('projects', ProjectController::class);
 Route::apiResource('collections', CollectionController::class);
 Route::apiResource('users', UserController::class)->only(['index', 'show', 'update']);
+Route::apiResource('releases', ReleaseController::class)->only(['index']);

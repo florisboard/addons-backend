@@ -57,10 +57,6 @@ class AppServiceProvider extends ServiceProvider
             return $user->isAdministrator();
         });
 
-        Gate::define('viewLogViewer', function (User $user) {
-            return $user->isAdministrator();
-        });
-
         Gate::define('viewApiDocs', function (?User $user) {
             return true;
         });
