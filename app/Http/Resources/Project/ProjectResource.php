@@ -30,14 +30,19 @@ class ProjectResource extends JsonResource
             'type' => $this->type,
             'is_recommended' => $this->is_recommended,
             'is_active' => $this->is_active,
-            'created_at' => (string) $this->created_at,
-            'updated_at' => (string) $this->updated_at,
+            /* @var string */
+            'created_at' => $this->created_at,
+            /* @var string */
+            'updated_at' => $this->updated_at,
             'image' => new ImageResource($this->image),
-            'reviews_avg_score' => (int) round($this->whenAggregated('reviews', 'score', 'avg') ?? 0),
-            'releases_sum_downloads_count' => (int) ($this->whenAggregated('releases', 'downloads_count', 'sum') ?? 0),
+            /* @var int */
+            'reviews_avg_score' => round($this->whenAggregated('reviews', 'score', 'avg') ?? 0),
+            /* @var int */
+            'releases_sum_downloads_count' => ($this->whenAggregated('releases', 'downloads_count', 'sum') ?? 0),
             /* @var ReleaseResource|null */
             'latest_release' => new ReleaseResource($this->latestRelease),
-            'reviews_count' => (int) $this->reviews_count,
+            /* @var int */
+            'reviews_count' => $this->reviews_count,
         ];
     }
 }

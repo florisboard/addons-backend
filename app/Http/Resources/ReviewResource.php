@@ -21,10 +21,13 @@ class ReviewResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'description' => $this->description,
-            'score' => (int) $this->score,
+            /* @var int */
+            'score' => $this->score,
             'is_anonymous' => $this->is_anonymous,
-            'created_at' => (string) $this->created_at,
-            'updated_at' => (string) $this->updated_at,
+            /* @var string */
+            'created_at' => $this->created_at,
+            /* @var string */
+            'updated_at' => $this->updated_at,
             /* @var UserResource|null */
             'user' => $this->is_anonymous ? null : new UserResource($this->user),
         ];
