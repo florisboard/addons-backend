@@ -13,7 +13,13 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Str;
 
-/** @mixin Project */
+/** @mixin Project
+ * @property int $one_reviews_count
+ * @property int $two_reviews_count
+ * @property int $three_reviews_count
+ * @property int $four_reviews_count
+ * @property int $five_reviews_count
+ */
 class ProjectFullResource extends JsonResource
 {
     /**
@@ -59,17 +65,17 @@ class ProjectFullResource extends JsonResource
             'latest_release' => new ReleaseFullResource($this->latestRelease),
             'reviews' => ReviewResource::collection($this->reviews),
             /* @var int */
-            'reviews_count' => $this->whenCounted('reviews'),
+            'reviews_count' => $this->reviews_count,
             /* @var int */
-            'one_reviews_count' => $this->whenCounted('one_reviews'),
+            'one_reviews_count' => $this->one_reviews_count,
             /* @var int */
-            'two_reviews_count' => $this->whenCounted('two_reviews'),
+            'two_reviews_count' => $this->two_reviews_count,
             /* @var int */
-            'three_reviews_count' => $this->whenCounted('three_reviews'),
+            'three_reviews_count' => $this->three_reviews_count,
             /* @var int */
-            'four_reviews_count' => $this->whenCounted('four_reviews'),
+            'four_reviews_count' => $this->four_reviews_count,
             /* @var int */
-            'five_reviews_count' => $this->whenCounted('five_reviews'),
+            'five_reviews_count' => $this->five_reviews_count,
         ];
     }
 }

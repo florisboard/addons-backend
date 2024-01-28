@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Custom\CustomResource;
+use App\Filament\Forms\Components\FileInput;
 use App\Filament\Forms\Layouts\BasicForm;
 use App\Filament\Resources\ReleaseResource\Pages;
 use App\Filament\Tables\Components\TimestampsColumn;
@@ -42,6 +43,8 @@ class ReleaseResource extends CustomResource
                 ->required(),
             Forms\Components\MarkdownEditor::make('description')
                 ->columnSpanFull()
+                ->required(),
+            FileInput::make('file')
                 ->required(),
         ]);
     }

@@ -8,13 +8,8 @@ class ImageInput
 {
     public static function make(string $name, bool $isMultiple = false): Forms\Components\SpatieMediaLibraryFileUpload
     {
-        return Forms\Components\SpatieMediaLibraryFileUpload::make($name)
-            ->collection($name)
+        return FileInput::make($name, $isMultiple)
             ->image()
-            ->imageEditor()
-            ->multiple($isMultiple)
-            ->reorderable($isMultiple)
-            ->openable()
-            ->downloadable();
+            ->imageEditor();
     }
 }

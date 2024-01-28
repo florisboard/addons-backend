@@ -18,7 +18,9 @@ class ReleaseFullResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            /* @var int */
             'id' => $this->id,
+            /* @var int */
             'project_id' => $this->project_id,
             'user_id' => $this->user_id,
             'version' => $this->version,
