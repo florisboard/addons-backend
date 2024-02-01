@@ -7,6 +7,7 @@ use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ReleaseController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UserController;
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -18,9 +19,14 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::get('home', HomeController::class)->name('home');
 Route::get('about', AboutController::class)->name('about');
+
 Route::apiResource('categories', CategoryController::class)->only(['index', 'show']);
 Route::apiResource('projects', ProjectController::class);
 Route::apiResource('collections', CollectionController::class);
 Route::apiResource('users', UserController::class)->only(['index', 'show', 'update']);
+
 Route::apiResource('releases', ReleaseController::class)->only(['index']);
 Route::get('releases/{release}/download', [ReleaseController::class, 'download'])->name('releases.download');
+
+Route::apiResource('projects.reviews', ReviewController::class)->shallow()->only('create');
+Route::apiResource('reviews', ReviewController::class)->except('create');

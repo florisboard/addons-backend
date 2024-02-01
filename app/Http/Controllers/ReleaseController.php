@@ -26,7 +26,7 @@ class ReleaseController extends Controller
             'sort' => ['nullable', 'string', Rule::in('id', '-id')],
         ]);
 
-        $projects = QueryBuilder::for(Release::class)
+        $releases = QueryBuilder::for(Release::class)
             ->allowedFilters([
                 AllowedFilter::exact('project_id'),
             ])
@@ -34,7 +34,7 @@ class ReleaseController extends Controller
             ->with('user')
             ->fastPaginate(20);
 
-        return ReleaseFullResource::collection($projects);
+        return ReleaseFullResource::collection($releases);
     }
 
     public function download(Release $release): JsonResponse

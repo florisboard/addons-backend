@@ -6,6 +6,7 @@ use App\Http\Resources\User\UserResource;
 use App\Models\Review;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 
 /** @mixin Review */
 class ReviewResource extends JsonResource
@@ -24,6 +25,8 @@ class ReviewResource extends JsonResource
             /* @var int */
             'score' => $this->score,
             'is_anonymous' => $this->is_anonymous,
+            /* @var boolean */
+            'is_owner' => $this->user_id === Auth::id(),
             /* @var string */
             'created_at' => $this->created_at,
             /* @var string */
