@@ -92,6 +92,7 @@ class ProjectController extends Controller
             'latestRelease',
             'category',
             'user',
+            'userReview.user',
             'reviews' => fn (HasMany $builder) => $builder->with('user')->take(10),
         ]);
         $project->loadAvg('reviews', 'score');

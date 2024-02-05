@@ -28,5 +28,5 @@ Route::apiResource('users', UserController::class)->only(['index', 'show', 'upda
 Route::apiResource('releases', ReleaseController::class)->only(['index']);
 Route::get('releases/{release}/download', [ReleaseController::class, 'download'])->name('releases.download');
 
-Route::apiResource('projects.reviews', ReviewController::class)->shallow()->only('create');
-Route::apiResource('reviews', ReviewController::class)->except('create');
+Route::apiResource('projects.reviews', ReviewController::class)->shallow()->only('store');
+Route::apiResource('reviews', ReviewController::class)->except('store');

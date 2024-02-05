@@ -46,6 +46,9 @@ class ReviewController extends Controller
             ->when($request->input('filter.user_id') && $request->input('filter.user_id') != Auth::id(), function (Builder $builder) {
                 $builder->where('is_anonymous', false);
             })
+            ->when($request->input('filter.project_id') && Auth::check(), function (Builder $builder) {
+                $builder->where('user_id', '!=', Auth::id());
+            })
             ->allowedSorts('id')
             ->with('user')
             ->fastPaginate(20);

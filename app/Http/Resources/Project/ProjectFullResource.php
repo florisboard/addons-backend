@@ -64,6 +64,7 @@ class ProjectFullResource extends JsonResource
             /* @var ReleaseFullResource|null */
             'latest_release' => new ReleaseFullResource($this->latestRelease),
             'reviews' => ReviewResource::collection($this->reviews),
+            'user_review' => new ReviewResource($this->whenLoaded('userReview')),
             /* @var int */
             'reviews_count' => $this->reviews_count,
             /* @var int */
