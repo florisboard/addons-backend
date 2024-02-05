@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Http\Resources\Project\ProjectResource;
 use App\Http\Resources\User\UserResource;
 use App\Models\Collection;
 use Illuminate\Http\Request;
@@ -23,8 +22,10 @@ class CollectionResource extends JsonResource
             'user_id' => $this->user_id,
             'name' => $this->name,
             'is_public' => $this->is_public,
-            'created_at' => (string) $this->created_at,
-            'updated_at' => (string) $this->updated_at,
+            /* @var string */
+            'created_at' => $this->created_at,
+            /* @var string */
+            'updated_at' => $this->updated_at,
             'user' => new UserResource($this->whenLoaded('user')),
             /* @var int */
             'projects_count' => $this->whenCounted('projects'),

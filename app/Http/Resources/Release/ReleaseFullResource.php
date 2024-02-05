@@ -18,14 +18,19 @@ class ReleaseFullResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            /* @var int */
             'id' => $this->id,
+            /* @var int */
             'project_id' => $this->project_id,
             'user_id' => $this->user_id,
             'version' => $this->version,
             'description' => $this->description,
+            /* @var int */
             'downloads_count' => round($this->downloads_count),
-            'created_at' => (string) $this->created_at,
-            'updated_at' => (string) $this->updated_at,
+            /* @var string */
+            'created_at' => $this->created_at,
+            /* @var string */
+            'updated_at' => $this->updated_at,
             'user' => new UserResource($this->user),
         ];
     }

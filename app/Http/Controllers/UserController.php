@@ -33,6 +33,7 @@ class UserController extends Controller
         $request->validate([
             'filter' => ['nullable', 'array'],
             'filter.username' => ['nullable', 'string'],
+            'page' => ['nullable', 'integer'],
         ]);
 
         $users = QueryBuilder::for(User::class)

@@ -19,8 +19,10 @@ class ReleaseResource extends JsonResource
         return [
             'id' => $this->id,
             'version' => $this->version,
-            'created_at' => (string) $this->created_at,
-            'updated_at' => (string) $this->updated_at,
+            /* @var string */
+            'created_at' => $this->created_at,
+            /* @var string */
+            'updated_at' => $this->updated_at,
         ];
     }
 }
