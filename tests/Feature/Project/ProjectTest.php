@@ -9,7 +9,7 @@ uses()->group('Project');
 
 describe('Index', function () {
     test('users can get projects', function () {
-        Project::factory()->forUser()->forCategory()->create();
+        Project::factory()->create();
 
         $this->getJson(route('projects.index'))
             ->assertOk()
@@ -18,7 +18,7 @@ describe('Index', function () {
 
     test('users can get their un active projects', function () {
         Sanctum::actingAs($user = User::factory()->create());
-        Project::factory()->for($user)->forCategory()->create(['is_active' => false]);
+        Project::factory()->for($user)->create(['is_active' => false]);
 
         $this->getJson(route('projects.index', ['filter' => ['user_id' => $user->id]]))
             ->assertOk()
@@ -28,7 +28,7 @@ describe('Index', function () {
 
 describe('Show', function () {
     test('users can get a project', function () {
-        $project = Project::factory()->forUser()->forCategory()->create();
+        $project = Project::factory()->create();
 
         $this->getJson(route('projects.show', [$project]))
             ->assertOk();
@@ -38,7 +38,7 @@ describe('Show', function () {
 describe('Delete', function () {
     test('users can delete their project', function () {
         Sanctum::actingAs($user = User::factory()->create());
-        $project = Project::factory()->for($user)->forCategory()->create();
+        $project = Project::factory()->for($user)->create();
 
         $this->deleteJson(route('projects.destroy', [$project]))
             ->assertOk();
@@ -46,7 +46,7 @@ describe('Delete', function () {
 
     test('users cannot delete other project', function () {
         Sanctum::actingAs(User::factory()->create());
-        $project = Project::factory()->forUser()->forCategory()->create();
+        $project = Project::factory()->create();
 
         $this->deleteJson(route('projects.destroy', [$project]))
             ->assertForbidden();

@@ -46,7 +46,6 @@ class ProjectRequest extends FormRequest
             /* @var int[] */
             'maintainers' => ['bail', 'nullable', 'array', 'between:0,5'],
             'maintainers.*' => ['bail', 'required', 'numeric', Rule::notIn([Auth::id()]), Rule::exists(User::class, 'id')],
-            'image_path' => ['bail', 'nullable', 'string', new FileUpload(['image/png', 'image/jpeg'])],
             'screenshots_path' => ['nullable', 'array', 'between:0,5'],
             'screenshots_path.*' => ['required', 'string', new FileUpload(['image/png', 'image/jpeg'])],
         ];

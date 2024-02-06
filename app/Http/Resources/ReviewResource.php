@@ -24,6 +24,7 @@ class ReviewResource extends JsonResource
             'description' => $this->description,
             /* @var int */
             'score' => $this->score,
+            'project_id' => $this->project_id,
             'is_anonymous' => $this->is_anonymous,
             /* @var boolean */
             'is_owner' => $this->user_id === Auth::id(),
