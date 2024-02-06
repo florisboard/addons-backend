@@ -56,7 +56,7 @@ describe('Delete', function () {
 describe('Update', function () {
     test('users can update their project', function () {
         Sanctum::actingAs($user = User::factory()->create());
-        $project = Project::factory()->for($user)->forCategory()->create();
+        $project = Project::factory()->for($user)->create();
         $data = $project->toArray();
 
         $this->putJson(route('projects.update', [$project]), $data)
@@ -65,7 +65,7 @@ describe('Update', function () {
 
     test('users cannot delete other project', function () {
         Sanctum::actingAs(User::factory()->create());
-        $project = Project::factory()->forUser()->forCategory()->create();
+        $project = Project::factory()->create();
 
         $this->putJson(route('projects.update', [$project]))
             ->assertForbidden();
@@ -74,7 +74,7 @@ describe('Update', function () {
     test('maintainers can update their project', function () {
         [$maintainer, $user] = User::factory(2)->create();
         Sanctum::actingAs($maintainer);
-        $project = Project::factory()->for($user)->forCategory()->create();
+        $project = Project::factory()->for($user)->create();
         $data = $project->toArray();
 
         $project->maintainers()->attach($maintainer->id);
@@ -85,10 +85,6 @@ describe('Update', function () {
 });
 
 describe('Create', function () {
-    beforeEach(function () {
-        Category::factory()->create();
-    });
-
     test('verified users can create a project', function () {
         $users = User::factory(4)->create();
         Sanctum::actingAs($users[0]);

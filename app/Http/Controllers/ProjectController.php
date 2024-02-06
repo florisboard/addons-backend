@@ -77,7 +77,9 @@ class ProjectController extends Controller
             'user_id' => Auth::id(),
         ]);
 
-        $project->addMediaFromDisk($request->image_path)->toMediaCollection('image');
+        if ($request->filled('image_path')) {
+            $project->addMediaFromDisk($request->image_path)->toMediaCollection('image');
+        }
 
         $project->maintainers()->attach($request->maintainers);
 

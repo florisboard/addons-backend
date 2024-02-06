@@ -6,6 +6,7 @@ use App\Http\Requests\ReviewRequest;
 use App\Http\Resources\ReviewResource;
 use App\Models\Project;
 use App\Models\Review;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -43,19 +44,22 @@ class ReviewController extends Controller
                 AllowedFilter::exact('user_id'),
                 AllowedFilter::exact('score'),
             ])
+            ->allowedSorts('id')
             ->when($request->input('filter.user_id') && $request->input('filter.user_id') != Auth::id(), function (Builder $builder) {
                 $builder->where('is_anonymous', false);
             })
             ->when($request->input('filter.project_id') && Auth::check(), function (Builder $builder) {
                 $builder->where('user_id', '!=', Auth::id());
             })
-            ->allowedSorts('id')
             ->with('user')
             ->fastPaginate(20);
 
         return ReviewResource::collection($reviews);
     }
 
+    /**
+     * @throws AuthorizationException
+     */
     public function store(ReviewRequest $request, Project $project): JsonResponse
     {
         $review = $project->reviews()->create([

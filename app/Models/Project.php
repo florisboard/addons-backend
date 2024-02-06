@@ -103,11 +103,11 @@ class Project extends Model implements HasMedia
     }
 
     /**
-     * @return HasOne
+     * @return HasOne<Review>
      */
     public function userReview(): HasOne
     {
-        return $this->reviews()->one()->where('user_id',Auth::id());
+        return $this->reviews()->one()->where('user_id', Auth::id());
     }
 
     /**
