@@ -35,7 +35,7 @@ class ProjectRequest extends FormRequest
         return [
             'category_id' => ['bail', 'required', 'numeric', Rule::exists(Category::class, 'id')],
             'name' => ['required', 'string', 'min:3', 'max:255'],
-            'package_name' => ['bail', 'required', 'string', 'min:3', 'max:255', 'regex:/^([A-Za-z]{1}[A-Za-z\d_]*\.)+[A-Za-z][A-Za-z\d_]*$/', Rule::unique('projects')],
+            'package_name' => ['bail', 'required', 'string', 'min:3', 'max:255', 'regex:/^([A-Za-z]{1}[A-Za-z\d_]*\.)+[A-Za-z][A-Za-z\d_]*$/', Rule::unique('projects')->ignore($project?->id)],
             'type' => ['required', Rule::enum(ProjectTypeEnum::class)],
             'short_description' => ['required', 'string', 'min:3', 'max:255'],
             'description' => ['required', 'string', 'min:3', 'max:1024'],
@@ -46,10 +46,9 @@ class ProjectRequest extends FormRequest
             /* @var int[] */
             'maintainers' => ['bail', 'nullable', 'array', 'between:0,5'],
             'maintainers.*' => ['bail', 'required', 'numeric', Rule::notIn([Auth::id()]), Rule::exists(User::class, 'id')],
-            'image_path' => ['bail', 'required', 'string', new FileUpload(['image/png', 'image/jpeg'])],
+            'image_path' => ['bail', 'nullable', 'string', new FileUpload(['image/png', 'image/jpeg'])],
             'screenshots_path' => ['nullable', 'array', 'between:0,5'],
             'screenshots_path.*' => ['required', 'string', new FileUpload(['image/png', 'image/jpeg'])],
-
         ];
     }
 }

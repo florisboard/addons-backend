@@ -3,6 +3,8 @@
 namespace Database\Factories;
 
 use App\Enums\ProjectTypeEnum;
+use App\Models\Category;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -33,6 +35,8 @@ class ProjectFactory extends Factory
             'donate_site' => fake()->boolean() ? fake()->url() : null,
             'is_recommended' => fake()->boolean(30),
             'is_active' => true,
+            'user_id' => User::factory(),
+            'category_id' => Category::factory(),
         ];
     }
 }

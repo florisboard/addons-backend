@@ -5,9 +5,18 @@ namespace App\Policies;
 use App\Models\Project;
 use App\Models\Review;
 use App\Models\User;
+use Illuminate\Http\Request;
 
 class ReviewPolicy
 {
+    private ?Project $project;
+
+    public function __construct(Request $request)
+    {
+        // @phpstan-ignore-next-line
+        $this->project = $request->route('project');
+    }
+
     /**
      * Determine whether the user can view any models.
      */
@@ -29,7 +38,7 @@ class ReviewPolicy
      */
     public function create(User $user): bool
     {
-        return true;
+        return ! $user->reviews()->where('project_id', $this->project?->id)->exists();
     }
 
     /**
