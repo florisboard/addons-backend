@@ -71,6 +71,14 @@ services:
                 - ping
             retries: 3
             timeout: 5s
+    buggregator:
+        image: ghcr.io/buggregator/server:dev
+        networks:
+            - sail
+        ports:
+            - '8000:8000'
+            - '9912:9912'
+            - '9913:9913'
 networks:
     sail:
         driver: bridge

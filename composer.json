@@ -39,7 +39,8 @@
         "pestphp/pest": "^2.33",
         "pestphp/pest-plugin-laravel": "^2.2",
         "plannr/laravel-fast-refresh-database": "^1.1",
-        "spatie/laravel-ignition": "^2.4"
+        "spatie/laravel-ignition": "^2.4",
+        "spatie/laravel-ray": "^1.35"
     },
     "autoload": {
         "psr-4": {
