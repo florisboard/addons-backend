@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Project;
 
 use App\Http\Controllers\Controller;
-use App\Models\Media;
 use App\Models\Project;
 use App\Rules\FileUpload;
 use Illuminate\Auth\Access\AuthorizationException;

@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Media;
 use App\Models\Project;
 use App\Models\User;
 use Laravel\Sanctum\Sanctum;

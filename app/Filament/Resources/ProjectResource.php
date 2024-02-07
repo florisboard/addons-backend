@@ -49,16 +49,16 @@ class ProjectResource extends CustomResource
             Forms\Components\Select::make('type')
                 ->options(ProjectTypeEnum::class)
                 ->required(),
-            Forms\Components\TextInput::make('home_page')
+            Forms\Components\TextInput::make('links.home_page')
                 ->url()
                 ->maxLength(255),
-            Forms\Components\TextInput::make('support_email')
+            Forms\Components\TextInput::make('links.support_email')
                 ->email()
                 ->maxLength(255),
-            Forms\Components\TextInput::make('support_site')
+            Forms\Components\TextInput::make('links.support_site')
                 ->url()
                 ->maxLength(255),
-            Forms\Components\TextInput::make('donate_site')
+            Forms\Components\TextInput::make('links.donate_site')
                 ->url()
                 ->maxLength(255),
             Forms\Components\MarkdownEditor::make('description')

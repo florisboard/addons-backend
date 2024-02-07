@@ -23,7 +23,7 @@ class MediaFactory extends Factory
             'mime_type' => fake()->mimeType(),
             'disk' => fake()->word(),
             'conversations_disk' => fake()->word(),
-            'size' => int(1_000,10_000),
+            'size' => int(1_000, 10_000),
         ];
     }
 }

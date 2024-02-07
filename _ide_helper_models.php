@@ -165,10 +165,7 @@ namespace App\Models{
  * @property \App\Enums\ProjectTypeEnum $type
  * @property string $description
  * @property string $short_description
- * @property string|null $home_page
- * @property string|null $support_email
- * @property string|null $support_site
- * @property string|null $donate_site
+ * @property array $links
  * @property bool $is_recommended
  * @property bool $is_active
  * @property \Illuminate\Support\Carbon|null $deleted_at
@@ -202,16 +199,13 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereDonateSite($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereHomePage($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereIsActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereIsRecommended($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereLinks($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project wherePackageName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereShortDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereSupportEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereSupportSite($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereUserId($value)

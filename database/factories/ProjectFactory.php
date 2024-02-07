@@ -17,6 +17,8 @@ class ProjectFactory extends Factory
      * Define the model's default state.
      *
      * @return array<string, mixed>
+     *
+     * @throws \JsonException
      */
     public function definition(): array
     {
@@ -29,10 +31,12 @@ class ProjectFactory extends Factory
             'type' => ProjectTypeEnum::randomValue(),
             'description' => fake()->realText(rand(200, 600)),
             'short_description' => fake()->realText(rand(50, 200)),
-            'home_page' => fake()->boolean() ? fake()->url() : null,
-            'support_email' => fake()->boolean() ? fake()->email() : null,
-            'support_site' => fake()->boolean() ? fake()->url() : null,
-            'donate_site' => fake()->boolean() ? fake()->url() : null,
+            'links' => [
+                'home_page' => fake()->boolean() ? fake()->url() : null,
+                'support_email' => fake()->boolean() ? fake()->email() : null,
+                'support_site' => fake()->boolean() ? fake()->url() : null,
+                'donate_site' => fake()->boolean() ? fake()->url() : null,
+            ],
             'is_recommended' => fake()->boolean(30),
             'is_active' => true,
             'user_id' => User::factory(),
