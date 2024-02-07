@@ -5,7 +5,6 @@ namespace App\Filament\Resources;
 use App\Filament\Custom\CustomResource;
 use App\Filament\Forms\Layouts\BasicSection;
 use App\Filament\Forms\Layouts\ComplexForm;
-use App\Filament\Forms\Layouts\StatusSection;
 use App\Filament\Resources\ReviewResource\Pages;
 use App\Filament\Tables\Components\TimestampsColumn;
 use App\Models\Review;
@@ -48,11 +47,7 @@ class ReviewResource extends CustomResource
                 ->required(),
         ]);
 
-        $statusSection = StatusSection::make([
-            Forms\Components\Toggle::make('is_anonymous'),
-        ]);
-
-        return ComplexForm::make($form, [$basicSection], [$statusSection]);
+        return ComplexForm::make($form, [$basicSection]);
     }
 
     public static function table(Table $table): Table
@@ -83,7 +78,6 @@ class ReviewResource extends CustomResource
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
-                Tables\Filters\TernaryFilter::make('is_anonymous'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

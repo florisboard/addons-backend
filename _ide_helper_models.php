@@ -295,7 +295,6 @@ namespace App\Models{
  * @property string $title
  * @property string $description
  * @property int $score
- * @property bool $is_anonymous
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -312,7 +311,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Review whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Review whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Review whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Review whereIsAnonymous($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Review whereProjectId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Review whereScore($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Review whereTitle($value)

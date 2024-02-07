@@ -6,7 +6,6 @@ use App\Enums\ProjectTypeEnum;
 use App\Models\Category;
 use App\Models\Project;
 use App\Models\User;
-use App\Rules\FileUpload;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;

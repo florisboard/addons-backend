@@ -16,7 +16,6 @@ class Review extends Model
     use HasFactory, SoftDeletes;
 
     protected $casts = [
-        'is_anonymous' => 'boolean',
         'score' => 'int',
     ];
 

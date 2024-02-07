@@ -25,7 +25,6 @@ class ReviewRequest extends FormRequest
             'title' => ['required', 'string', 'min:3', 'max:50'],
             'description' => ['required', 'string', 'min:3', 'max:2024'],
             'score' => ['required', 'integer', 'between:1,5'],
-            'is_anonymous' => ['required', 'boolean'],
         ];
     }
 }

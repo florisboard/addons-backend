@@ -12,10 +12,6 @@ parameters:
     scanFiles:
         - _ide_helper_models.php
 
-    rules:
-        - Spatie\Ray\PHPStan\RemainingRayCallRule
-
-
 #    ignoreErrors:
 #        - '#PHPDoc tag @var#'
 #
