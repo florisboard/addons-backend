@@ -46,8 +46,19 @@ class ProjectRequest extends FormRequest
             /* @var int[] */
             'maintainers' => ['bail', 'nullable', 'array', 'between:0,5'],
             'maintainers.*' => ['bail', 'required', 'numeric', Rule::notIn([Auth::id()]), Rule::exists(User::class, 'id')],
-            'screenshots_path' => ['nullable', 'array', 'between:0,5'],
-            'screenshots_path.*' => ['required', 'string', new FileUpload(['image/png', 'image/jpeg'])],
         ];
+    }
+
+    protected function passedValidation(): void
+    {
+        $links = ['home_page', 'support_email', 'support_site', 'donate_site'];
+
+        $this->merge([
+            'links' => collect($links)->mapWithKeys(function ($link) {
+                return [$link => $this->input($link)];
+            })->toArray(),
+        ]);
+
+        $this->except($links);
     }
 }

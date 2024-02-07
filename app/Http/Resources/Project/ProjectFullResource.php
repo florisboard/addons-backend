@@ -43,10 +43,10 @@ class ProjectFullResource extends JsonResource
             /* @var ProjectTypeEnum */
             'type' => $this->type,
             'description' => $this->description,
-            'home_page' => $this->links?->home_page,
-            'support_email' => $this->links?->support_email,
-            'support_site' => $this->links?->support_site,
-            'donate_site' => $this->links?->donate_site,
+            'home_page' => data_get($this->links,'home_page'),
+            'support_email' => data_get($this->links,'support_email'),
+            'support_site' => data_get($this->links,'support_site'),
+            'donate_site' => data_get($this->links,'donate_site'),
             'is_recommended' => $this->is_recommended,
             'is_active' => $this->is_active,
             /* @var string */

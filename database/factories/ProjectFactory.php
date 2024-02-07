@@ -38,7 +38,7 @@ class ProjectFactory extends Factory
                 'donate_site' => fake()->boolean() ? fake()->url() : null,
             ],
             'is_recommended' => fake()->boolean(30),
-            'is_active' => true,
+            'is_active' => app()->runningUnitTests() || fake()->boolean(90),
             'user_id' => User::factory(),
             'category_id' => Category::factory(),
         ];
