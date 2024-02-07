@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Project;
 
 use App\Http\Controllers\Controller;
+use App\Models\Media;
 use App\Models\Project;
 use App\Rules\FileUpload;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -11,7 +12,7 @@ use Illuminate\Http\Request;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 
-class ImageController extends Controller
+class ScreenshotController extends Controller
 {
     /**
      * @throws FileDoesNotExist
@@ -23,25 +24,30 @@ class ImageController extends Controller
         $this->authorize('update', $project);
 
         $request->validate([
-            'image' => ['bail', 'required', 'string', new FileUpload(['image/png', 'image/jpeg'])],
+            'screenshots' => ['required', 'array', 'max:5'],
+            'screenshots.*' => ['bail', 'required', 'string', new FileUpload(['image/png', 'image/jpeg'])],
         ]);
 
-        $project
-            ->addMediaFromDisk($request->input('image'))
-            ->toMediaCollection('image');
+        foreach ($request->input('screenshots') as $screenshot) {
+            $project->addMediaFromDisk($screenshot)
+                ->toMediaCollection('screenshots');
+        }
 
-        return new JsonResponse(['message' => 'Image has been saved successfully.']);
+        return new JsonResponse(['message' => 'Screenshots has been saved successfully.']);
     }
 
     /**
      * @throws AuthorizationException
      */
-    public function destroy(Project $project): JsonResponse
+    public function destroy(Project $project, $media): JsonResponse
     {
         $this->authorize('update', $project);
 
-        $project->image?->delete();
+        $project->screenshots()
+            ->where('id', $media)
+            ->first()
+            ?->delete();
 
-        return new JsonResponse(['message' => 'Image has been deleted successfully.']);
+        return new JsonResponse(['message' => 'Screenshot has been deleted successfully.']);
     }
 }

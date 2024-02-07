@@ -7,6 +7,7 @@ use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Project\ImageController;
 use App\Http\Controllers\Project\ProjectController;
+use App\Http\Controllers\Project\ScreenshotController;
 use App\Http\Controllers\ReleaseController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UserController;
@@ -23,6 +24,7 @@ Route::get('about', AboutController::class)->name('about');
 
 Route::apiResource('projects', ProjectController::class);
 Route::apiSingleton('projects.image', ImageController::class)->creatable()->only(['store', 'destroy']);
+Route::apiResource('projects.screenshots', ScreenshotController::class)->only(['store', 'destroy']);
 
 Route::apiResource('categories', CategoryController::class)->only(['index', 'show']);
 Route::apiResource('collections', CollectionController::class);

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Media;
 use App\Models\Project;
 use App\Models\User;
 use Laravel\Sanctum\Sanctum;
@@ -7,21 +8,12 @@ use Laravel\Sanctum\Sanctum;
 uses()->group('ProjectImage');
 
 describe('Store', function () {
-    test('users can store project image', function () {
+    test('users can create project image', function () {
         Sanctum::actingAs($user = User::factory()->create());
-        Project::factory()->for($user)->create();
+        $project = Project::factory()->for($user)->create();
+        $data = ['image' => createUploadedFile()];
 
-        $this->getJson(route('projects.index'))
-            ->assertOk()
-            ->assertJsonFragment(['is_active' => true]);
-    });
-
-    test('users can get their un active projects', function () {
-        Sanctum::actingAs($user = User::factory()->create());
-        Project::factory()->for($user)->forCategory()->create(['is_active' => false]);
-
-        $this->getJson(route('projects.index', ['filter' => ['user_id' => $user->id]]))
-            ->assertOk()
-            ->assertJsonFragment(['is_active' => false]);
+        $this->postJson(route('projects.image.store', [$project]), $data)
+            ->assertOk();
     });
 });

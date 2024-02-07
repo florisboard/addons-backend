@@ -36,9 +36,9 @@ class ProjectResource extends JsonResource
             'updated_at' => $this->updated_at,
             'image' => new ImageResource($this->image),
             /* @var int */
-            'reviews_avg_score' => round($this->whenAggregated('reviews', 'score', 'avg') ?? 0),
+            'reviews_avg_score' => round($this->whenAggregated('reviews', 'score', 'avg', null, 0)),
             /* @var int */
-            'releases_sum_downloads_count' => ($this->whenAggregated('releases', 'downloads_count', 'sum') ?? 0),
+            'releases_sum_downloads_count' => $this->whenAggregated('releases', 'downloads_count', 'sum', null, 0),
             /* @var ReleaseResource|null */
             'latest_release' => new ReleaseResource($this->latestRelease),
             /* @var int */

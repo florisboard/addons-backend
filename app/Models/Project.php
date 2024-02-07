@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -34,7 +35,8 @@ class Project extends Model implements HasMedia
         $this->addMediaCollection('image')
             ->singleFile();
 
-        $this->addMediaCollection('screenshots');
+        $this->addMediaCollection('screenshots')
+            ->onlyKeepLatest(5);
     }
 
     /**
@@ -44,6 +46,15 @@ class Project extends Model implements HasMedia
     {
         return $this->morphOne(Media::class, 'model')
             ->where('collection_name', 'image');
+    }
+
+    /**
+     * @return MorphMany<Media>
+     */
+    public function screenshots(): MorphMany
+    {
+        return $this->morphMany(Media::class, 'model')
+            ->where('collection_name', 'screenshots');
     }
 
     /**

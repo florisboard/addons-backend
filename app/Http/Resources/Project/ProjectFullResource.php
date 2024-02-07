@@ -30,6 +30,7 @@ class ProjectFullResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            /* @var int */
             'id' => $this->id,
             /* @var int */
             'category_id' => $this->category_id,
@@ -53,14 +54,14 @@ class ProjectFullResource extends JsonResource
             /* @var string */
             'updated_at' => $this->updated_at,
             'image' => new ImageResource($this->image),
-            'screenshots' => ImageResource::collection($this->whenLoaded('screenshots')),
+            'screenshots' => ImageResource::collection($this->screenshots),
             'user' => new UserResource($this->user),
             'category' => new CategoryResource($this->category),
             'maintainers' => UserResource::collection($this->maintainers),
             /* @var int */
-            'reviews_avg_score' => round($this->whenAggregated('reviews', 'score', 'avg') ?? 0),
+            'reviews_avg_score' => round($this->whenAggregated('reviews', 'score', 'avg', null, 0)),
             /* @var int */
-            'releases_sum_downloads_count' => ($this->whenAggregated('releases', 'downloads_count', 'sum') ?? 0),
+            'releases_sum_downloads_count' => $this->whenAggregated('releases', 'downloads_count', 'sum', null, 0),
             /* @var ReleaseFullResource|null */
             'latest_release' => new ReleaseFullResource($this->latestRelease),
             'reviews' => ReviewResource::collection($this->reviews),

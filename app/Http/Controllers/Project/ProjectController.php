@@ -81,6 +81,7 @@ class ProjectController extends Controller
     {
         $project->load([
             'image',
+            'screenshots',
             'maintainers',
             'latestRelease',
             'category',
