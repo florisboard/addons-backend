@@ -19,6 +19,8 @@ use Illuminate\Support\Str;
  * @property int $three_reviews_count
  * @property int $four_reviews_count
  * @property int $five_reviews_count
+ * @property string $reviews_avg_score
+ * @property string $releases_sum_downloads_count
  */
 class ProjectFullResource extends JsonResource
 {
@@ -59,9 +61,9 @@ class ProjectFullResource extends JsonResource
             'category' => new CategoryResource($this->category),
             'maintainers' => UserResource::collection($this->maintainers),
             /* @var int */
-            'reviews_avg_score' => round($this->whenAggregated('reviews', 'score', 'avg', null, 0)),
+            'reviews_avg_score' => round((int) $this->reviews_avg_score),
             /* @var int */
-            'releases_sum_downloads_count' => $this->whenAggregated('releases', 'downloads_count', 'sum', null, 0),
+            'releases_sum_downloads_count' => (int) $this->releases_sum_downloads_count,
             /* @var ReleaseFullResource|null */
             'latest_release' => new ReleaseFullResource($this->latestRelease),
             'reviews' => ReviewResource::collection($this->reviews),

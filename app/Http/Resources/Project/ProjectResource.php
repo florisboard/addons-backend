@@ -9,7 +9,10 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Str;
 
-/** @mixin Project */
+/** @mixin Project
+ * @property string $reviews_avg_score
+ * @property string $releases_sum_downloads_count
+ */
 class ProjectResource extends JsonResource
 {
     /**
@@ -36,9 +39,9 @@ class ProjectResource extends JsonResource
             'updated_at' => $this->updated_at,
             'image' => new ImageResource($this->image),
             /* @var int */
-            'reviews_avg_score' => round($this->whenAggregated('reviews', 'score', 'avg', null, 0)),
+            'reviews_avg_score' => round((int) $this->reviews_avg_score),
             /* @var int */
-            'releases_sum_downloads_count' => $this->whenAggregated('releases', 'downloads_count', 'sum', null, 0),
+            'releases_sum_downloads_count' => (int) $this->releases_sum_downloads_count,
             /* @var ReleaseResource|null */
             'latest_release' => new ReleaseResource($this->latestRelease),
             /* @var int */

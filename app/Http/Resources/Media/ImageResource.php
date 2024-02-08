@@ -16,11 +16,8 @@ class ImageResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        ray($this->getSrcset());
-
         return [
             'id' => $this->id,
-            'placeholder' => $this->responsiveImages('media_library_original')->getPlaceholderSvg(),
             'url' => $this->getFullUrl(),
         ];
     }

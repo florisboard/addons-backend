@@ -13,6 +13,11 @@ use Illuminate\Validation\Rule;
 class ProjectRequest extends FormRequest
 {
     /**
+     * @var string[]
+     */
+    public static array $links = ['home_page', 'support_email', 'support_site', 'donate_site'];
+
+    /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
@@ -50,14 +55,11 @@ class ProjectRequest extends FormRequest
 
     protected function passedValidation(): void
     {
-        $links = ['home_page', 'support_email', 'support_site', 'donate_site'];
-
         $this->merge([
-            'links' => collect($links)->mapWithKeys(function ($link) {
+            'links' => collect(static::$links)->mapWithKeys(function ($link) {
                 return [$link => $this->input($link)];
             })->toArray(),
         ]);
 
-        $this->except($links);
     }
 }
