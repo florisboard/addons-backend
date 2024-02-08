@@ -37,6 +37,7 @@ class ProjectResource extends JsonResource
             'created_at' => $this->created_at,
             /* @var string */
             'updated_at' => $this->updated_at,
+            /* @var ImageResource|null */
             'image' => new ImageResource($this->image),
             /* @var int */
             'reviews_avg_score' => round((int) $this->reviews_avg_score),

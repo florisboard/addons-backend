@@ -55,6 +55,7 @@ class ProjectFullResource extends JsonResource
             'created_at' => $this->created_at,
             /* @var string */
             'updated_at' => $this->updated_at,
+            /* @var ImageResource|null */
             'image' => new ImageResource($this->image),
             'screenshots' => ImageResource::collection($this->screenshots),
             'user' => new UserResource($this->user),
