@@ -12,7 +12,6 @@ parameters:
     scanFiles:
         - _ide_helper_models.php
 
-
 #    ignoreErrors:
 #        - '#PHPDoc tag @var#'
 #

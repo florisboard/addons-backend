@@ -1,6 +1,7 @@
 <?php
 
 // @formatter:off
+// phpcs:ignoreFile
 /**
  * A helper file for your Eloquent Models
  * Copy the phpDocs from this file to the correct Model,
@@ -123,6 +124,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $model
  * @method static \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, static> all($columns = ['*'])
+ * @method static \Database\Factories\MediaFactory factory($count = null, $state = [])
  * @method static \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, static> get($columns = ['*'])
  * @method static \Illuminate\Database\Eloquent\Builder|Media newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Media newQuery()
@@ -163,10 +165,7 @@ namespace App\Models{
  * @property \App\Enums\ProjectTypeEnum $type
  * @property string $description
  * @property string $short_description
- * @property string|null $home_page
- * @property string|null $support_email
- * @property string|null $support_site
- * @property string|null $donate_site
+ * @property array $links
  * @property bool $is_recommended
  * @property bool $is_active
  * @property \Illuminate\Support\Carbon|null $deleted_at
@@ -187,7 +186,10 @@ namespace App\Models{
  * @property-read int|null $reports_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Review> $reviews
  * @property-read int|null $reviews_count
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \App\Models\Media> $screenshots
+ * @property-read int|null $screenshots_count
  * @property-read \App\Models\User $user
+ * @property-read \App\Models\Review|null $userReview
  * @method static \Database\Factories\ProjectFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Project newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Project newQuery()
@@ -197,16 +199,13 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereDonateSite($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereHomePage($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereIsActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereIsRecommended($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereLinks($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project wherePackageName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereShortDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereSupportEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereSupportSite($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereUserId($value)
@@ -296,7 +295,6 @@ namespace App\Models{
  * @property string $title
  * @property string $description
  * @property int $score
- * @property bool $is_anonymous
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -313,7 +311,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Review whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Review whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Review whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Review whereIsAnonymous($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Review whereProjectId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Review whereScore($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Review whereTitle($value)

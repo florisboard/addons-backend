@@ -9,6 +9,13 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
+    public static function fakeImage($with = 640, $height = 480): string
+    {
+        $imageId = fake()->randomNumber(1, 1000);
+
+        return "https://picsum.photos/seed/$imageId/$with/$height";
+    }
+
     /**
      * Seed the application's database.
      */

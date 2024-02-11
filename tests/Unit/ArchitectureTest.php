@@ -3,7 +3,7 @@
 uses()->group('Architecture');
 
 test('dd and dump should not be used')
-    ->expect(['dd', 'dump'])
+    ->expect(['dd', 'dump', 'ray'])
     ->not->toBeUsed();
 
 test('models should extend eloquent model and should be classes')

@@ -20,7 +20,7 @@ class ProjectSeeder extends Seeder
         $users = User::all('id');
         $categories = Category::all('id');
 
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 0; $i < 20; $i++) {
             $ownerId = $users->random()->id;
 
             $project = Project::factory()

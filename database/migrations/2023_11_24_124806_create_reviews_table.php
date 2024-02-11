@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->unsignedTinyInteger('score');
-            $table->boolean('is_anonymous')->default(false);
             $table->softDeletes();
             $table->timestamps();
         });

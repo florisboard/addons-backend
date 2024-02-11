@@ -3,6 +3,7 @@
 use App\Models\Category;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
@@ -22,10 +23,7 @@ return new class extends Migration
             $table->string('type')->index();
             $table->text('description');
             $table->string('short_description');
-            $table->string('home_page')->nullable();
-            $table->string('support_email')->nullable();
-            $table->string('support_site')->nullable();
-            $table->string('donate_site')->nullable();
+            $table->json('links')->default(new Expression('(JSON_ARRAY())'));
             $table->boolean('is_recommended')->default(false);
             $table->boolean('is_active')->default(false);
             $table->softDeletes();

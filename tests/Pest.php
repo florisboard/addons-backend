@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\FileUploadController;
+use Illuminate\Http\UploadedFile;
 use Plannr\Laravel\FastRefreshDatabase\Traits\FastRefreshDatabase;
 use Tests\TestCase;
 
@@ -42,7 +44,13 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+function createUploadedFile($fileName = 'test.png'): bool|string
 {
-    // ..
+    Storage::fake();
+
+    Str::createRandomStringsUsing(static fn (): string => 'random');
+    $path = App::make(FileUploadController::class)->generatePath();
+    $file = UploadedFile::fake()->image($fileName);
+
+    return Storage::putFile($path, $file);
 }

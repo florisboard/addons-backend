@@ -18,12 +18,13 @@ class ReviewFactory extends Factory
      */
     public function definition(): array
     {
+        $deletedAt = fake()->boolean(20) ? fake()->dateTime() : null;
+
         return [
             'title' => fake()->words(rand(2, 5), true),
             'description' => fake()->realText(),
             'score' => rand(1, 5),
-            'is_anonymous' => fake()->boolean(),
-            'deleted_at' => fake()->boolean(20) ? fake()->dateTime() : null,
+            'deleted_at' => app()->runningUnitTests() ? null : $deletedAt,
             'user_id' => User::factory(),
             'project_id' => Project::factory(),
         ];

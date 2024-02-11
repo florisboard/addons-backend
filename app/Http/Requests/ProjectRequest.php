@@ -6,13 +6,17 @@ use App\Enums\ProjectTypeEnum;
 use App\Models\Category;
 use App\Models\Project;
 use App\Models\User;
-use App\Rules\FileUpload;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class ProjectRequest extends FormRequest
 {
+    /**
+     * @var string[]
+     */
+    public static array $links = ['home_page', 'support_email', 'support_site', 'donate_site'];
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -46,9 +50,16 @@ class ProjectRequest extends FormRequest
             /* @var int[] */
             'maintainers' => ['bail', 'nullable', 'array', 'between:0,5'],
             'maintainers.*' => ['bail', 'required', 'numeric', Rule::notIn([Auth::id()]), Rule::exists(User::class, 'id')],
-            'image_path' => ['bail', 'nullable', 'string', new FileUpload(['image/png', 'image/jpeg'])],
-            'screenshots_path' => ['nullable', 'array', 'between:0,5'],
-            'screenshots_path.*' => ['required', 'string', new FileUpload(['image/png', 'image/jpeg'])],
         ];
+    }
+
+    protected function passedValidation(): void
+    {
+        $this->merge([
+            'links' => collect(static::$links)->mapWithKeys(function ($link) {
+                return [$link => $this->input($link)];
+            })->toArray(),
+        ]);
+
     }
 }

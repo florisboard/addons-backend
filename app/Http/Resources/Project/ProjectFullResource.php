@@ -19,6 +19,8 @@ use Illuminate\Support\Str;
  * @property int $three_reviews_count
  * @property int $four_reviews_count
  * @property int $five_reviews_count
+ * @property string $reviews_avg_score
+ * @property string $releases_sum_downloads_count
  */
 class ProjectFullResource extends JsonResource
 {
@@ -30,6 +32,7 @@ class ProjectFullResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            /* @var int */
             'id' => $this->id,
             /* @var int */
             'category_id' => $this->category_id,
@@ -42,25 +45,26 @@ class ProjectFullResource extends JsonResource
             /* @var ProjectTypeEnum */
             'type' => $this->type,
             'description' => $this->description,
-            'home_page' => $this->home_page,
-            'support_email' => $this->support_email,
-            'support_site' => $this->support_site,
-            'donate_site' => $this->donate_site,
+            'home_page' => data_get($this->links, 'home_page'),
+            'support_email' => data_get($this->links, 'support_email'),
+            'support_site' => data_get($this->links, 'support_site'),
+            'donate_site' => data_get($this->links, 'donate_site'),
             'is_recommended' => $this->is_recommended,
             'is_active' => $this->is_active,
             /* @var string */
             'created_at' => $this->created_at,
             /* @var string */
             'updated_at' => $this->updated_at,
+            /* @var ImageResource|null */
             'image' => new ImageResource($this->image),
-            'screenshots' => ImageResource::collection($this->whenLoaded('screenshots')),
+            'screenshots' => ImageResource::collection($this->screenshots),
             'user' => new UserResource($this->user),
             'category' => new CategoryResource($this->category),
             'maintainers' => UserResource::collection($this->maintainers),
             /* @var int */
-            'reviews_avg_score' => round($this->whenAggregated('reviews', 'score', 'avg') ?? 0),
+            'reviews_avg_score' => round((int) $this->reviews_avg_score),
             /* @var int */
-            'releases_sum_downloads_count' => ($this->whenAggregated('releases', 'downloads_count', 'sum') ?? 0),
+            'releases_sum_downloads_count' => (int) $this->releases_sum_downloads_count,
             /* @var ReleaseFullResource|null */
             'latest_release' => new ReleaseFullResource($this->latestRelease),
             'reviews' => ReviewResource::collection($this->reviews),
