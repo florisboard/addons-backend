@@ -12,9 +12,9 @@ class UserService
     /**
      * @throws ValidationException
      */
-    public function ensureUserPasswordMatch(User $user, string $password, string $passwordField = 'current_password'): void
+    public function ensureUserPasswordMatch(User $user, ?string $password, string $passwordField = 'current_password'): void
     {
-        if (! Hash::check($password, $user->password)) {
+        if (! $password || ! Hash::check($password, $user->password)) {
             throw ValidationException::withMessages([
                 $passwordField => __('auth.failed'),
             ]);
