@@ -115,7 +115,7 @@ of [laravel ray](https://spatie.be/docs/ray/v1/introduction)
 ```php
 ray(...$values);
 ```
-and you can see the result on [http://localhost:8000](http://localhost:8000) which is called [buggregator](https://buggregator.dev/). It's an open source laravel ray compatible service
+and you can see the result on [http://localhost:8000](http://localhost:8000). It's an open source laravel ray compatible service called [buggregator](https://buggregator.dev/).
 
 ### Testing
 We're using testing to make sure the logic works with different scenarios so make sure to use
