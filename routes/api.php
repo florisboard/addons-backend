@@ -28,7 +28,7 @@ Route::apiResource('projects.screenshots', ScreenshotController::class)->only(['
 
 Route::apiResource('categories', CategoryController::class)->only(['index', 'show']);
 Route::apiResource('collections', CollectionController::class);
-Route::apiResource('users', UserController::class)->only(['index', 'show', 'update']);
+Route::apiResource('users', UserController::class)->only(['index', 'show']);
 
 Route::apiResource('releases', ReleaseController::class)->only(['index']);
 Route::get('releases/{release}/download', [ReleaseController::class, 'download'])->name('releases.download');

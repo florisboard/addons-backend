@@ -67,26 +67,26 @@ class UserController extends Controller
             'new_password' => ['nullable', 'string', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        if ($request->email !== Auth::user()->email) {
-            $this->userService->ensureUserPasswordMatch(Auth::user(), $request->current_password);
+        if ($request->input('email') !== Auth::user()->email) {
+            $this->userService->ensureUserPasswordMatch(Auth::user(), $request->input('current_password'));
             Auth::user()->update([
-                'email' => $request->email,
+                'email' => $request->input('email'),
                 'email_verified_at' => null,
             ]);
         }
 
-        if ($request->username !== Auth::user()->username) {
+        if ($request->input('username') !== Auth::user()->username) {
             $this->userService->ensureUserCanUpdateUsername(Auth::user());
             Auth::user()->update([
-                'username' => $request->username,
+                'username' => $request->input('username'),
                 'username_changed_at' => now(),
             ]);
         }
 
-        if ($request->has('new_password')) {
-            $this->userService->ensureUserPasswordMatch(Auth::user(), $request->current_password);
+        if ($request->filled('new_password')) {
+            $this->userService->ensureUserPasswordMatch(Auth::user(), $request->input('current_password'));
             Auth::user()->update([
-                'password' => Hash::make($request->new_password),
+                'password' => Hash::make($request->input('new_password')),
             ]);
         }
 
