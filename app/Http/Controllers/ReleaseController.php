@@ -37,6 +37,11 @@ class ReleaseController extends Controller
         return ReleaseFullResource::collection($releases);
     }
 
+    public function store(Request $request)
+    {
+
+    }
+
     public function download(Release $release): JsonResponse
     {
         Release::where('id', $release->id)->increment('downloads_count');

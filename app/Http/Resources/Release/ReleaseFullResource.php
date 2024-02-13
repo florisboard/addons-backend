@@ -23,7 +23,9 @@ class ReleaseFullResource extends JsonResource
             /* @var int */
             'project_id' => $this->project_id,
             'user_id' => $this->user_id,
-            'version' => $this->version,
+            'version_name' => $this->version_name,
+            /* @var int */
+            'version_code' => $this->version_code,
             'description' => $this->description,
             /* @var int */
             'downloads_count' => round($this->downloads_count),

@@ -23,7 +23,7 @@ Route::get('home', HomeController::class)->name('home');
 Route::get('about', AboutController::class)->name('about');
 
 Route::apiResource('projects', ProjectController::class);
-Route::apiSingleton('projects.image', ImageController::class)->creatable()->only(['store', 'destroy']);
+Route::apiSingleton('projects.image', ImageController::class)->creatable()->only(['store', 'destory']);
 Route::apiResource('projects.screenshots', ScreenshotController::class)->only(['store', 'destroy']);
 
 Route::apiResource('categories', CategoryController::class)->only(['index', 'show']);
