@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
+use App\Http\Controllers\Auth\GithubController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
@@ -37,4 +38,9 @@ Route::prefix('api/auth')->group(function () {
         ->middleware(['auth', 'throttle:6,1'])
         ->name('verification.send');
 
+    Route::get('github/redirect', [GithubController::class, 'redirect'])
+        ->name('github.redirect');
+
+    Route::get('github/callback', [GithubController::class, 'callback'])
+        ->name('github.callback');
 });
