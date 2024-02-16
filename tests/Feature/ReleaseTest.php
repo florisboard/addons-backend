@@ -1,7 +1,10 @@
 <?php
 
+use App\Models\Project;
 use App\Models\Release;
+use App\Models\User;
 use Illuminate\Http\UploadedFile;
+use Laravel\Sanctum\Sanctum;
 
 uses()->group('Release');
 
@@ -30,5 +33,32 @@ describe('Download', function () {
             'id' => $release->id,
             'downloads_count' => $release->downloads_count + 1,
         ]);
+    });
+});
+
+describe('Create', function () {
+    test('users can create a release', function () {
+        Sanctum::actingAs($user = User::factory()->create());
+        $project = Project::factory()
+            ->has(Release::factory(['version_name' => '1.0.0']))
+            ->for($user)
+            ->create();
+
+        $data = [
+            ...Release::factory()->make()->toArray(),
+            'version_name' => '2.0.0',
+            'file' => createUploadedFile('file.flex'),
+        ];
+
+        $this->postJson(route('projects.releases.store', [$project]), $data)
+            ->assertCreated();
+    });
+
+    test('users cannot create a release for another project', function () {
+        Sanctum::actingAs(User::factory()->create());
+        $project = Project::factory()->create();
+
+        $this->postJson(route('projects.releases.store', [$project]))
+            ->assertForbidden();
     });
 });

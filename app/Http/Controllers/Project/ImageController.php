@@ -23,11 +23,11 @@ class ImageController extends Controller
         $this->authorize('update', $project);
 
         $request->validate([
-            'image' => ['bail', 'required', 'string', new FileUpload(['image/png', 'image/jpeg'])],
+            'image_path' => ['bail', 'required', 'string', new FileUpload(['image/png', 'image/jpeg'])],
         ]);
 
         $project
-            ->addMediaFromDisk($request->input('image'))
+            ->addMediaFromDisk($request->input('image_path'))
             ->toMediaCollection('image');
 
         return new JsonResponse(['message' => 'Image has been saved successfully.']);

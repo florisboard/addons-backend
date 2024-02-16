@@ -23,11 +23,11 @@ class ScreenshotController extends Controller
         $this->authorize('update', $project);
 
         $request->validate([
-            'screenshots' => ['required', 'array', 'max:5'],
-            'screenshots.*' => ['bail', 'required', 'string', new FileUpload(['image/png', 'image/jpeg'])],
+            'screenshots_path' => ['required', 'array', 'max:5'],
+            'screenshots_path.*' => ['bail', 'required', 'string', new FileUpload(['image/png', 'image/jpeg'])],
         ]);
 
-        foreach ($request->input('screenshots') as $screenshot) {
+        foreach ($request->input('screenshots_path') as $screenshot) {
             $project->addMediaFromDisk($screenshot)
                 ->toMediaCollection('screenshots');
         }

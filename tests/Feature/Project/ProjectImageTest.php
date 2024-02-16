@@ -10,7 +10,7 @@ describe('Store', function () {
     test('users can create project image', function () {
         Sanctum::actingAs($user = User::factory()->create());
         $project = Project::factory()->for($user)->create();
-        $data = ['image' => createUploadedFile()];
+        $data = ['image_path' => createUploadedImage()];
 
         $this->postJson(route('projects.image.store', [$project]), $data)
             ->assertOk();

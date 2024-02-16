@@ -7,6 +7,7 @@ use App\Filament\Forms\Components\FileInput;
 use App\Filament\Forms\Layouts\BasicForm;
 use App\Filament\Resources\ReleaseResource\Pages;
 use App\Filament\Tables\Components\TimestampsColumn;
+use App\Http\Requests\Release\StoreReleaseRequest;
 use App\Models\Release;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -24,7 +25,7 @@ class ReleaseResource extends CustomResource
         return BasicForm::make($form, [
             Forms\Components\TextInput::make('version_name')
                 ->maxLength(255)
-                ->regex('/^\d+(?:\.\d+){2}$/')
+                ->regex(StoreReleaseRequest::$versionNameRegex)
                 ->required(),
             Forms\Components\TextInput::make('version_code')
                 ->readOnly(),

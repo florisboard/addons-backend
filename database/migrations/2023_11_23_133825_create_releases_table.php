@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignIdFor(Project::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->string('version_name');
-            $table->unsignedBigInteger('version_code')->default(1);
+            $table->unsignedBigInteger('version_code');
             $table->text('description')->nullable();
             $table->unsignedBigInteger('downloads_count')->default(0);
             $table->timestamps();
