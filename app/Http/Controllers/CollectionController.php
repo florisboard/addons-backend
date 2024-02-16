@@ -39,22 +39,22 @@ class CollectionController extends Controller
         return CollectionResource::collection($collections);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): void
     {
         //
     }
 
-    public function show(Collection $collection)
+    public function show(Collection $collection): void
     {
         //
     }
 
-    public function update(Request $request, Collection $collection)
+    public function update(Request $request, Collection $collection): void
     {
         //
     }
 
-    public function destroy(Collection $collection)
+    public function destroy(Collection $collection): void
     {
         //
     }

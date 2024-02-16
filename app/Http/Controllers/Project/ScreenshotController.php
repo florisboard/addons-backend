@@ -38,7 +38,7 @@ class ScreenshotController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function destroy(Project $project, $media): JsonResponse
+    public function destroy(Project $project, int $media): JsonResponse
     {
         $this->authorize('update', $project);
 

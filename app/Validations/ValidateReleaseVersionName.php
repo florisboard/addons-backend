@@ -27,6 +27,7 @@ class ValidateReleaseVersionName
 
     public function __invoke(Validator $validator): void
     {
+
         /* @var Project $project */
         $project = request()->route('project');
 

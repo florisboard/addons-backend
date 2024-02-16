@@ -46,7 +46,7 @@ class ReleasePolicy
      */
     public function update(User $user, Release $release): bool
     {
-        return true;
+        return $user->can('update', [$release->project]);
     }
 
     /**

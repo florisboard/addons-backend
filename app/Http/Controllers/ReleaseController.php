@@ -47,7 +47,8 @@ class ReleaseController extends Controller
 
     public function store(StoreReleaseRequest $request, Project $project): JsonResponse
     {
-        $versionCode = $project->latestRelease?->version_code + 1 ?? 1;
+        $previousVersionCode = $project->latestRelease?->version_code;
+        $versionCode = $previousVersionCode ? $previousVersionCode + 1 : 1;
 
         $release = $project->releases()->create([
             ...$request->safe()->except('file'),
@@ -56,6 +57,17 @@ class ReleaseController extends Controller
         ]);
 
         return new JsonResponse(new ReleaseFullResource($release), 201);
+    }
+
+    public function update(Request $request, Release $release): ReleaseFullResource
+    {
+        $validated = $request->validate([
+            'description' => ['required', 'string', 'min:3', 'max:1024'],
+        ]);
+
+        $release->update($validated);
+
+        return new ReleaseFullResource($release);
     }
 
     public function download(Release $release): JsonResponse

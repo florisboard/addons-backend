@@ -32,6 +32,9 @@ class StoreReleaseRequest extends FormRequest
         ];
     }
 
+    /**
+     * @return ValidateReleaseVersionName[]
+     */
     public function after(): array
     {
         return [

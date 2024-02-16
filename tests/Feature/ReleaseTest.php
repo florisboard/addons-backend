@@ -54,11 +54,36 @@ describe('Create', function () {
             ->assertCreated();
     });
 
-    test('users cannot create a release for another project', function () {
+    test('users cannot create a release from another project', function () {
         Sanctum::actingAs(User::factory()->create());
         $project = Project::factory()->create();
 
         $this->postJson(route('projects.releases.store', [$project]))
+            ->assertForbidden();
+    });
+});
+
+describe('Update', function () {
+    test('users can update a release', function () {
+        Sanctum::actingAs($user = User::factory()->create());
+        $project = Project::factory()
+            ->has(Release::factory())
+            ->for($user)
+            ->create();
+
+        $data = Release::factory()->make()->toArray();
+
+        $this->putJson(route('releases.update', [$project->latestRelease]), $data)
+            ->assertOk();
+    });
+
+    test('users cannot update a release from another project', function () {
+        Sanctum::actingAs(User::factory()->create());
+        $release = Release::factory()->create();
+
+        $data = Release::factory()->make()->toArray();
+
+        $this->putJson(route('releases.update', [$release]), $data)
             ->assertForbidden();
     });
 });
