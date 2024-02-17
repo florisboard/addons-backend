@@ -6,6 +6,7 @@ ARG user=api
 ARG uid=1000
 
 RUN apt update && apt install -y \
+    procps \
     libpng-dev \
     libonig-dev \
     libxml2-dev \
