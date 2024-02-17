@@ -8,7 +8,7 @@ services:
     volumes:
       - caddy-data:/data
     networks:
-      - proxy-net
+      - addons
     depends_on:
       - api
     ports:
@@ -22,7 +22,7 @@ services:
     command: sh -c "./wait-for-it.sh mysql:3306 -t 30 && ./wait-for-it.sh redis:6379 -t 30 && php-fpm"
     restart: unless-stopped
     networks:
-      - proxy-net
+      - addons
     ports:
       - "9000:9000"
     volumes:
@@ -37,6 +37,7 @@ services:
       - mysql
       - redis
       - migrate
+      - mailpit
   scheduler:
     build:
       context: .
@@ -44,7 +45,7 @@ services:
       target: scheduler
     restart: unless-stopped
     networks:
-      - proxy-net
+      - addons
     volumes:
       - ./app:/usr/src/app
       - ./config:/usr/src/config
@@ -64,7 +65,7 @@ services:
       target: worker
     restart: unless-stopped
     networks:
-      - proxy-net
+      - addons
     volumes:
       - ./app:/usr/src/app
       - ./config:/usr/src/config
@@ -81,7 +82,7 @@ services:
     image: redis:7.2.3
     restart: unless-stopped
     networks:
-      - proxy-net
+      - addons
     volumes:
       - redis-data:/data
     ports:
@@ -90,7 +91,7 @@ services:
     image: mysql:8.0.33
     restart: unless-stopped
     networks:
-      - proxy-net
+      - addons
     build:
       context: .
       dockerfile: mysql.dockerfile
@@ -106,10 +107,17 @@ services:
       dockerfile: api.dockerfile
     command: sh -c "./wait-for-it.sh mysql:3306 -t 30 && php /usr/src/artisan migrate --force"
     networks:
-      - proxy-net
+      - addons
     restart: no
     depends_on:
       - mysql
+  mailpit:
+    image: 'axllent/mailpit:latest'
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - addons
 
 volumes:
   storage:
