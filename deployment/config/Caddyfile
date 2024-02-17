@@ -1,0 +1,10 @@
+api.addons.florisboard.org {
+	file_server
+    encode zstd gzip
+    root * /usr/src/public
+	php_fastcgi api:9000
+}
+
+addons.florisboard.org {
+    reverse_proxy ui:3000
+}
