@@ -5,6 +5,6 @@ api.addons.florisboard.org {
 	php_fastcgi api:9000
 }
 
-addons.florisboard.org {
+beta.addons.florisboard.org {
     reverse_proxy ui:3000
 }
