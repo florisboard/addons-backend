@@ -45,6 +45,9 @@ USER $user
 
 RUN composer install --optimize-autoloader --no-dev
 
+RUN php artisan storage:link && \
+    chmod -R 775 ./storage ./bootstrap/cache
+
 COPY ./deployment/config/php-fpm/php.ini /usr/local/etc/php/conf.d/php.ini
 COPY ./deployment/config/php-fpm/www.conf /usr/local/etc/php-fpm.d/www.conf
 

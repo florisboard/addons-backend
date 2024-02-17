@@ -17,6 +17,7 @@
         "guzzlehttp/guzzle": "^7.8",
         "hammerstone/fast-paginate": "^1.0",
         "laravel/framework": "^10.43",
+        "laravel/horizon": "^5.23",
         "laravel/sanctum": "^3.3",
         "laravel/socialite": "^5.12",
         "laravel/tinker": "^2.9",
