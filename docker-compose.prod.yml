@@ -128,3 +128,4 @@ volumes:
 networks:
   addons:
     name: addons
+    external: true
