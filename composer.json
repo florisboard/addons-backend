@@ -25,7 +25,8 @@
         "spatie/eloquent-sortable": "^4.1",
         "spatie/laravel-medialibrary": "^11.2.0",
         "spatie/laravel-query-builder": "^5.8",
-        "spatie/laravel-settings": "^3.2"
+        "spatie/laravel-settings": "^3.2",
+        "symfony/filesystem": "^7.0"
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest",
