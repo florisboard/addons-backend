@@ -1,0 +1,122 @@
+version: '3.8'
+services:
+  caddy:
+    build:
+      context: .
+      dockerfile: caddy.dockerfile
+    restart: unless-stopped
+    volumes:
+      - caddy-data:/data
+    networks:
+      - proxy-net
+    depends_on:
+      - api
+    ports:
+      - "80:80"
+      - "443:443"
+  api:
+    build:
+      context: .
+      dockerfile: api.dockerfile
+      target: api
+    command: sh -c "./wait-for-it.sh mysql:3306 -t 30 && ./wait-for-it.sh redis:6379 -t 30 && php-fpm"
+    restart: unless-stopped
+    networks:
+      - proxy-net
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./app:/usr/src/app
+      - ./config:/usr/src/config
+      - ./database:/usr/src/database
+      - ./routes:/usr/src/routes
+      - ./storage:/usr/src/storage
+      - ./tests:/usr/src/tests
+      - ./.env:/usr/src/.env
+    depends_on:
+      - mysql
+      - redis
+      - migrate
+  scheduler:
+    build:
+      context: .
+      dockerfile: api.dockerfile
+      target: scheduler
+    restart: unless-stopped
+    networks:
+      - proxy-net
+    volumes:
+      - ./app:/usr/src/app
+      - ./config:/usr/src/config
+      - ./database:/usr/src/database
+      - ./routes:/usr/src/routes
+      - ./storage:/usr/src/storage
+      - ./tests:/usr/src/tests
+      - ./.env:/usr/src/.env
+    depends_on:
+      - migrate
+      - mysql
+      - redis
+  worker:
+    build:
+      context: .
+      dockerfile: api.dockerfile
+      target: worker
+    restart: unless-stopped
+    networks:
+      - proxy-net
+    volumes:
+      - ./app:/usr/src/app
+      - ./config:/usr/src/config
+      - ./database:/usr/src/database
+      - ./routes:/usr/src/routes
+      - ./storage:/usr/src/storage
+      - ./tests:/usr/src/tests
+      - ./.env:/usr/src/.env
+    depends_on:
+      - migrate
+      - mysql
+      - redis
+  redis:
+    image: redis:7.2.3
+    restart: unless-stopped
+    networks:
+      - proxy-net
+    volumes:
+      - redis-data:/data
+    ports:
+      - "63790:6379"
+  mysql:
+    image: mysql:8.0.33
+    restart: unless-stopped
+    networks:
+      - proxy-net
+    build:
+      context: .
+      dockerfile: mysql.dockerfile
+    volumes:
+      - mysql-data:/var/lib/mysql
+    ports:
+      - "33060:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+  migrate:
+    build:
+      context: .
+      dockerfile: api.dockerfile
+    command: sh -c "./wait-for-it.sh mysql:3306 -t 30 && php /usr/src/artisan migrate --force"
+    networks:
+      - proxy-net
+    restart: no
+    depends_on:
+      - mysql
+
+volumes:
+  storage:
+  mysql-data:
+  redis-data:
+  caddy-data:
+
+networks:
+  addons:
+    name: addons
