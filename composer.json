@@ -18,6 +18,7 @@
         "hammerstone/fast-paginate": "^1.0",
         "laravel/framework": "^10.43",
         "laravel/sanctum": "^3.3",
+        "laravel/socialite": "^5.12",
         "laravel/tinker": "^2.9",
         "opcodesio/log-viewer": "^3.1",
         "rawilk/filament-password-input": "^2.0",

@@ -8,6 +8,7 @@ use App\Models\Project;
 use App\Models\Release;
 use App\Models\Review;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 
 class ProjectSeeder extends Seeder
@@ -42,7 +43,11 @@ class ProjectSeeder extends Seeder
 
             Release::factory(rand(0, 10))
                 ->for($project)
-                ->sequence(fn () => ['user_id' => collect([$ownerId, ...$maintainerIds])->flatten()->random()])
+                ->sequence(fn (Sequence $sequence) => [
+                    'user_id' => collect([$ownerId, ...$maintainerIds])->flatten()->random(),
+                    'version_code' => $sequence->index + 1,
+                    'version_name' => $sequence->index + 1 .'.0.0',
+                ])
                 ->create();
 
             $reviewUsers = $users->random(rand(0, 10))

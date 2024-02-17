@@ -13,7 +13,7 @@ class FileUpload implements ValidationRule
      * @param  string[]  $validMimeTypes
      */
     public function __construct(
-        private readonly array $validMimeTypes
+        private readonly array $validMimeTypes = []
     ) {
         //
     }
@@ -33,7 +33,7 @@ class FileUpload implements ValidationRule
             $fail('The file does not exist.');
         }
 
-        if (! in_array(Storage::mimeType($value), $this->validMimeTypes, true)) {
+        if (count($this->validMimeTypes) > 0 && ! in_array(Storage::mimeType($value), $this->validMimeTypes, true)) {
             $fail('The file is not a valid mime type.');
         }
     }

@@ -7,6 +7,7 @@ use App\Filament\Forms\Components\FileInput;
 use App\Filament\Forms\Layouts\BasicForm;
 use App\Filament\Resources\ReleaseResource\Pages;
 use App\Filament\Tables\Components\TimestampsColumn;
+use App\Http\Requests\Release\StoreReleaseRequest;
 use App\Models\Release;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -22,10 +23,12 @@ class ReleaseResource extends CustomResource
     public static function form(Form $form): Form
     {
         return BasicForm::make($form, [
-            Forms\Components\TextInput::make('version')
+            Forms\Components\TextInput::make('version_name')
                 ->maxLength(255)
-                ->regex('/^\d+(?:\.\d+){2}$/')
+                ->regex(StoreReleaseRequest::$versionNameRegex)
                 ->required(),
+            Forms\Components\TextInput::make('version_code')
+                ->readOnly(),
             Forms\Components\TextInput::make('downloads_count')
                 ->integer()
                 ->required(),
@@ -57,7 +60,9 @@ class ReleaseResource extends CustomResource
                     ->hiddenOn([UserResource\RelationManagers\ReleasesRelationManager::class]),
                 Tables\Columns\TextColumn::make('project.name')
                     ->hiddenOn([ProjectResource\RelationManagers\ReleasesRelationManager::class]),
-                Tables\Columns\TextColumn::make('version')
+                Tables\Columns\TextColumn::make('version_code')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('version_name')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('downloads_count')
                     ->numeric()

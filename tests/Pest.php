@@ -44,13 +44,22 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function createUploadedFile($fileName = 'test.png'): bool|string
+function createCustomUploadedFile(UploadedFile $uploadedFile): bool|string
 {
     Storage::fake();
 
     Str::createRandomStringsUsing(static fn (): string => 'random');
     $path = App::make(FileUploadController::class)->generatePath();
-    $file = UploadedFile::fake()->image($fileName);
 
-    return Storage::putFile($path, $file);
+    return Storage::putFile($path, $uploadedFile);
+}
+
+function createUploadedImage($fileName = 'test.png'): bool|string
+{
+    return createCustomUploadedFile(UploadedFile::fake()->image($fileName));
+}
+
+function createUploadedFile(string $fileName): bool|string
+{
+    return createCustomUploadedFile(UploadedFile::fake()->create($fileName));
 }

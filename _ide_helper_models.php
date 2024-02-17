@@ -223,7 +223,8 @@ namespace App\Models{
  * @property int $id
  * @property int $project_id
  * @property int $user_id
- * @property string $version
+ * @property string $version_name
+ * @property int $version_code
  * @property string|null $description
  * @property int $downloads_count
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -244,7 +245,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Release whereProjectId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Release whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Release whereUserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Release whereVersion($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Release whereVersionCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Release whereVersionName($value)
  * @mixin \Eloquent
  */
 	class IdeHelperRelease {}

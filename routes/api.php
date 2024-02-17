@@ -30,8 +30,9 @@ Route::apiResource('categories', CategoryController::class)->only(['index', 'sho
 Route::apiResource('collections', CollectionController::class);
 Route::apiResource('users', UserController::class)->only(['index', 'show']);
 
-Route::apiResource('releases', ReleaseController::class)->only(['index']);
+Route::apiResource('projects.releases', ReleaseController::class)->only('store');
+Route::apiResource('releases', ReleaseController::class)->only(['index', 'update']);
 Route::get('releases/{release}/download', [ReleaseController::class, 'download'])->name('releases.download');
 
-Route::apiResource('projects.reviews', ReviewController::class)->shallow()->only('store');
+Route::apiResource('projects.reviews', ReviewController::class)->only('store');
 Route::apiResource('reviews', ReviewController::class)->except('store');

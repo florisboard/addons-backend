@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Project;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,8 +20,11 @@ class ReleaseFactory extends Factory
     {
         return [
             'description' => fake()->realText(),
-            'version' => rand(0, 3).'.'.rand(0, 9).'.'.rand(0, 9),
+            'version_name' => rand(0, 3).'.'.rand(0, 9).'.'.rand(0, 9),
+            'version_code' => rand(0, 1000),
             'downloads_count' => fake()->numberBetween(0, 1_000_000),
+            'user_id' => User::factory(),
+            'project_id' => Project::factory(),
         ];
     }
 }

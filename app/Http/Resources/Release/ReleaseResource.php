@@ -18,7 +18,9 @@ class ReleaseResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'version' => $this->version,
+            'version_name' => $this->version_name,
+            /* @var int */
+            'version_code' => $this->version_code,
             /* @var string */
             'created_at' => $this->created_at,
             /* @var string */
