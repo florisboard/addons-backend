@@ -17,7 +17,7 @@ class CollectionFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->words(rand(1, 6), true),
+            'title' => fake()->words(rand(1, 6), true),
             'is_public' => fake()->boolean(),
         ];
     }

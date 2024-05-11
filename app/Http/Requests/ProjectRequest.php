@@ -38,7 +38,7 @@ class ProjectRequest extends FormRequest
 
         return [
             'category_id' => ['bail', 'required', 'numeric', Rule::exists(Category::class, 'id')],
-            'name' => ['required', 'string', 'min:3', 'max:255'],
+            'title' => ['required', 'string', 'min:3', 'max:255'],
             'package_name' => ['bail', 'required', 'string', 'min:3', 'max:255', 'regex:/^([A-Za-z]{1}[A-Za-z\d_]*\.)+[A-Za-z][A-Za-z\d_]*$/', Rule::unique('projects')->ignore($project?->id)],
             'type' => ['required', Rule::enum(ProjectTypeEnum::class)],
             'short_description' => ['required', 'string', 'min:3', 'max:255'],

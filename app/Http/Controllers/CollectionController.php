@@ -20,7 +20,7 @@ class CollectionController extends Controller
     {
         $request->validate([
             'filter' => ['nullable', 'array'],
-            'filter.name' => ['nullable', 'string'],
+            'filter.title' => ['nullable', 'string'],
             'filter.user_id' => ['nullable', 'numeric'],
             'page' => ['nullable', 'integer'],
         ]);
@@ -28,7 +28,7 @@ class CollectionController extends Controller
         $collections = QueryBuilder::for(Collection::class)
             ->allowedFilters([
                 AllowedFilter::exact('user_id'),
-                AllowedFilter::partial('name'),
+                AllowedFilter::partial('title'),
             ])
             ->with(['projects' => function (BelongsToMany $builder) {
                 return $builder->with('image')->take(3);

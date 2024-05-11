@@ -25,11 +25,8 @@ class ProjectFactory extends Factory
      */
     public function definition(): array
     {
-        /* @var $name string */
-        $name = fake()->unique()->words(rand(3, 6), true);
-
         return [
-            'name' => $name,
+            'title' => fake()->unique()->words(rand(3, 6), true),
             'package_name' => Str::reverse(fake()->unique()->domainName()).'.'.fake()->word(),
             'type' => ProjectTypeEnum::randomValue(),
             'description' => fake()->realText(rand(200, 600)),

@@ -16,8 +16,7 @@ namespace App\Models{
  * App\Models\Category
  *
  * @property int $id
- * @property string $name
- * @property string $slug
+ * @property string $title
  * @property string $circle_bg
  * @property string $circle_fg
  * @property int $order_column
@@ -38,12 +37,12 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereIsActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereIsTop($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Category whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereOrderColumn($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Category whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Category whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereUpdatedAt($value)
  * @mixin \Eloquent
  */
+	#[\AllowDynamicProperties]
 	class IdeHelperCategory {}
 }
 
@@ -53,7 +52,7 @@ namespace App\Models{
  *
  * @property int $id
  * @property int $user_id
- * @property string $name
+ * @property string $title
  * @property bool $is_public
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -67,11 +66,12 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Collection whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Collection whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Collection whereIsPublic($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Collection whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Collection whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Collection whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Collection whereUserId($value)
  * @mixin \Eloquent
  */
+	#[\AllowDynamicProperties]
 	class IdeHelperCollection {}
 }
 
@@ -97,6 +97,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Maintainer whereUserId($value)
  * @mixin \Eloquent
  */
+	#[\AllowDynamicProperties]
 	class IdeHelperMaintainer {}
 }
 
@@ -122,7 +123,12 @@ namespace App\Models{
  * @property int|null $order_column
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read mixed $extension
+ * @property-read mixed $human_readable_size
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $model
+ * @property-read mixed $original_url
+ * @property-read mixed $preview_url
+ * @property-read mixed $type
  * @method static \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, static> all($columns = ['*'])
  * @method static \Database\Factories\MediaFactory factory($count = null, $state = [])
  * @method static \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, static> get($columns = ['*'])
@@ -150,6 +156,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Media whereUuid($value)
  * @mixin \Eloquent
  */
+	#[\AllowDynamicProperties]
 	class IdeHelperMedia {}
 }
 
@@ -158,9 +165,9 @@ namespace App\Models{
  * App\Models\Project
  *
  * @property int $id
- * @property int $user_id
- * @property int $category_id
- * @property string $name
+ * @property int|null $user_id
+ * @property int|null $category_id
+ * @property string $title
  * @property string $package_name
  * @property \App\Enums\ProjectTypeEnum $type
  * @property string $description
@@ -171,7 +178,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Category $category
+ * @property-read \App\Models\Category|null $category
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Collection> $collections
  * @property-read int|null $collections_count
  * @property-read \App\Models\Media|null $image
@@ -188,7 +195,7 @@ namespace App\Models{
  * @property-read int|null $reviews_count
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \App\Models\Media> $screenshots
  * @property-read int|null $screenshots_count
- * @property-read \App\Models\User $user
+ * @property-read \App\Models\User|null $user
  * @property-read \App\Models\Review|null $userReview
  * @method static \Database\Factories\ProjectFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Project newModelQuery()
@@ -203,9 +210,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereIsActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereIsRecommended($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereLinks($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project wherePackageName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereShortDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereUserId($value)
@@ -213,6 +220,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Project withoutTrashed()
  * @mixin \Eloquent
  */
+	#[\AllowDynamicProperties]
 	class IdeHelperProject {}
 }
 
@@ -249,6 +257,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Release whereVersionName($value)
  * @mixin \Eloquent
  */
+	#[\AllowDynamicProperties]
 	class IdeHelperRelease {}
 }
 
@@ -284,6 +293,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Report whereUserId($value)
  * @mixin \Eloquent
  */
+	#[\AllowDynamicProperties]
 	class IdeHelperReport {}
 }
 
@@ -322,6 +332,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Review withoutTrashed()
  * @mixin \Eloquent
  */
+	#[\AllowDynamicProperties]
 	class IdeHelperReview {}
 }
 
@@ -369,6 +380,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUsernameChangedAt($value)
  * @mixin \Eloquent
  */
+	#[\AllowDynamicProperties]
 	class IdeHelperUser {}
 }
 

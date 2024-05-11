@@ -1,7 +1,5 @@
 <?php
 
-use App\Models\Collection;
-use App\Models\Project;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('collection_project', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Collection::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(Project::class)->constrained()->cascadeOnDelete();
+            $table->foreignId('collection_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('project_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

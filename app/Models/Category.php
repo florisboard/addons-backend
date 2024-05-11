@@ -25,11 +25,6 @@ class Category extends Model implements Sortable
         static::addGlobalScope(new ActiveScope);
     }
 
-    public function getRouteKeyName(): string
-    {
-        return 'slug';
-    }
-
     /**
      * @return HasMany<Project>
      */

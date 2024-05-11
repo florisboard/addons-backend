@@ -6,16 +6,16 @@ use EmreYarligan\EnumConcern\EnumConcern;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 
-enum ReportTypeEnum: int implements HasColor, HasLabel
+enum ReportTypeEnum: string implements HasColor, HasLabel
 {
     use EnumConcern;
-    case Spam = 1;
+    case Spam = 'SPAM';
 
-    case Misinformation = 2;
+    case Misinformation = 'MISINFORMATION';
 
-    case Harassment = 3;
+    case Harassment = 'HARASSMENT';
 
-    case HateSpeech = 4;
+    case HateSpeech = 'HATE_SPEACH';
 
     public function getLabel(): string
     {

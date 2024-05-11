@@ -33,7 +33,7 @@ class ProjectController extends Controller
     {
         $request->validate([
             'filter' => ['nullable', 'array'],
-            'filter.name' => ['nullable', 'string'],
+            'filter.title' => ['nullable', 'string'],
             'filter.category_id' => ['nullable', 'numeric'],
             'filter.user_id' => ['nullable', 'numeric'],
             'filter.package_name' => ['nullable', 'string'],
@@ -47,12 +47,12 @@ class ProjectController extends Controller
             ->allowedFilters([
                 AllowedFilter::exact('category_id'),
                 AllowedFilter::exact('user_id'),
-                AllowedFilter::partial('name'),
+                AllowedFilter::partial('title'),
                 AllowedFilter::partial('package_name'),
                 AllowedFilter::exact('is_recommended'),
             ])
             ->allowedIncludes(['user', 'category'])
-            ->allowedSorts(['name', 'package_name', 'id'])
+            ->allowedSorts(['title', 'package_name', 'id'])
             ->with(['image', 'latestRelease'])
             ->when(Auth::guest() || $request->input('filter.user_id') != Auth::id(), function (Builder $builder) {
                 $builder->withGlobalScope('active', new ActiveScope);

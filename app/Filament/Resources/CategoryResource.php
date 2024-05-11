@@ -14,7 +14,6 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Support\Str;
 
 class CategoryResource extends CustomResource
 {
@@ -25,17 +24,10 @@ class CategoryResource extends CustomResource
     public static function form(Form $form): Form
     {
         $basicSection = BasicSection::make([
-            Forms\Components\TextInput::make('name')
+            Forms\Components\TextInput::make('title')
                 ->maxLength(255)
-                ->live(onBlur: true)
-                ->afterStateUpdated(fn (string $operation, $state, Forms\Set $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null)
                 ->columnSpanFull()
                 ->required(),
-            Forms\Components\TextInput::make('slug')
-                ->required()
-                ->maxLength(255)
-                ->columnSpanFull()
-                ->unique(ignoreRecord: true),
         ]);
 
         $statusSection = StatusSection::make(includeIsActive: true);
@@ -50,8 +42,7 @@ class CategoryResource extends CustomResource
             ->defaultSort('order_column')
             ->columns([
                 Tables\Columns\IconColumn::make('is_active')->boolean(),
-                Tables\Columns\TextColumn::make('name')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('slug')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('title')->sortable()->searchable(),
                 ...TimestampsColumn::make(),
             ])
             ->filters([

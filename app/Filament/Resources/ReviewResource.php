@@ -32,7 +32,7 @@ class ReviewResource extends CustomResource
                 ->searchable()
                 ->preload()
                 ->hiddenOn([ProjectResource\RelationManagers\ReviewsRelationManager::class])
-                ->relationship('project', 'name')
+                ->relationship('project', 'title')
                 ->required(),
             Forms\Components\TextInput::make('title')
                 ->maxLength(255)
@@ -56,7 +56,7 @@ class ReviewResource extends CustomResource
             ->columns([
                 Tables\Columns\TextColumn::make('user.username')
                     ->hiddenOn([UserResource\RelationManagers\ReviewsRelationManager::class]),
-                Tables\Columns\TextColumn::make('project.name')
+                Tables\Columns\TextColumn::make('project.title')
                     ->hiddenOn([ProjectResource\RelationManagers\ReviewsRelationManager::class]),
                 Tables\Columns\TextColumn::make('score')
                     ->sortable()

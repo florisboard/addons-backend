@@ -11,7 +11,6 @@ use App\Http\Resources\User\UserResource;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Str;
 
 /** @mixin Project
  * @property int $one_reviews_count
@@ -38,8 +37,7 @@ class ProjectFullResource extends JsonResource
             'category_id' => $this->category_id,
             /* @var int */
             'user_id' => $this->user_id,
-            'name' => $this->name,
-            'slug' => Str::slug($this->name),
+            'title' => $this->title,
             'package_name' => $this->package_name,
             'short_description' => $this->short_description,
             /* @var ProjectTypeEnum */

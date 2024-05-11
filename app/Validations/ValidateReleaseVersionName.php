@@ -32,7 +32,7 @@ class ValidateReleaseVersionName
         $project = request()->route('project');
 
         // It's the first release
-        if ($project->latestRelease === null) {
+        if (! $project->latestRelease) {
             return;
         }
 

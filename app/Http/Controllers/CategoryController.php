@@ -19,13 +19,13 @@ class CategoryController extends Controller
     {
         $request->validate([
             'filter' => ['nullable', 'array'],
-            'filter.name' => ['nullable', 'string'],
+            'filter.title' => ['nullable', 'string'],
             'page' => ['nullable', 'integer'],
         ]);
 
         $categories = QueryBuilder::for(Category::class)
             ->allowedFilters([
-                AllowedFilter::partial('name'),
+                AllowedFilter::partial('title'),
             ])
             ->fastPaginate(20);
 

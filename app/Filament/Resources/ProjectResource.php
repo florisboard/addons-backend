@@ -27,7 +27,7 @@ class ProjectResource extends CustomResource
     public static function form(Form $form): Form
     {
         $basicSection = BasicSection::make([
-            Forms\Components\TextInput::make('name')
+            Forms\Components\TextInput::make('title')
                 ->maxLength(255)
                 ->required(),
             Forms\Components\Select::make('user_id')
@@ -39,7 +39,7 @@ class ProjectResource extends CustomResource
             Forms\Components\Select::make('category_id')
                 ->searchable()
                 ->preload()
-                ->relationship('category', 'name')
+                ->relationship('category', 'title')
                 ->hiddenOn([CategoryResource\RelationManagers\ProjectsRelationManager::class])
                 ->required(),
             Forms\Components\TextInput::make('package_name')
@@ -94,9 +94,8 @@ class ProjectResource extends CustomResource
             ->columns([
                 Tables\Columns\IconColumn::make('is_recommended')->boolean(),
                 Tables\Columns\IconColumn::make('is_active')->boolean(),
-                Tables\Columns\IconColumn::make('is_active')->boolean(),
                 Tables\Columns\TextColumn::make('type')->badge(),
-                Tables\Columns\TextColumn::make('name')->sortable()->searchable(isIndividual: true),
+                Tables\Columns\TextColumn::make('title')->sortable()->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('package_name')->sortable()->searchable(isIndividual: true)->toggleable(),
                 Tables\Columns\TextColumn::make('description')->searchable(isIndividual: true)->toggleable()->toggledHiddenByDefault()->limit(30),
                 Tables\Columns\TextColumn::make('short_description')->searchable(isIndividual: true)->toggleable()->toggledHiddenByDefault()->limit(30),

@@ -24,7 +24,7 @@ class CollectionResource extends CustomResource
     public static function form(Form $form): Form
     {
         $basicSection = BasicSection::make([
-            Forms\Components\TextInput::make('name')
+            Forms\Components\TextInput::make('title')
                 ->maxLength(255)
                 ->columnSpanFull()
                 ->required(),
@@ -50,7 +50,7 @@ class CollectionResource extends CustomResource
             ->columns([
                 Tables\Columns\IconColumn::make('is_public')
                     ->boolean(),
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('title')
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('user.username'),

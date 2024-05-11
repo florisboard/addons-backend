@@ -20,7 +20,7 @@ class CollectionResource extends JsonResource
         return [
             'id' => $this->id,
             'user_id' => $this->user_id,
-            'name' => $this->name,
+            'title' => $this->title,
             'is_public' => $this->is_public,
             /* @var string */
             'created_at' => $this->created_at,
