@@ -66,6 +66,7 @@
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
+            "@php artisan log-viewer:publish",
             "@php artisan ide-helper:generate",
             "@php artisan ide-helper:meta"
         ],
