@@ -15,8 +15,6 @@ use Illuminate\Validation\ValidationException;
 class NewPasswordController extends Controller
 {
     /**
-     * Handle an incoming new password request.
-     *
      * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request): JsonResponse
@@ -42,7 +40,7 @@ class NewPasswordController extends Controller
             }
         );
 
-        if ($status != Password::PASSWORD_RESET) {
+        if ($status !== Password::PASSWORD_RESET) {
             throw ValidationException::withMessages([
                 'email' => [__($status)],
             ]);

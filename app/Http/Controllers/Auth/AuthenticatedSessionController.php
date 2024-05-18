@@ -11,9 +11,6 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthenticatedSessionController extends Controller
 {
-    /**
-     * Handle an incoming authentication request.
-     */
     public function store(LoginRequest $request): AuthResource
     {
         $request->authenticate();
@@ -23,9 +20,6 @@ class AuthenticatedSessionController extends Controller
         return new AuthResource(Auth::user());
     }
 
-    /**
-     * Destroy an authenticated session.
-     */
     public function destroy(Request $request): Response
     {
         Auth::guard('web')->logout();
