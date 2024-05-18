@@ -28,7 +28,7 @@ class ReviewResource extends JsonResource
             'created_at' => $this->created_at,
             /* @var string */
             'updated_at' => $this->updated_at,
-            /* @var UserResource|null */
+            /* @var UserResource */
             'user' => new UserResource($this->user),
         ];
     }

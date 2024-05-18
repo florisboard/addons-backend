@@ -20,7 +20,7 @@ class RegisteredUserController extends Controller
     {
         /** @var array<string,mixed> $validated */
         $validated = $request->validate([
-            'username' => ['required', 'string', 'min:3', 'max:30', new Username],
+            'username' => ['required', 'string', 'min:3', 'max:33', new Username],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);

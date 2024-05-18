@@ -8,7 +8,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "*",
+        "php": "^8.3",
         "dedoc/scramble": "^0.8.6",
         "emreyarligan/enum-concern": "^1.0",
         "filament/filament": "^3.2",
@@ -30,21 +30,20 @@
         "symfony/filesystem": "^7.0"
     },
     "require-dev": {
-        "roave/security-advisories": "dev-latest",
-        "barryvdh/laravel-ide-helper": "^2.14",
-        "fakerphp/faker": "^1.23.1",
-        "larastan/larastan": "^2.8.1",
-        "laravel/breeze": "^1.28.1",
-        "laravel/pint": "^1.13.10",
-        "laravel/sail": "^1.27.3",
-        "laravel/telescope": "^4.17.5",
-        "mockery/mockery": "^1.6.7",
+        "barryvdh/laravel-ide-helper": "^3.0",
+        "fakerphp/faker": "^1.23",
+        "larastan/larastan": "^2.9",
+        "laravel/breeze": "^1.29",
+        "laravel/pint": "^1.15",
+        "laravel/sail": "^1.29",
+        "laravel/telescope": "^5.0",
+        "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^7.10",
-        "pestphp/pest": "^2.33.4",
-        "pestphp/pest-plugin-laravel": "^2.2",
-        "plannr/laravel-fast-refresh-database": "^1.1.1",
-        "spatie/laravel-ignition": "^2.4.1",
-        "spatie/laravel-ray": "^1.35"
+        "pestphp/pest": "^2.34",
+        "pestphp/pest-plugin-laravel": "^2.4",
+        "plannr/laravel-fast-refresh-database": "^1.2",
+        "spatie/laravel-ignition": "^2.7",
+        "spatie/laravel-ray": "^1.36"
     },
     "autoload": {
         "psr-4": {

@@ -61,7 +61,7 @@ class UserController extends Controller
     public function update(Request $request): AuthResource
     {
         $request->validate([
-            'username' => ['required', 'string', 'min:3', 'max:30', new Username],
+            'username' => ['required', 'string', 'min:3', 'max:33', new Username],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore(Auth::id())],
             'current_password' => ['nullable', 'required_with:password', 'string'],
             'new_password' => ['nullable', 'string', 'confirmed', Rules\Password::defaults()],

@@ -25,7 +25,7 @@ class UserResource extends CustomResource
     public static function form(Form $form): Form
     {
         return BasicForm::make($form, [
-            Forms\Components\TextInput::make('username')->unique(ignoreRecord: true)->required()->rules([new Username]),
+            Forms\Components\TextInput::make('username')->minLength(3)->maxLength(33)->unique(ignoreRecord: true)->required()->rules([new Username]),
             Forms\Components\TextInput::make('email')->email()->required()->maxLength(255),
             Forms\Components\DateTimePicker::make('email_verified_at'),
             Forms\Components\DateTimePicker::make('username_changed_at'),

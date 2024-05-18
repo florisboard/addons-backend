@@ -19246,7 +19246,7 @@ namespace Livewire\Features\SupportTesting {
          * 
          *
          * @see \Filament\Forms\Testing\TestsForms::fillForm()
-         * @param array $state
+         * @param \Closure|array $state
          * @param string $formName
          * @return static 
          * @static 
@@ -19258,7 +19258,7 @@ namespace Livewire\Features\SupportTesting {
          * 
          *
          * @see \Filament\Forms\Testing\TestsForms::assertFormSet()
-         * @param array $state
+         * @param \Closure|array $state
          * @param string $formName
          * @return static 
          * @static 
@@ -25222,6 +25222,11 @@ namespace  {
     }
 
 
+namespace Facades\Livewire\Features\SupportFileUploads {
+    /**
+     * @mixin \Livewire\Features\SupportFileUploads\GenerateSignedUploadUrl     */
+    class GenerateSignedUploadUrl extends \Livewire\Features\SupportFileUploads\GenerateSignedUploadUrl {}
+}
 
 
 
