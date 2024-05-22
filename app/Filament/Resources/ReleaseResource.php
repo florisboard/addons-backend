@@ -42,7 +42,7 @@ class ReleaseResource extends CustomResource
                 ->searchable()
                 ->preload()
                 ->hiddenOn([ProjectResource\RelationManagers\ReleasesRelationManager::class])
-                ->relationship('project', 'name')
+                ->relationship('project', 'title')
                 ->required(),
             Forms\Components\MarkdownEditor::make('description')
                 ->columnSpanFull()
@@ -58,7 +58,7 @@ class ReleaseResource extends CustomResource
             ->columns([
                 Tables\Columns\TextColumn::make('user.username')
                     ->hiddenOn([UserResource\RelationManagers\ReleasesRelationManager::class]),
-                Tables\Columns\TextColumn::make('project.name')
+                Tables\Columns\TextColumn::make('project.title')
                     ->hiddenOn([ProjectResource\RelationManagers\ReleasesRelationManager::class]),
                 Tables\Columns\TextColumn::make('version_code')
                     ->sortable(),

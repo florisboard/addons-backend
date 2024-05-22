@@ -25,6 +25,7 @@ services:
             - mysql
             - mailpit
             - redis
+            - minio
     mysql:
         image: 'mysql/mysql-server:8.0'
         ports:
@@ -72,13 +73,34 @@ services:
             retries: 3
             timeout: 5s
     buggregator:
-        image: ghcr.io/buggregator/server:dev
+        image: 'ghcr.io/buggregator/server:dev'
         networks:
             - sail
         ports:
             - '8000:8000'
             - '9912:9912'
             - '9913:9913'
+    minio:
+        image: 'minio/minio:latest'
+        ports:
+            - '${FORWARD_MINIO_PORT:-9000}:9000'
+            - '${FORWARD_MINIO_CONSOLE_PORT:-8900}:8900'
+        environment:
+            MINIO_ROOT_USER: sail
+            MINIO_ROOT_PASSWORD: password
+        volumes:
+            - 'sail-minio:/data/minio'
+        networks:
+            - sail
+        command: 'minio server /data/minio --console-address ":8900"'
+        healthcheck:
+            test:
+                - CMD
+                - curl
+                - '-f'
+                - 'http://localhost:9000/minio/health/live'
+            retries: 3
+            timeout: 5s
 networks:
     sail:
         driver: bridge
@@ -86,4 +108,6 @@ volumes:
     sail-mysql:
         driver: local
     sail-redis:
+        driver: local
+    sail-minio:
         driver: local
