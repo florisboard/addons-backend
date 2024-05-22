@@ -13,7 +13,7 @@
 
 namespace App\Models{
 /**
- * App\Models\Category
+ * 
  *
  * @property int $id
  * @property string $title
@@ -48,7 +48,7 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * App\Models\Collection
+ * 
  *
  * @property int $id
  * @property int $user_id
@@ -77,7 +77,7 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * App\Models\Maintainer
+ * 
  *
  * @property int $id
  * @property int $user_id
@@ -103,7 +103,7 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * App\Models\Media
+ * 
  *
  * @property int $id
  * @property string $model_type
@@ -162,7 +162,7 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * App\Models\Project
+ * 
  *
  * @property int $id
  * @property int|null $user_id
@@ -226,7 +226,7 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * App\Models\Release
+ * 
  *
  * @property int $id
  * @property int $project_id
@@ -263,7 +263,7 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * App\Models\Report
+ * 
  *
  * @property int $id
  * @property int $user_id
@@ -299,7 +299,7 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * App\Models\Review
+ * 
  *
  * @property int $id
  * @property int $project_id
@@ -338,14 +338,13 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * App\Models\User
+ * 
  *
  * @property int $id
  * @property string $username
- * @property string $email
- * @property \Illuminate\Support\Carbon|null $email_verified_at
+ * @property string $provider_id
+ * @property \App\Enums\AuthProviderEnum $provider
  * @property \Illuminate\Support\Carbon|null $username_changed_at
- * @property mixed $password
  * @property bool $is_admin
  * @property string|null $remember_token
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -369,11 +368,10 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User query()
  * @method static \Illuminate\Database\Eloquent\Builder|User whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereEmailVerifiedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereIsAdmin($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereProvider($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereProviderId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUsername($value)
