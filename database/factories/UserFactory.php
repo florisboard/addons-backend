@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Enums\AuthProviderEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 /**
@@ -25,6 +26,7 @@ class UserFactory extends Factory
             'provider_id' => fake()->unique()->uuid(),
             'provider' => AuthProviderEnum::randomValue(),
             'username_changed_at' => fake()->boolean() ? fake()->dateTime() : null,
+            'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
             'is_admin' => false,
         ];

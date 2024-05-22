@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('provider');
             $table->timestamp('username_changed_at')->nullable();
             $table->boolean('is_admin')->default(false);
+            $table->string('password');
             $table->rememberToken();
             $table->timestamps();
         });

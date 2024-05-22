@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Enums\AuthProviderEnum;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -22,18 +23,17 @@ class GithubController extends Controller
     public function callback(): RedirectResponse
     {
         $result = Socialite::with('github')->stateless()->user();
-        $usernameExists = User::where('username', $result->nickname)->exists();
 
         $user = User::firstOrCreate([
-            'email' => $result->email,
+            'provider_id' => $result->getId(),
+            'provider' => AuthProviderEnum::Github,
         ], [
-            'username' => $usernameExists ? $result->nickname.rand(1000, 9999) : $result->nickname,
-            'password' => Str::password(),
-            'email_verified_at' => now(),
+            'username' => $result->getNickname(),
+            'password' => Str::password(12),
         ]);
 
-        Auth::login($user);
+        Auth::login($user, true);
 
-        return response()->redirectToIntended(env('FRONTEND_URL').'?'.http_build_query(['loginSuccessful' => false]));
+        return response()->redirectToIntended(config('app.frontend_url').'?'.http_build_query(['authSuccessful' => true]));
     }
 }

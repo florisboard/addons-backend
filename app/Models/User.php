@@ -41,6 +41,7 @@ class User extends Authenticatable implements FilamentUser, HasName
     protected $casts = [
         'provider' => AuthProviderEnum::class,
         'is_admin' => 'boolean',
+        'password' => 'hashed',
         'username_changed_at' => 'datetime',
     ];
 

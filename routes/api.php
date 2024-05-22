@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\AboutController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\FileUploadController;
@@ -20,7 +19,6 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::get('home', HomeController::class)->name('home');
-Route::get('about', AboutController::class)->name('about');
 
 Route::apiResource('projects', ProjectController::class);
 Route::apiSingleton('projects.image', ImageController::class)->creatable()->only(['store', 'destroy']);

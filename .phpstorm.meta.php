@@ -13,7 +13,6 @@ namespace PHPSTORM_META {
     */
     override(new \Illuminate\Contracts\Container\Container, map([
         '' => '@',
-            'App\Settings\AboutSettings' => \App\Settings\AboutSettings::class,
             'BladeUI\Icons\Factory' => \BladeUI\Icons\Factory::class,
             'BladeUI\Icons\IconsManifest' => \BladeUI\Icons\IconsManifest::class,
             'Dedoc\Scramble\Infer' => \Dedoc\Scramble\Infer::class,
@@ -285,7 +284,6 @@ namespace PHPSTORM_META {
         ]));
     override(\Illuminate\Container\Container::makeWith(0), map([
         '' => '@',
-            'App\Settings\AboutSettings' => \App\Settings\AboutSettings::class,
             'BladeUI\Icons\Factory' => \BladeUI\Icons\Factory::class,
             'BladeUI\Icons\IconsManifest' => \BladeUI\Icons\IconsManifest::class,
             'Dedoc\Scramble\Infer' => \Dedoc\Scramble\Infer::class,
@@ -557,7 +555,6 @@ namespace PHPSTORM_META {
         ]));
     override(\Illuminate\Contracts\Container\Container::get(0), map([
         '' => '@',
-            'App\Settings\AboutSettings' => \App\Settings\AboutSettings::class,
             'BladeUI\Icons\Factory' => \BladeUI\Icons\Factory::class,
             'BladeUI\Icons\IconsManifest' => \BladeUI\Icons\IconsManifest::class,
             'Dedoc\Scramble\Infer' => \Dedoc\Scramble\Infer::class,
@@ -829,7 +826,6 @@ namespace PHPSTORM_META {
         ]));
     override(\Illuminate\Contracts\Container\Container::make(0), map([
         '' => '@',
-            'App\Settings\AboutSettings' => \App\Settings\AboutSettings::class,
             'BladeUI\Icons\Factory' => \BladeUI\Icons\Factory::class,
             'BladeUI\Icons\IconsManifest' => \BladeUI\Icons\IconsManifest::class,
             'Dedoc\Scramble\Infer' => \Dedoc\Scramble\Infer::class,
@@ -1101,7 +1097,6 @@ namespace PHPSTORM_META {
         ]));
     override(\Illuminate\Contracts\Container\Container::makeWith(0), map([
         '' => '@',
-            'App\Settings\AboutSettings' => \App\Settings\AboutSettings::class,
             'BladeUI\Icons\Factory' => \BladeUI\Icons\Factory::class,
             'BladeUI\Icons\IconsManifest' => \BladeUI\Icons\IconsManifest::class,
             'Dedoc\Scramble\Infer' => \Dedoc\Scramble\Infer::class,
@@ -1373,7 +1368,6 @@ namespace PHPSTORM_META {
         ]));
     override(\App::get(0), map([
         '' => '@',
-            'App\Settings\AboutSettings' => \App\Settings\AboutSettings::class,
             'BladeUI\Icons\Factory' => \BladeUI\Icons\Factory::class,
             'BladeUI\Icons\IconsManifest' => \BladeUI\Icons\IconsManifest::class,
             'Dedoc\Scramble\Infer' => \Dedoc\Scramble\Infer::class,
@@ -1645,7 +1639,6 @@ namespace PHPSTORM_META {
         ]));
     override(\App::make(0), map([
         '' => '@',
-            'App\Settings\AboutSettings' => \App\Settings\AboutSettings::class,
             'BladeUI\Icons\Factory' => \BladeUI\Icons\Factory::class,
             'BladeUI\Icons\IconsManifest' => \BladeUI\Icons\IconsManifest::class,
             'Dedoc\Scramble\Infer' => \Dedoc\Scramble\Infer::class,
@@ -1917,7 +1910,6 @@ namespace PHPSTORM_META {
         ]));
     override(\App::makeWith(0), map([
         '' => '@',
-            'App\Settings\AboutSettings' => \App\Settings\AboutSettings::class,
             'BladeUI\Icons\Factory' => \BladeUI\Icons\Factory::class,
             'BladeUI\Icons\IconsManifest' => \BladeUI\Icons\IconsManifest::class,
             'Dedoc\Scramble\Infer' => \Dedoc\Scramble\Infer::class,
@@ -2189,7 +2181,6 @@ namespace PHPSTORM_META {
         ]));
     override(\app(0), map([
         '' => '@',
-            'App\Settings\AboutSettings' => \App\Settings\AboutSettings::class,
             'BladeUI\Icons\Factory' => \BladeUI\Icons\Factory::class,
             'BladeUI\Icons\IconsManifest' => \BladeUI\Icons\IconsManifest::class,
             'Dedoc\Scramble\Infer' => \Dedoc\Scramble\Infer::class,
@@ -2461,7 +2452,6 @@ namespace PHPSTORM_META {
         ]));
     override(\resolve(0), map([
         '' => '@',
-            'App\Settings\AboutSettings' => \App\Settings\AboutSettings::class,
             'BladeUI\Icons\Factory' => \BladeUI\Icons\Factory::class,
             'BladeUI\Icons\IconsManifest' => \BladeUI\Icons\IconsManifest::class,
             'Dedoc\Scramble\Infer' => \Dedoc\Scramble\Infer::class,
@@ -2733,7 +2723,6 @@ namespace PHPSTORM_META {
         ]));
     override(\Psr\Container\ContainerInterface::get(0), map([
         '' => '@',
-            'App\Settings\AboutSettings' => \App\Settings\AboutSettings::class,
             'BladeUI\Icons\Factory' => \BladeUI\Icons\Factory::class,
             'BladeUI\Icons\IconsManifest' => \BladeUI\Icons\IconsManifest::class,
             'Dedoc\Scramble\Infer' => \Dedoc\Scramble\Infer::class,
