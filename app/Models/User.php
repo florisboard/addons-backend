@@ -100,6 +100,14 @@ class User extends Authenticatable implements FilamentUser, HasName
         return $this->hasMany(Review::class);
     }
 
+    /**
+     * @return HasMany<Review>
+     */
+    public function domains(): HasMany
+    {
+        return $this->hasMany(Domain::class);
+    }
+
     public function getFilamentName(): string
     {
         return Auth::user()->username;
