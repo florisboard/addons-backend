@@ -8,7 +8,3 @@ api.addons.florisboard.org {
 beta.addons.florisboard.org {
     reverse_proxy ui:3000
 }
-
-mail.addons.florisboard.org {
-    reverse_proxy mailpit:8025
-}

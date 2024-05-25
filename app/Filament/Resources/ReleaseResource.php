@@ -20,6 +20,8 @@ class ReleaseResource extends CustomResource
 
     protected static ?string $navigationIcon = 'heroicon-o-arrow-trending-up';
 
+    protected static ?string $navigationGroup = 'Projects';
+
     public static function form(Form $form): Form
     {
         return BasicForm::make($form, [

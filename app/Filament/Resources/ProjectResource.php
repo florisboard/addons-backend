@@ -24,6 +24,8 @@ class ProjectResource extends CustomResource
 
     protected static ?string $navigationIcon = 'heroicon-o-fire';
 
+    protected static ?string $navigationGroup = 'Projects';
+
     public static function form(Form $form): Form
     {
         $basicSection = BasicSection::make([
