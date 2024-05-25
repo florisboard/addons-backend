@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\User;
+use App\Services\DomainService;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,7 +20,7 @@ class DomainFactory extends Factory
     {
         return [
             'name' => fake()->unique()->domainName(),
-            'verification_code' => rand(100000, 999999),
+            'verification_code' => rand(DomainService::MIN_VERIFICATION_CODE, DomainService::MAX_VERIFICATION_CODE),
             'verified_at' => fake()->boolean(70) ? fake()->dateTime() : null,
             'user_id' => User::factory(),
         ];

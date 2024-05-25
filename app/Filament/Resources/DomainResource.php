@@ -7,6 +7,7 @@ use App\Filament\Forms\Layouts\BasicForm;
 use App\Filament\Resources\DomainResource\Pages;
 use App\Filament\Tables\Components\TimestampsColumn;
 use App\Models\Domain;
+use App\Services\DomainService;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Tables;
@@ -25,6 +26,8 @@ class DomainResource extends CustomResource
         return BasicForm::make($form, [
             Forms\Components\TextInput::make('name')
                 ->maxLength(255)
+                ->regex(DomainService::REGEX)
+                ->unique(ignoreRecord: true)
                 ->required(),
             Forms\Components\Select::make('user_id')
                 ->searchable()
@@ -34,8 +37,8 @@ class DomainResource extends CustomResource
             Forms\Components\TextInput::make('verification_code')
                 ->maxLength(255)
                 ->integer()
-                ->minValue(100000)
-                ->maxValue(999999)
+                ->minValue(DomainService::MIN_VERIFICATION_CODE)
+                ->maxValue(DomainService::MAX_VERIFICATION_CODE)
                 ->required(),
             Forms\Components\DateTimePicker::make('verified_at'),
         ]);

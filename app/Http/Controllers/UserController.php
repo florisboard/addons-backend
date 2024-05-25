@@ -61,13 +61,13 @@ class UserController extends Controller
             'username' => ['required', 'string', 'min:3', 'max:33', new Username],
         ]);
 
-        if ($request->input('username') !== Auth::user()->username) {
-            $this->userService->ensureUserCanUpdateUsername(Auth::user());
-            Auth::user()->update([
-                'username' => $request->input('username'),
-                'username_changed_at' => now(),
-            ]);
-        }
+        //        if ($request->input('username') !== Auth::user()->username) {
+        //            $this->userService->ensureUserCanUpdateUsername(Auth::user());
+        //            Auth::user()->update([
+        //                'username' => $request->input('username'),
+        //                'username_changed_at' => now(),
+        //            ]);
+        //        }
 
         return new AuthResource(Auth::user());
     }

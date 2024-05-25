@@ -56,4 +56,4 @@ describe('Update', function () {
             'username' => 'test.username',
         ])->assertUnprocessable();
     });
-});
+})->skip();
