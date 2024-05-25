@@ -101,7 +101,7 @@ class User extends Authenticatable implements FilamentUser, HasName
     }
 
     /**
-     * @return HasMany<Review>
+     * @return HasMany<Domain>
      */
     public function domains(): HasMany
     {

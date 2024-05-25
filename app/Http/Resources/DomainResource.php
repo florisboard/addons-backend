@@ -17,13 +17,15 @@ class DomainResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $domainService = app(DomainService::class);
+
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'verification_text' => DomainService::generateVerificationText($this->verification_code),
+            'verification_text' => $domainService->generateVerificationText($this->verification_code),
             'verified_at' => $this->verified_at,
             /** @var bool */
-            'is_reserved' => DomainService::isInExcludedDomains($this->name)
+            'is_reserved' => $domainService->isInExcludedDomains($this->name),
         ];
     }
 }

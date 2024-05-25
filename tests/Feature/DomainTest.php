@@ -2,7 +2,9 @@
 
 use App\Models\Domain;
 use App\Models\User;
+use App\Services\DomainService;
 use Laravel\Sanctum\Sanctum;
+use Mockery\MockInterface;
 
 uses()->group('Domain');
 
@@ -50,5 +52,33 @@ describe('Delete', function () {
 
         $this->deleteJson(route('domains.destroy', $domain))
             ->assertForbidden();
+    });
+});
+
+describe('Verify', function () {
+    test('users can verify their domain', function () {
+        Sanctum::actingAs($user = User::factory()->create());
+        $domain = Domain::factory()->for($user)->create();
+
+        $this->partialMock(DomainService::class, function (MockInterface $mock) {
+            $mock->shouldReceive('hasVerificationText')->once()->andReturnTrue();
+        });
+
+        $this->postJson(route('domains.verify.store', $domain))
+            ->assertOk();
+
+        expect($domain->verified_at)->not->toBeNull();
+    });
+
+    test('users cannot verify when verification text does not exist', function () {
+        Sanctum::actingAs($user = User::factory()->create());
+        $domain = Domain::factory()->for($user)->create();
+
+        $this->partialMock(DomainService::class, function (MockInterface $mock) {
+            $mock->shouldReceive('hasVerificationText')->once()->andReturnFalse();
+        });
+
+        $this->postJson(route('domains.verify.store', $domain))
+            ->assertUnprocessable();
     });
 });

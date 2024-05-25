@@ -21,18 +21,32 @@ class DomainService
     /**
      * @throws RandomException
      */
-    public static function generateVerificationCode(): int
+    public function generateVerificationCode(): string
     {
-        return random_int(self::MIN_VERIFICATION_CODE, self::MAX_VERIFICATION_CODE);
+        return (string) random_int(static::MIN_VERIFICATION_CODE, static::MAX_VERIFICATION_CODE);
     }
 
-    public static function generateVerificationText(int $code): string
+    public function generateVerificationText(string $code): string
     {
         return "florisboard-addons-verification-$code";
     }
 
-    public static function isInExcludedDomains(string $name): bool
+    public function isInExcludedDomains(string $name): bool
     {
-        return collect(self::reservedDomains)->some(fn ($domain) => Str::endsWith($name,$domain));
+        return collect(static::reservedDomains)->some(fn ($domain) => Str::endsWith($name, $domain));
+    }
+
+    public function hasVerificationText(string $domain, string $verificationCode): bool
+    {
+        try {
+            /** @var array[] $records */
+            $records = dns_get_record($domain, DNS_TXT);
+
+            return collect($records)->some(function (array $record) use ($verificationCode) {
+                return $record['host'] && $record['txt'] === static::generateVerificationText($verificationCode);
+            });
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 }

@@ -9,6 +9,10 @@ use Random\RandomException;
 
 class UserObserver
 {
+    public function __construct(private readonly DomainService $domainService)
+    {
+    }
+
     /**
      * Handle the User "created" event.
      *
@@ -19,7 +23,7 @@ class UserObserver
         $user->domains()->firstOrCreate([
             'name' => sprintf('%s.github.io', Str::lower($user->username)),
             'verified_at' => now(),
-            'verification_code' => DomainService::generateVerificationCode(),
+            'verification_code' => $this->domainService->generateVerificationCode(),
         ]);
     }
 

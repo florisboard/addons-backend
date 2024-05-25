@@ -8,6 +8,15 @@ use App\Services\DomainService;
 
 class DomainPolicy
 {
+    public function __construct(private readonly DomainService $domainService)
+    {
+    }
+
+    public function isTheOwner(User $user, Domain $domain): bool
+    {
+        return $user->id === $domain->user_id && ! $this->domainService->isInExcludedDomains($domain->name);
+    }
+
     /**
      * Determine whether the user can view any models.
      */
@@ -45,7 +54,12 @@ class DomainPolicy
      */
     public function delete(User $user, Domain $domain): bool
     {
-        return $user->id === $domain->user_id && !DomainService::isInExcludedDomains($domain->name);
+        return $this->isTheOwner($user, $domain);
+    }
+
+    public function verify(User $user, Domain $domain): bool
+    {
+        return $this->isTheOwner($user, $domain);
     }
 
     /**

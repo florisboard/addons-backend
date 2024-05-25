@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Domain;
 
+use App\Http\Controllers\Controller;
 use App\Http\Resources\DomainResource;
 use App\Models\Domain;
 use App\Services\DomainService;
@@ -17,7 +18,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class DomainController extends Controller
 {
-    public function __construct()
+    public function __construct(private readonly DomainService $domainService)
     {
         $this->authorizeResource(Domain::class);
     }
@@ -47,7 +48,7 @@ class DomainController extends Controller
     /**
      * @throws RandomException
      */
-    public function store(Request $request): JsonResponse
+    public function store(Request $request, DomainService $domainService): JsonResponse
     {
         /** @var array<string,string> $validated */
         $validated = $request->validate([
@@ -57,8 +58,8 @@ class DomainController extends Controller
                 'min:3',
                 'max:255',
                 Rule::unique(Domain::class),
-                function (string $attribute, mixed $value, \Closure $fail) {
-                    if (DomainService::isInExcludedDomains($value)) {
+                function (string $attribute, mixed $value, \Closure $fail) use ($domainService) {
+                    if ($domainService->isInExcludedDomains($value)) {
                         $fail('You cannot use this domain name.');
                     }
                 },
@@ -67,7 +68,7 @@ class DomainController extends Controller
 
         $domain = Auth::user()->domains()->create([
             ...$validated,
-            'verification_code' => DomainService::generateVerificationCode(),
+            'verification_code' => $this->domainService->generateVerificationCode(),
         ]);
 
         return new JsonResponse(new DomainResource($domain), 201);
