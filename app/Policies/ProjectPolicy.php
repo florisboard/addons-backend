@@ -31,7 +31,7 @@ class ProjectPolicy
      */
     public function create(User $user): bool
     {
-        return $user->isEmailVerified();
+        return true;
     }
 
     /**

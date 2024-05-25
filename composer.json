@@ -23,7 +23,6 @@
         "laravel/tinker": "^2.9",
         "league/flysystem-aws-s3-v3": "^3.0",
         "opcodesio/log-viewer": "^3.9",
-        "rawilk/filament-password-input": "^2.0",
         "spatie/eloquent-sortable": "^4.3",
         "spatie/laravel-medialibrary": "^11.4",
         "spatie/laravel-query-builder": "^6.0",

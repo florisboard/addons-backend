@@ -85,7 +85,7 @@ describe('Update', function () {
 });
 
 describe('Create', function () {
-    test('verified users can create a project', function () {
+    test('users can create a project', function () {
         $users = User::factory(4)->create();
         Sanctum::actingAs($users[0]);
         $data = [
@@ -108,12 +108,5 @@ describe('Create', function () {
 
         $this->postJson(route('projects.store'), $data)
             ->assertJsonValidationErrorFor('maintainers.0');
-    });
-
-    test('unverified users cannot create a project', function () {
-        Sanctum::actingAs(User::factory()->unverified()->create());
-
-        $this->postJson(route('projects.store'))
-            ->assertForbidden();
     });
 });

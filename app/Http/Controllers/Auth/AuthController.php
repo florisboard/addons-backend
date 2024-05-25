@@ -3,21 +3,16 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
-use App\Http\Resources\User\AuthResource;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
-class AuthenticatedSessionController extends Controller
+class AuthController extends Controller
 {
-    public function store(LoginRequest $request): AuthResource
+    public function login(): RedirectResponse
     {
-        $request->authenticate();
-
-        $request->session()->regenerate();
-
-        return new AuthResource(Auth::user());
+        return response()->redirectToIntended(config('app.frontend_url').'/login');
     }
 
     public function destroy(Request $request): Response

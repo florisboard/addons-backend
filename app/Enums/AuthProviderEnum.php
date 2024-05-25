@@ -7,10 +7,11 @@ use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Support\Str;
 
-enum ProjectTypeEnum: string implements HasColor, HasLabel
+enum AuthProviderEnum: string implements HasColor, HasLabel
 {
     use EnumConcern;
-    case Extension = 'EXTENSION';
+
+    case Github = 'GITHUB';
 
     public function getLabel(): string
     {

@@ -1,7 +1,5 @@
 <?php
 
-use App\Settings\AboutSettings;
-
 return [
 
     /*
@@ -9,7 +7,7 @@ return [
      * put them (manually) here.
      */
     'settings' => [
-        AboutSettings::class,
+        //
     ],
 
     /*

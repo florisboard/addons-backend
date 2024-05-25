@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\AuthProviderEnum;
 use App\Filament\Custom\CustomResource;
 use App\Filament\Forms\Layouts\BasicForm;
 use App\Filament\Resources\UserResource\Pages;
@@ -13,8 +14,6 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Support\Facades\Hash;
-use Rawilk\FilamentPasswordInput\Password;
 
 class UserResource extends CustomResource
 {
@@ -25,19 +24,16 @@ class UserResource extends CustomResource
     public static function form(Form $form): Form
     {
         return BasicForm::make($form, [
-            Forms\Components\TextInput::make('username')->minLength(3)->maxLength(33)->unique(ignoreRecord: true)->required()->rules([new Username]),
-            Forms\Components\TextInput::make('email')->email()->required()->maxLength(255),
-            Forms\Components\DateTimePicker::make('email_verified_at'),
+            Forms\Components\TextInput::make('username')
+                ->minLength(3)
+                ->maxLength(33)->unique(ignoreRecord: true)
+                ->required()
+                ->rules([new Username]),
+            Forms\Components\Select::make('provider')
+                ->options(AuthProviderEnum::class)
+                ->searchable()
+                ->required(),
             Forms\Components\DateTimePicker::make('username_changed_at'),
-            Password::make('password')
-                ->copyable()
-                ->regeneratePassword()
-                ->dehydrateStateUsing(fn ($state) => Hash::make($state))
-                ->dehydrated(fn ($state) => filled($state))
-                ->required(fn (string $context): bool => $context === 'create'),
-            Password::make('password_confirmation')
-                ->dehydrated(false)
-                ->requiredWith('password'),
         ]);
     }
 
@@ -46,9 +42,8 @@ class UserResource extends CustomResource
         return $table
             ->columns([
                 Tables\Columns\IconColumn::make('is_admin')->boolean(),
+                Tables\Columns\TextColumn::make('provider')->badge(),
                 Tables\Columns\TextColumn::make('username')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('email')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('email_verified_at')->toggleable()->dateTime(),
                 Tables\Columns\TextColumn::make('username_changed_at')->toggleable()->dateTime(),
                 ...TimestampsColumn::make(),
             ])

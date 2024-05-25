@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\AuthProviderEnum;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasName;
 use Filament\Panel;
@@ -29,6 +30,7 @@ class User extends Authenticatable implements FilamentUser, HasName
     protected $hidden = [
         'password',
         'remember_token',
+        'provider_id',
     ];
 
     /**
@@ -37,9 +39,9 @@ class User extends Authenticatable implements FilamentUser, HasName
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
+        'provider' => AuthProviderEnum::class,
         'is_admin' => 'boolean',
+        'password' => 'hashed',
         'username_changed_at' => 'datetime',
     ];
 
@@ -51,11 +53,6 @@ class User extends Authenticatable implements FilamentUser, HasName
     public function isAdministrator(): bool
     {
         return $this->is_admin;
-    }
-
-    public function isEmailVerified(): bool
-    {
-        return (bool) $this->email_verified_at;
     }
 
     public function canAccessPanel(Panel $panel): bool
