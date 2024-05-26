@@ -75,6 +75,7 @@ describe('Verify', function () {
         $this->postJson(route('domains.verify.store', $domain))
             ->assertOk();
 
+        $domain->refresh();
         expect($domain->verified_at)->not->toBeNull();
     });
 

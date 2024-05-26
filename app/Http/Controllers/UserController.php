@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -68,8 +69,13 @@ class UserController extends Controller
         return new AuthResource(Auth::user());
     }
 
-    public function destroy(): JsonResponse
+    public function destroy(Request $request): JsonResponse
     {
+        $request->validate([
+            /** @var string */
+            'username' => ['required', 'string', 'min:3', 'max:255', Rule::in(Auth::user()?->username)]
+        ]);
+
         Auth::guard('web')->logout();
         Auth::user()->delete();
 

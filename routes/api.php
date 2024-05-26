@@ -16,7 +16,7 @@ use App\Http\Controllers\UserController;
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('users/me', [UserController::class, 'me'])->name('users.me');
     Route::put('users/me', [UserController::class, 'update'])->name('users.me.update');
-    Route::post('users/me/delete', [UserController::class, 'destroy'])->name('users.me.destroy')->middleware('throttle:deleteAccount');
+    Route::post('users/me/delete', [UserController::class, 'destroy'])->name('users.me.destroy');
     Route::post('uploads/process', FileUploadController::class)->name('uploads.process')->middleware('throttle:fileUpload');
 
     Route::apiResource('domains', DomainController::class)->only(['index', 'store', 'destroy']);

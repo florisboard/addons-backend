@@ -28,10 +28,6 @@ class RouteServiceProvider extends ServiceProvider
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
 
-        RateLimiter::for('deleteAccount', function (Request $request) {
-            return Limit::perDay(5)->by($request->user()->id);
-        });
-
         RateLimiter::for('verifyDomain', function (Request $request) {
             return Limit::perMinute(8)->by($request->user()->id);
         });
