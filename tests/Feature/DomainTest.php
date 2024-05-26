@@ -27,6 +27,14 @@ describe('Create', function () {
         $this->postJson(route('domains.store'), $data)
             ->assertCreated();
     });
+
+    test('users cannot create a domain when another unverified domain exists', function () {
+        Sanctum::actingAs(User::factory()->has(Domain::factory()->state(['verified_at' => null]))->create());
+        $data = Domain::factory()->make()->toArray();
+
+        $this->postJson(route('domains.store'), $data)
+            ->assertForbidden();
+    });
 });
 
 describe('Delete', function () {

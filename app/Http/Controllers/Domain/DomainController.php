@@ -30,7 +30,7 @@ class DomainController extends Controller
     {
         $request->validate([
             'filter' => ['nullable', 'array'],
-            'filter.title' => ['nullable', 'string'],
+            'filter.name' => ['nullable', 'string'],
             'page' => ['nullable', 'integer'],
             'sort' => ['nullable', 'string', Rule::in('name', '-name')],
         ]);
@@ -40,7 +40,7 @@ class DomainController extends Controller
                 AllowedFilter::partial('name'),
             ])
             ->allowedSorts(['name'])
-            ->fastPaginate(20);
+            ->fastPaginate(50);
 
         return DomainResource::collection($domains);
     }

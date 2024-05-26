@@ -20,7 +20,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('uploads/process', FileUploadController::class)->name('uploads.process')->middleware('throttle:fileUpload');
 
     Route::apiResource('domains', DomainController::class)->only(['index', 'store', 'destroy']);
-    Route::apiResource('domains.verify', DomainVerifyController::class)->only(['store']);
+    Route::apiResource('domains.verify', DomainVerifyController::class)->only(['store'])->middleware('throttle:verifyDomain');
 });
 
 Route::get('home', HomeController::class)->name('home');

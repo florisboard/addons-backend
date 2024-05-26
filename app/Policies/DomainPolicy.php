@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Domain;
 use App\Models\User;
 use App\Services\DomainService;
+use Illuminate\Auth\Access\Response;
 
 class DomainPolicy
 {
@@ -36,9 +37,9 @@ class DomainPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(User $user): Response
     {
-        return true;
+        return $user->domains()->whereNull('verified_at')->exists() ? Response::deny('You have unverified domain, verify it or delete it to create another domain.') : Response::allow();
     }
 
     /**

@@ -32,6 +32,10 @@ class RouteServiceProvider extends ServiceProvider
             return Limit::perDay(5)->by($request->user()->id);
         });
 
+        RateLimiter::for('verifyDomain', function (Request $request) {
+            return Limit::perMinute(8)->by($request->user()->id);
+        });
+
         RateLimiter::for('fileUpload', function (Request $request) {
             return Limit::perHour(20)->by($request->user()->id);
         });
