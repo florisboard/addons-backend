@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CollectionController;
+use App\Http\Controllers\Domain\DomainController;
+use App\Http\Controllers\Domain\DomainVerifyController;
 use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Project\ImageController;
@@ -16,6 +18,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('users/me', [UserController::class, 'update'])->name('users.me.update');
     Route::post('users/me/delete', [UserController::class, 'destroy'])->name('users.me.destroy')->middleware('throttle:deleteAccount');
     Route::post('uploads/process', FileUploadController::class)->name('uploads.process')->middleware('throttle:fileUpload');
+
+    Route::apiResource('domains', DomainController::class)->only(['index', 'store', 'destroy']);
+    Route::apiResource('domains.verify', DomainVerifyController::class)->only(['store'])->middleware('throttle:verifyDomain');
 });
 
 Route::get('home', HomeController::class)->name('home');

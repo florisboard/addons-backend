@@ -12,13 +12,12 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class UserController extends Controller
 {
-    public function __construct(private readonly UserService $userService)
+    public function __construct()
     {
     }
 
@@ -52,22 +51,19 @@ class UserController extends Controller
         return new UserResource($user);
     }
 
-    /**
-     * @throws ValidationException
-     */
     public function update(Request $request): AuthResource
     {
         $request->validate([
             'username' => ['required', 'string', 'min:3', 'max:33', new Username],
         ]);
 
-        if ($request->input('username') !== Auth::user()->username) {
-            $this->userService->ensureUserCanUpdateUsername(Auth::user());
-            Auth::user()->update([
-                'username' => $request->input('username'),
-                'username_changed_at' => now(),
-            ]);
-        }
+        //        if ($request->input('username') !== Auth::user()->username) {
+        //            $this->userService->ensureUserCanUpdateUsername(Auth::user());
+        //            Auth::user()->update([
+        //                'username' => $request->input('username'),
+        //                'username_changed_at' => now(),
+        //            ]);
+        //        }
 
         return new AuthResource(Auth::user());
     }

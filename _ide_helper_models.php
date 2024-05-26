@@ -81,6 +81,35 @@ namespace App\Models{
  *
  * @property int $id
  * @property int $user_id
+ * @property string $name
+ * @property string $verification_code
+ * @property \Illuminate\Support\Carbon|null $verified_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\User $user
+ * @method static \Database\Factories\DomainFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|Domain newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Domain newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Domain query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Domain whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Domain whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Domain whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Domain whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Domain whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Domain whereVerificationCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Domain whereVerifiedAt($value)
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperDomain {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
+ * @property int $user_id
  * @property int $project_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -346,11 +375,14 @@ namespace App\Models{
  * @property \App\Enums\AuthProviderEnum $provider
  * @property \Illuminate\Support\Carbon|null $username_changed_at
  * @property bool $is_admin
+ * @property mixed $password
  * @property string|null $remember_token
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Collection> $collections
  * @property-read int|null $collections_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Domain> $domains
+ * @property-read int|null $domains_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Project> $maintaining
  * @property-read int|null $maintaining_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
@@ -370,6 +402,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereIsAdmin($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereProvider($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereProviderId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)

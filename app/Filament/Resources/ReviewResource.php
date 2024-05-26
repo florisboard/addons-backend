@@ -19,6 +19,8 @@ class ReviewResource extends CustomResource
 
     protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-bottom-center';
 
+    protected static ?string $navigationGroup = 'Projects';
+
     public static function form(Form $form): Form
     {
         $basicSection = BasicSection::make([

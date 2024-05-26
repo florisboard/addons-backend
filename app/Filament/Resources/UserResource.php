@@ -21,6 +21,8 @@ class UserResource extends CustomResource
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
+    protected static ?string $navigationGroup = 'Users';
+
     public static function form(Form $form): Form
     {
         return BasicForm::make($form, [
@@ -70,6 +72,7 @@ class UserResource extends CustomResource
             RelationManagers\CollectionsRelationManager::class,
             RelationManagers\ReleasesRelationManager::class,
             RelationManagers\ReviewsRelationManager::class,
+            RelationManagers\DomainsRelationManager::class,
         ];
     }
 

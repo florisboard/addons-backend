@@ -37,7 +37,6 @@ services:
       - mysql
       - redis
       - migrate
-      - mailpit
   scheduler:
     build:
       context: .
@@ -111,13 +110,6 @@ services:
     restart: no
     depends_on:
       - mysql
-  mailpit:
-    image: 'axllent/mailpit:latest'
-    ports:
-      - "1025:1025"
-      - "8025:8025"
-    networks:
-      - addons
 
 volumes:
   storage:
