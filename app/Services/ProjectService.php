@@ -10,6 +10,7 @@ use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class ProjectService
 {
@@ -103,5 +104,23 @@ class ProjectService
 
             return ProjectResource::collection($projects);
         });
+    }
+
+    public function extractPackageName(string $packageName): array
+    {
+        $segments = explode('.', $packageName);
+
+        $domain = collect($segments)->slice(0, -1)->reverse()->implode('.');
+
+        return ['domain' => $domain, 'name' => end($segments)];
+    }
+
+    public function convertToPackageName(string $name, string $domain): string
+    {
+        return Str::of($domain)
+            ->explode('.')
+            ->reverse()
+            ->push($name)
+            ->implode('.');
     }
 }

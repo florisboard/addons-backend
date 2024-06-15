@@ -32,10 +32,7 @@ class ProjectFactory extends Factory
             'description' => fake()->realText(rand(200, 600)),
             'short_description' => fake()->realText(rand(50, 200)),
             'links' => [
-                'home_page' => fake()->boolean() ? fake()->url() : null,
-                'support_email' => fake()->boolean() ? fake()->email() : null,
-                'support_site' => fake()->boolean() ? fake()->url() : null,
-                'donate_site' => fake()->boolean() ? fake()->url() : null,
+                'source_code' => 'https://github.com/'.fake()->slug(),
             ],
             'is_recommended' => fake()->boolean(30),
             'is_active' => app()->runningUnitTests() || fake()->boolean(90),

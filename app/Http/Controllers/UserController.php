@@ -73,7 +73,7 @@ class UserController extends Controller
     {
         $request->validate([
             /** @var string */
-            'username' => ['required', 'string', 'min:3', 'max:255', Rule::in(Auth::user()?->username)]
+            'username' => ['required', 'string', 'min:3', 'max:255', Rule::in(Auth::user()?->username)],
         ]);
 
         Auth::guard('web')->logout();

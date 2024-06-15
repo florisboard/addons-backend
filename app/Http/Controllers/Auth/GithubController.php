@@ -34,6 +34,6 @@ class GithubController extends Controller
 
         Auth::login($user, true);
 
-        return response()->redirectToIntended(config('app.frontend_url').'?'.http_build_query(['authSuccessful' => true]));
+        return response()->redirectToIntended(sprintf('%s/users/%s', config('app.frontend_url'), Auth::user()->username));
     }
 }

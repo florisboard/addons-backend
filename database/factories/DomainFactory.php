@@ -25,4 +25,14 @@ class DomainFactory extends Factory
             'user_id' => User::factory(),
         ];
     }
+
+    /**
+     * Indicate that the model's verified_at address should be now.
+     */
+    public function verified(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'verified_at' => now(),
+        ]);
+    }
 }

@@ -22,7 +22,7 @@ describe('Destroy', function () {
         /* @var User $user */
         global $user;
         $this->postJson(route('users.me.destroy'), [
-            'username' => $user->username
+            'username' => $user->username,
         ])
             ->assertOk();
 
@@ -31,7 +31,7 @@ describe('Destroy', function () {
 
     test('user cannot delete his account with invalid username', function () {
         $this->postJson(route('users.me.destroy'), [
-            'username' => 'random-username'
+            'username' => 'random-username',
         ])->assertUnprocessable();
     });
 });

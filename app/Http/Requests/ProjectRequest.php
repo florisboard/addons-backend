@@ -4,19 +4,16 @@ namespace App\Http\Requests;
 
 use App\Enums\ProjectTypeEnum;
 use App\Models\Category;
+use App\Models\Domain;
 use App\Models\Project;
 use App\Models\User;
+use App\Services\ProjectService;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class ProjectRequest extends FormRequest
 {
-    /**
-     * @var string[]
-     */
-    public static array $links = ['home_page', 'support_email', 'support_site', 'donate_site'];
-
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -36,30 +33,43 @@ class ProjectRequest extends FormRequest
         /** @var Project|null $project */
         $project = $this->route('project');
 
-        return [
+        $baseRules = [
             'category_id' => ['bail', 'required', 'numeric', Rule::exists(Category::class, 'id')],
             'title' => ['required', 'string', 'min:3', 'max:255'],
-            'package_name' => ['bail', 'required', 'string', 'min:3', 'max:255', 'regex:/^[a-z][a-z0-9_]*(\.[a-z0-9][a-z0-9_]*)*$/', Rule::unique('projects')->ignore($project?->id)],
             'type' => ['required', Rule::enum(ProjectTypeEnum::class)],
             'short_description' => ['required', 'string', 'min:3', 'max:255'],
             'description' => ['required', 'string', 'min:3', 'max:1024'],
-            'home_page' => ['nullable', 'string', 'url', 'max:255'],
-            'support_email' => ['nullable', 'string', 'min:3', 'max:255', 'email'],
-            'support_site' => ['nullable', 'string', 'max:255', 'url'],
-            'donate_site' => ['nullable', 'string', 'max:255', 'url'],
+            'links' => ['required', 'array:source_code'],
+            'links.source_code' => ['required', 'string', 'url', 'max:255', 'starts_with:https://github.com'],
             /* @var int[] */
             'maintainers' => ['bail', 'nullable', 'array', 'between:0,5'],
             'maintainers.*' => ['bail', 'required', 'numeric', Rule::notIn([Auth::id()]), Rule::exists(User::class, 'id')],
         ];
-    }
 
-    protected function passedValidation(): void
-    {
-        $this->merge([
-            'links' => collect(static::$links)->mapWithKeys(function ($link) {
-                return [$link => $this->input($link)];
-            })->toArray(),
-        ]);
+        if (! $project) {
+            $baseRules['package_name'] = [
+                'bail',
+                'required',
+                'string',
+                'min:3',
+                'max:255',
+                'not_regex:/^defaults\./',
+                'regex:/^[a-z][a-z0-9_]*(\.[a-z0-9][a-z0-9_]*)*$/',
+                Rule::unique('projects'),
+                function ($attribute, $value, $fail) {
+                    $result = app(ProjectService::class)->extractPackageName($this->input('package_name'));
+                    $exists = Domain::where('user_id', Auth::id())
+                        ->whereNotNull('verified_at')
+                        ->where('name', $result['domain'])
+                        ->exists();
 
+                    if (! $exists) {
+                        $fail("You don't own or verified the {$attribute} domain.");
+                    }
+                },
+            ];
+        }
+
+        return $baseRules;
     }
 }

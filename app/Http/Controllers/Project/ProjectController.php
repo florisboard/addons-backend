@@ -68,7 +68,7 @@ class ProjectController extends Controller
     public function store(ProjectRequest $request): JsonResponse
     {
         $project = Project::create([
-            ...$request->safe()->except(['maintainers', ...ProjectRequest::$links]),
+            ...$request->safe()->except(['maintainers']),
             'user_id' => Auth::id(),
         ]);
 
@@ -115,7 +115,7 @@ class ProjectController extends Controller
 
     public function update(ProjectRequest $request, Project $project): ProjectFullResource
     {
-        $project->update($request->safe()->except(['maintainers', ...ProjectRequest::$links]));
+        $project->update($request->safe()->except(['maintainers']));
 
         $project->maintainers()->sync($request->input('maintainers'));
 

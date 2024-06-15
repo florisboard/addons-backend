@@ -1,8 +1,10 @@
 <?php
 
 use App\Models\Category;
+use App\Models\Domain;
 use App\Models\Project;
 use App\Models\User;
+use App\Services\ProjectService;
 use Laravel\Sanctum\Sanctum;
 
 uses()->group('Project');
@@ -87,9 +89,13 @@ describe('Update', function () {
 describe('Create', function () {
     test('users can create a project', function () {
         $users = User::factory(4)->create();
-        Sanctum::actingAs($users[0]);
+        Sanctum::actingAs($currentUser = $users[0]);
+        $domain = Domain::factory()->for($currentUser)->verified()->create();
+        $packageName = app(ProjectService::class)->convertToPackageName('test', $domain->name);
+
         $data = [
             ...Project::factory()->make()->toArray(),
+            'package_name' => 'defaults.test.hello',
             'category_id' => Category::first()->id,
             'maintainers' => $users->splice(1)->pluck('id')->flatten()->toArray(),
         ];
