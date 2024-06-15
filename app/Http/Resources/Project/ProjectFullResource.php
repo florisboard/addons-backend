@@ -59,9 +59,9 @@ class ProjectFullResource extends JsonResource
             'category' => new CategoryResource($this->category),
             'maintainers' => UserResource::collection($this->maintainers),
             /* @var int */
-            'reviews_avg_score' => round((int)$this->reviews_avg_score),
+            'reviews_avg_score' => round((int) $this->reviews_avg_score),
             /* @var int */
-            'releases_sum_downloads_count' => (int)$this->releases_sum_downloads_count,
+            'releases_sum_downloads_count' => (int) $this->releases_sum_downloads_count,
             /* @var ReleaseFullResource|null */
             'latest_release' => new ReleaseFullResource($this->latestRelease),
             'reviews' => ReviewResource::collection($this->reviews),

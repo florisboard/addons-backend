@@ -37,5 +37,5 @@ Route::apiResource('projects.releases', ReleaseController::class)->only('store')
 Route::apiResource('releases', ReleaseController::class)->only(['index', 'update']);
 Route::get('releases/{release}/download', [ReleaseController::class, 'download'])->name('releases.download');
 
-Route::apiResource('projects.reviews', ReviewController::class)->only('store');
+Route::apiResource('projects.reviews', ReviewController::class)->shallow()->only('store');
 Route::apiResource('reviews', ReviewController::class)->except('store');
