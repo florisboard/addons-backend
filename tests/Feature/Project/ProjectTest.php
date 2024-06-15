@@ -95,7 +95,7 @@ describe('Create', function () {
 
         $data = [
             ...Project::factory()->make()->toArray(),
-            'package_name' => 'defaults.test.hello',
+            'package_name' => $packageName,
             'category_id' => Category::first()->id,
             'maintainers' => $users->splice(1)->pluck('id')->flatten()->toArray(),
         ];

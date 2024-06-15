@@ -15,6 +15,11 @@ use Illuminate\Validation\Rule;
 class ProjectRequest extends FormRequest
 {
     /**
+     * @var string[]
+     */
+    public static array $links = ['source_Code'];
+
+    /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
@@ -46,7 +51,7 @@ class ProjectRequest extends FormRequest
             'maintainers.*' => ['bail', 'required', 'numeric', Rule::notIn([Auth::id()]), Rule::exists(User::class, 'id')],
         ];
 
-        if (! $project) {
+        if (!$project) {
             $baseRules['package_name'] = [
                 'bail',
                 'required',
@@ -63,7 +68,7 @@ class ProjectRequest extends FormRequest
                         ->where('name', $result['domain'])
                         ->exists();
 
-                    if (! $exists) {
+                    if (!$exists) {
                         $fail("You don't own or verified the {$attribute} domain.");
                     }
                 },

@@ -43,7 +43,9 @@ class ProjectFullResource extends JsonResource
             /* @var ProjectTypeEnum */
             'type' => $this->type,
             'description' => $this->description,
-            'source_code' => data_get($this->links, 'source_code'),
+            'links' => [
+                'source_code' => data_get($this->links, 'source_code'),
+            ],
             'is_recommended' => $this->is_recommended,
             'is_active' => $this->is_active,
             /* @var string */
@@ -57,9 +59,9 @@ class ProjectFullResource extends JsonResource
             'category' => new CategoryResource($this->category),
             'maintainers' => UserResource::collection($this->maintainers),
             /* @var int */
-            'reviews_avg_score' => round((int) $this->reviews_avg_score),
+            'reviews_avg_score' => round((int)$this->reviews_avg_score),
             /* @var int */
-            'releases_sum_downloads_count' => (int) $this->releases_sum_downloads_count,
+            'releases_sum_downloads_count' => (int)$this->releases_sum_downloads_count,
             /* @var ReleaseFullResource|null */
             'latest_release' => new ReleaseFullResource($this->latestRelease),
             'reviews' => ReviewResource::collection($this->reviews),
