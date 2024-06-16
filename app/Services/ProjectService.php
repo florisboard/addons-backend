@@ -106,6 +106,9 @@ class ProjectService
         });
     }
 
+    /**
+     * @return array{domain: string, name: string}
+     */
     public function extractPackageName(string $packageName): array
     {
         $segments = explode('.', $packageName);

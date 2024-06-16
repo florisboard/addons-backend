@@ -11,9 +11,11 @@ class FileUpload implements ValidationRule
 {
     /**
      * @param  string[]  $validMimeTypes
+     * @param  string[]  $validExtensions
      */
     public function __construct(
-        private readonly array $validMimeTypes = []
+        private readonly array $validMimeTypes = [],
+        private readonly array $validExtensions = [],
     ) {
         //
     }
@@ -29,11 +31,15 @@ class FileUpload implements ValidationRule
             $fail('The path is not correct.');
         }
 
+        if (! empty($this->validExtensions) && ! in_array(explode('.', $value)[1], $this->validExtensions, true)) {
+            $fail('The file has an invalid extension.');
+        }
+
         if (! Storage::exists($value)) {
             $fail('The file does not exist.');
         }
 
-        if (count($this->validMimeTypes) > 0 && ! in_array(Storage::mimeType($value), $this->validMimeTypes, true)) {
+        if (! empty($this->validMimeTypes) && ! in_array(Storage::mimeType($value), $this->validMimeTypes, true)) {
             $fail('The file is not a valid mime type.');
         }
     }

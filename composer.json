@@ -27,7 +27,8 @@
         "spatie/laravel-medialibrary": "^11.6",
         "spatie/laravel-query-builder": "^6.0",
         "spatie/laravel-settings": "^3.3",
-        "symfony/filesystem": "^7.1"
+        "symfony/filesystem": "^7.1",
+        "ext-zip": "*"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.0",

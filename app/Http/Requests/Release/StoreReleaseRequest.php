@@ -28,7 +28,7 @@ class StoreReleaseRequest extends FormRequest
         return [
             'description' => ['required', 'string', 'min:3', 'max:1024'],
             'version_name' => ['required', 'string', 'regex:'.static::$versionNameRegex],
-            'file' => ['bail', 'required', new FileUpload()],
+            'file' => ['bail', 'required', new FileUpload(validMimeTypes: ['application/zip'], validExtensions: ['flex'])],
         ];
     }
 
