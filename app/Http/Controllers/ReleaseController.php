@@ -6,8 +6,6 @@ use App\Http\Requests\Release\StoreReleaseRequest;
 use App\Http\Resources\Release\ReleaseFullResource;
 use App\Models\Project;
 use App\Models\Release;
-use App\Services\FilesystemService;
-use App\Services\ReleaseService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -19,7 +17,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ReleaseController extends Controller
 {
-    public function __construct(private readonly FilesystemService $filesystemService, private readonly ReleaseService $releaseService)
+    public function __construct()
     {
         $this->authorizeResource(Release::class);
     }
@@ -57,36 +55,12 @@ class ReleaseController extends Controller
 
         /** @var Release $release */
         $release = $project->releases()->create([
-            ...$request->safe()->except('file'),
+            ...$request->safe()->except('file_path'),
             'user_id' => Auth::id(),
             'version_code' => $versionCode,
         ]);
 
-        $filePath = $request->input('file');
-        $fileExtensionName = pathinfo($filePath, PATHINFO_EXTENSION);
-
-        $tempDirPath = $this->filesystemService->createTempDirectory('projects', $project->id);
-        try {
-            file_put_contents("$tempDirPath/file.$fileExtensionName", file_get_contents($this->filesystemService->getStorageUrl($filePath)));
-            $this->filesystemService->extractZipFile($tempDirPath, "file.$fileExtensionName");
-
-            $result = $this->releaseService->parseExtensionJson($tempDirPath);
-            $result['$'] = $project->package_name;
-            $result['meta']['version'] = $request->input('version_name');
-            $this->releaseService->replaceExtensionJson($tempDirPath, $result);
-
-            exec("cd $tempDirPath/extracted && zip -r ../repacked.$fileExtensionName ./*");
-
-            $release
-                ->addMedia(file_get_contents("$tempDirPath/repacked.$fileExtensionName"))
-                ->toMediaCollection('file');
-
-        } catch (\RuntimeException $e) {
-            $this->filesystemService->deleteDirectory($tempDirPath);
-            throw $e;
-        }
-
-        $this->filesystemService->deleteDirectory($tempDirPath);
+        $release->addMediaFromDisk($request->input('file_path'))->toMediaCollection('file');
 
         return new JsonResponse(new ReleaseFullResource($release), 201);
     }

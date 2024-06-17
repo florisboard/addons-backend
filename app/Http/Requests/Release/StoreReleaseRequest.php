@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Release;
 
 use App\Rules\FileUpload;
+use App\Validations\ValidateReleaseFile;
 use App\Validations\ValidateReleaseVersionName;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -28,17 +29,18 @@ class StoreReleaseRequest extends FormRequest
         return [
             'description' => ['required', 'string', 'min:3', 'max:1024'],
             'version_name' => ['required', 'string', 'regex:'.static::$versionNameRegex],
-            'file' => ['bail', 'required', new FileUpload(validMimeTypes: ['application/zip'], validExtensions: ['flex'])],
+            'file_path' => ['bail', 'required', new FileUpload(validExtensions: ['flex'])],
         ];
     }
 
     /**
-     * @return ValidateReleaseVersionName[]
+     * @return mixed[]
      */
     public function after(): array
     {
         return [
             new ValidateReleaseVersionName,
+            new ValidateReleaseFile,
         ];
     }
 }

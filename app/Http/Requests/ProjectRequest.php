@@ -15,11 +15,6 @@ use Illuminate\Validation\Rule;
 class ProjectRequest extends FormRequest
 {
     /**
-     * @var string[]
-     */
-    public static array $links = ['source_Code'];
-
-    /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
