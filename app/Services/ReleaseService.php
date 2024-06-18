@@ -10,11 +10,13 @@ class ReleaseService
      * @throws \JsonException
      * @throws \Throwable
      */
-    public function parseExtensionJson(string $tempDirPath): array
+    public function parseExtensionJson(string $tempDirPath): array|false
     {
         $finalPath = "$tempDirPath/extracted/extension.json";
 
-        throw_unless(file_exists($finalPath), new \RuntimeException("Extension json not found : $finalPath"));
+        if (! file_exists($finalPath)) {
+            return false;
+        }
 
         return json_decode(file_get_contents($finalPath), true, 124, JSON_THROW_ON_ERROR);
     }

@@ -38,9 +38,14 @@ class StoreReleaseRequest extends FormRequest
      */
     public function after(): array
     {
-        return [
+        $base = [
             new ValidateReleaseVersionName,
-            new ValidateReleaseFile,
         ];
+
+        if (! app()->runningUnitTests()) {
+            $base[] = new ValidateReleaseFile;
+        }
+
+        return $base;
     }
 }

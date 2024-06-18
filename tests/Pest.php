@@ -46,12 +46,19 @@ expect()->extend('toBeOne', function () {
 
 function createCustomUploadedFile(UploadedFile $uploadedFile): bool|string
 {
-    Storage::fake();
+    Storage::fake('local');
+    config()->set('filesystems.disks.local', [
+        'driver' => 'local',
+        'root' => Storage::disk('local')->path(''),
+    ]);
 
     Str::createRandomStringsUsing(static fn (): string => 'random');
-    $path = App::make(FileUploadController::class)->generatePath();
+    $path = App::make(FileUploadController::class)->generatePath($uploadedFile->getClientOriginalExtension());
 
-    return Storage::putFile($path, $uploadedFile);
+    $exploded = explode('/', $path);
+    $basePath = implode('/', array_slice($exploded, 0, -1));
+
+    return Storage::putFileAs($basePath, $uploadedFile, end($exploded));
 }
 
 function createUploadedImage($fileName = 'test.png'): bool|string

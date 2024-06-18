@@ -47,7 +47,7 @@ describe('Create', function () {
         $data = [
             ...Release::factory()->make()->toArray(),
             'version_name' => '2.0.0',
-            'file' => createUploadedFile('file.flex'),
+            'file_path' => createUploadedFile('file.flex'),
         ];
 
         $this->postJson(route('projects.releases.store', [$project]), $data)

@@ -5,6 +5,7 @@ namespace App\Validations;
 use App\Models\Project;
 use App\Services\FilesystemService;
 use App\Services\ReleaseService;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Validator;
 
 class ValidateReleaseFile
@@ -31,10 +32,17 @@ class ValidateReleaseFile
         $fileExtensionName = pathinfo($filePath, PATHINFO_EXTENSION);
 
         $tempDirPath = $filesystemService->createTempDirectory('projects', $project->id);
-        file_put_contents("$tempDirPath/file.$fileExtensionName", file_get_contents($filesystemService->getStorageUrl($filePath)));
+        file_put_contents("$tempDirPath/file.$fileExtensionName", Storage::get("$tempDirPath/file.$fileExtensionName"));
         $filesystemService->extractZipFile($tempDirPath, "file.$fileExtensionName");
 
         $result = $releaseService->parseExtensionJson($tempDirPath);
+
+        if (! $result) {
+            $validator->errors()->add('file_path', "The uploaded file doesn't have extension.json");
+
+            return;
+        }
+
         $filesystemService->deleteDirectory($tempDirPath);
         $filePackageName = data_get($result, '$');
         $fileVersionName = data_get($result, 'meta.version');

@@ -20,6 +20,11 @@ class FileUploadController extends Controller
 
     public function generatePath(string $extension): string
     {
-        return sprintf('tmp/%s-%s.%s', now()->timestamp, Str::random(20), $extension);
+        return sprintf(
+            'tmp/%s-%s.%s',
+            now()->timestamp,
+            Str::random(20),
+            Str::remove('.', $extension)
+        );
     }
 }

@@ -17,14 +17,13 @@ beforeEach(function () {
 test('users can upload', function () {
     $file = UploadedFile::fake()->image('image.png')->size(5);
 
-    $path = App::make(FileUploadController::class)->generatePath();
-    $expectedFilePath = "$path/random.png";
+    $path = App::make(FileUploadController::class)->generatePath('png');
 
     $this->postJson(route('uploads.process'), ['file' => $file])
         ->assertOk()
-        ->assertSee($expectedFilePath);
+        ->assertSee($path);
 
-    Storage::assertExists($expectedFilePath);
+    Storage::assertExists($path);
 });
 
 test('users should send a file', function () {
