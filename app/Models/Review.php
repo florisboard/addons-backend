@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -35,11 +35,8 @@ class Review extends Model
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * @return MorphToMany<Report>
-     */
-    public function reports(): MorphToMany
+    public function reports(): MorphMany
     {
-        return $this->morphedByMany(Report::class, 'reportable');
+        return $this->morphMany(Report::class, 'reportable');
     }
 }

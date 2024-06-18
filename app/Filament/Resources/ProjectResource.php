@@ -85,6 +85,7 @@ class ProjectResource extends CustomResource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('id'),
                 Tables\Columns\IconColumn::make('is_recommended')->boolean(),
                 Tables\Columns\IconColumn::make('is_active')->boolean(),
                 Tables\Columns\TextColumn::make('type')->badge(),

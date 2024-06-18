@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Spatie\MediaLibrary\HasMedia;
@@ -122,11 +121,8 @@ class Project extends Model implements HasMedia
         return $this->reviews()->one()->where('user_id', Auth::id());
     }
 
-    /**
-     * @return MorphToMany<Report>
-     */
-    public function reports(): MorphToMany
+    public function reports(): MorphMany
     {
-        return $this->morphedByMany(Report::class, 'reportable');
+        return $this->morphMany(Report::class, 'reportable');
     }
 }

@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use App\Enums\ReportTypeEnum;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 /**
  * @mixin IdeHelperReport
@@ -19,18 +21,25 @@ class Report extends Model
     ];
 
     /**
-     * @return MorphToMany<Project>
+     * @return Attribute<bool,bool>
      */
-    public function projects(): MorphToMany
+    protected function isReviewed(): Attribute
     {
-        return $this->morphedByMany(Project::class, 'reportable');
+        return Attribute::make(
+            get: fn (null $value, array $attributes) => (bool) $attributes['reviewed_at'],
+        );
     }
 
     /**
-     * @return MorphToMany<Review>
+     * @return BelongsTo<User,Report>
      */
-    public function reviews(): MorphToMany
+    public function user(): BelongsTo
     {
-        return $this->morphedByMany(Review::class, 'reportable');
+        return $this->belongsTo(User::class);
+    }
+
+    public function reportable(): MorphTo
+    {
+        return $this->morphTo();
     }
 }

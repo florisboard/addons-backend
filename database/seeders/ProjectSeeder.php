@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Maintainer;
 use App\Models\Project;
 use App\Models\Release;
+use App\Models\Report;
 use App\Models\Review;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Sequence;
@@ -25,6 +26,10 @@ class ProjectSeeder extends Seeder
             $ownerId = $users->random()->id;
 
             $project = Project::factory()
+                ->has(
+                    Report::factory(3)
+                        ->sequence(fn () => ['user_id' => User::all()->random()->id])
+                )
                 ->create([
                     'category_id' => $categories->random()->id,
                     'user_id' => $ownerId,
@@ -56,6 +61,10 @@ class ProjectSeeder extends Seeder
 
             Review::factory(count($reviewUsers))
                 ->for($project)
+                ->has(
+                    Report::factory(3)
+                        ->sequence(fn () => ['user_id' => User::all()->random()->id])
+                )
                 ->forEachSequence(...$reviewUsers)
                 ->create();
         }

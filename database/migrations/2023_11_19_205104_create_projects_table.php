@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
@@ -21,7 +20,7 @@ return new class extends Migration
             $table->string('type')->index();
             $table->text('description');
             $table->string('short_description');
-            $table->json('links')->default(new Expression('(JSON_ARRAY())'));
+            $table->json('links');
             $table->boolean('is_recommended')->default(false);
             $table->boolean('is_active')->default(false);
             $table->softDeletes();
