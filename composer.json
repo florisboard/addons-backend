@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "*",
+        "ext-zip": "*",
         "dedoc/scramble": "^0.8.6",
         "emreyarligan/enum-concern": "^1.0",
         "filament/filament": "^3.2",
@@ -18,6 +19,7 @@
         "hammerstone/fast-paginate": "^1.1",
         "laravel/framework": "^10.48",
         "laravel/horizon": "^5.24",
+        "laravel/octane": "^2.4",
         "laravel/sanctum": "^3.3",
         "laravel/socialite": "^5.14",
         "laravel/tinker": "^2.9",
@@ -27,8 +29,7 @@
         "spatie/laravel-medialibrary": "^11.6",
         "spatie/laravel-query-builder": "^6.0",
         "spatie/laravel-settings": "^3.3",
-        "symfony/filesystem": "^7.1",
-        "ext-zip": "*"
+        "symfony/filesystem": "^7.1"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.0",

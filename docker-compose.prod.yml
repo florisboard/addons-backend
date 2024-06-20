@@ -1,121 +1,89 @@
-version: '3.8'
 services:
-  caddy:
-    build:
-      context: .
-      dockerfile: caddy.dockerfile
-    restart: unless-stopped
-    volumes:
-      - caddy-data:/data
-    networks:
-      - addons
-    depends_on:
-      - api
-    ports:
-      - "80:80"
-      - "443:443"
   api:
     build:
       context: .
       dockerfile: api.dockerfile
-      target: api
-    command: sh -c "./wait-for-it.sh mysql:3306 -t 30 && ./wait-for-it.sh redis:6379 -t 30 && php-fpm"
-    restart: unless-stopped
     networks:
-      - addons
+      - app
+    environment:
+      - CONTAINER_MODE=http
+      - WITH_HORIZON=true
+      - WITH_SCHEDULER=true
+    env_file:
+      - .env
     ports:
-      - "9000:9000"
-    volumes:
-      - ./app:/usr/src/app
-      - ./config:/usr/src/config
-      - ./database:/usr/src/database
-      - ./routes:/usr/src/routes
-      - ./storage:/usr/src/storage
-      - ./tests:/usr/src/tests
-      - ./.env:/usr/src/.env
+      - "8000:8000"
     depends_on:
-      - mysql
+      - pgsql
       - redis
-      - migrate
-  scheduler:
-    build:
-      context: .
-      dockerfile: api.dockerfile
-      target: scheduler
+  pgsql:
+    image: postgres:16
     restart: unless-stopped
-    networks:
-      - addons
     volumes:
-      - ./app:/usr/src/app
-      - ./config:/usr/src/config
-      - ./database:/usr/src/database
-      - ./routes:/usr/src/routes
-      - ./storage:/usr/src/storage
-      - ./tests:/usr/src/tests
-      - ./.env:/usr/src/.env
-    depends_on:
-      - migrate
-      - mysql
-      - redis
-  worker:
-    build:
-      context: .
-      dockerfile: api.dockerfile
-      target: worker
-    restart: unless-stopped
+      - pgsql-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: '${DB_DATABASE}'
+      POSTGRES_USER: '${DB_USERNAME}'
+      POSTGRES_PASSWORD: '${DB_PASSWORD}'
+      PGPASSWORD: '${DB_PASSWORD}'
     networks:
-      - addons
-    volumes:
-      - ./app:/usr/src/app
-      - ./config:/usr/src/config
-      - ./database:/usr/src/database
-      - ./routes:/usr/src/routes
-      - ./storage:/usr/src/storage
-      - ./tests:/usr/src/tests
-      - ./.env:/usr/src/.env
-    depends_on:
-      - migrate
-      - mysql
-      - redis
+      - app
+    healthcheck:
+      test:
+        - CMD
+        - pg_isready
+        - '-q'
+        - '-d'
+        - '${DB_DATABASE}'
+        - '-U'
+        - '${DB_USERNAME}'
+      retries: 3
+      timeout: 5s
   redis:
-    image: redis:7.2.3
+    image: redis:alpine
     restart: unless-stopped
     networks:
-      - addons
+      - app
     volumes:
       - redis-data:/data
     ports:
-      - "63790:6379"
-  mysql:
-    image: mysql:8.0.33
-    restart: unless-stopped
-    networks:
-      - addons
-    build:
-      context: .
-      dockerfile: mysql.dockerfile
-    volumes:
-      - mysql-data:/var/lib/mysql
+      - "6379:6379"
+    healthcheck:
+      test:
+        - CMD
+        - redis-cli
+        - ping
+      retries: 3
+      timeout: 5s
+  minio:
+    image: 'minio/minio:latest'
     ports:
-      - "33060:3306"
+      - "9000:9000"
+      - "8900:8900"
     environment:
-      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
-  migrate:
-    build:
-      context: .
-      dockerfile: api.dockerfile
-    command: sh -c "./wait-for-it.sh mysql:3306 -t 30 && php /usr/src/artisan migrate --force"
+      MINIO_ROOT_USER: '${AWS_ACCESS_KEY_ID}'
+      MINIO_ROOT_PASSWORD: '${AWS_SECRET_ACCESS_KEY}'
+    volumes:
+      - 'minio-data:/data/minio'
     networks:
-      - addons
-    restart: no
-    depends_on:
-      - mysql
+      - app
+    command: 'minio server /data/minio --console-address ":8900"'
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - '-f'
+        - 'http://localhost:9000/minio/health/live'
+      retries: 3
+      timeout: 5s
 
 volumes:
   storage:
-  mysql-data:
+  minio-data:
+  pgsql-data:
   redis-data:
-  caddy-data:
 
 networks:
   addons:
