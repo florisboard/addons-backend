@@ -35,6 +35,9 @@ class Review extends Model
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * @return MorphMany<Report>
+     */
     public function reports(): MorphMany
     {
         return $this->morphMany(Report::class, 'reportable');

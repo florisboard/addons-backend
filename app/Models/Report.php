@@ -26,7 +26,7 @@ class Report extends Model
     protected function isReviewed(): Attribute
     {
         return Attribute::make(
-            get: fn (null $value, array $attributes) => (bool) $attributes['reviewed_at'],
+            get: fn(null $value, array $attributes) => (bool)$attributes['reviewed_at'],
         );
     }
 
@@ -38,6 +38,9 @@ class Report extends Model
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * @return MorphTo<Model,Report>
+     */
     public function reportable(): MorphTo
     {
         return $this->morphTo();

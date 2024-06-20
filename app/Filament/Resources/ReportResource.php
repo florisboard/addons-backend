@@ -80,6 +80,7 @@ class ReportResource extends CustomResource
                         $resource = match ($report->reportable_type) {
                             Project::class => 'projects',
                             Review::class => 'reviews',
+                            default => throw new \RuntimeException('This reportable type is not handled.')
                         };
 
                         return route("filament.admin.resources.$resource.edit", $report->reportable_id);

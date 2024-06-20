@@ -121,6 +121,9 @@ class Project extends Model implements HasMedia
         return $this->reviews()->one()->where('user_id', Auth::id());
     }
 
+    /**
+     * @return MorphMany<Report>
+     */
     public function reports(): MorphMany
     {
         return $this->morphMany(Report::class, 'reportable');
