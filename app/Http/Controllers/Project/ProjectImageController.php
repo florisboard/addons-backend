@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 
-class ImageController extends Controller
+class ProjectImageController extends Controller
 {
     /**
      * @throws FileDoesNotExist
