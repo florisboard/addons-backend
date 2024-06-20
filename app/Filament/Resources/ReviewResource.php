@@ -6,6 +6,7 @@ use App\Filament\Custom\CustomResource;
 use App\Filament\Forms\Layouts\BasicSection;
 use App\Filament\Forms\Layouts\ComplexForm;
 use App\Filament\Resources\ReviewResource\Pages;
+use App\Filament\Resources\ReviewResource\RelationManagers;
 use App\Filament\Tables\Components\TimestampsColumn;
 use App\Models\Review;
 use Filament\Forms;
@@ -97,7 +98,7 @@ class ReviewResource extends CustomResource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\ReportsRelationManager::class,
         ];
     }
 

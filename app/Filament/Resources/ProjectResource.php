@@ -122,6 +122,7 @@ class ProjectResource extends CustomResource
             RelationManagers\ReleasesRelationManager::class,
             RelationManagers\CollectionsRelationManager::class,
             RelationManagers\ReviewsRelationManager::class,
+            RelationManagers\ReportsRelationManager::class,
         ];
     }
 
