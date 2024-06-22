@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Project;
 use App\Models\Report;
 use App\Models\Review;
 use App\Models\User;

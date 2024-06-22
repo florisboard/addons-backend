@@ -14,6 +14,8 @@ use Illuminate\Validation\Rule;
 
 class ProjectRequest extends FormRequest
 {
+    public static string $packageNameRegex = '/^[a-z][a-z0-9_]*(\.[a-z0-9][a-z0-9_]*)*$/';
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -54,7 +56,7 @@ class ProjectRequest extends FormRequest
                 'min:3',
                 'max:255',
                 'not_regex:/^defaults\./',
-                'regex:/^[a-z][a-z0-9_]*(\.[a-z0-9][a-z0-9_]*)*$/',
+                'regex:'.static::$packageNameRegex,
                 Rule::unique('projects'),
                 function ($attribute, $value, $fail) {
                     $result = app(ProjectService::class)->extractPackageName($this->input('package_name'));

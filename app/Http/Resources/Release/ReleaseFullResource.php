@@ -29,6 +29,7 @@ class ReleaseFullResource extends JsonResource
             'description' => $this->description,
             /* @var int */
             'downloads_count' => round($this->downloads_count),
+            'download_link' => route('releases.download', $this),
             /* @var string */
             'created_at' => $this->created_at,
             /* @var string */
