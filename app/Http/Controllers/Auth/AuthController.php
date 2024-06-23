@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
+    public function login(): RedirectResponse
+    {
+        return response()->redirectTo(config('app.frontend_url') . '/auth');
+    }
+
     public function destroy(Request $request): Response
     {
         Auth::guard('web')->logout();
