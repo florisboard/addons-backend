@@ -95,6 +95,7 @@ describe('Create', function () {
 
         $data = [
             ...Project::factory()->make()->toArray(),
+            'verified_domain_id' => $domain->id,
             'package_name' => $packageName,
             'category_id' => Category::first()->id,
             'maintainers' => $users->splice(1)->pluck('id')->flatten()->toArray(),
@@ -106,7 +107,12 @@ describe('Create', function () {
 
     test('current user cannot be in the maintainers list', function () {
         Sanctum::actingAs($user = User::factory()->create());
+        $domain = Domain::factory()->for($user)->verified()->create();
+        $packageName = app(ProjectService::class)->convertToPackageName('test', $domain->name);
+
         $data = [
+            'verified_domain_id' => $domain->id,
+            'package_name' => $packageName,
             ...Project::factory()->make()->toArray(),
             'category_id' => Category::first()->id,
             'maintainers' => [$user->id],

@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Project;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ProjectRequest;
+use App\Http\Requests\Project\StoreProjectRequest;
+use App\Http\Requests\Project\UpdateProjectRequest;
 use App\Http\Resources\Project\ProjectFullResource;
 use App\Http\Resources\Project\ProjectResource;
 use App\Models\Project;
@@ -65,10 +66,10 @@ class ProjectController extends Controller
         return ProjectResource::collection($projects);
     }
 
-    public function store(ProjectRequest $request): JsonResponse
+    public function store(StoreProjectRequest $request): JsonResponse
     {
         $project = Project::create([
-            ...$request->safe()->except(['maintainers']),
+            ...$request->safe()->except(['maintainers', 'verified_domain_id']),
             'user_id' => Auth::id(),
         ]);
 
@@ -113,7 +114,7 @@ class ProjectController extends Controller
         return new ProjectFullResource($project);
     }
 
-    public function update(ProjectRequest $request, Project $project): ProjectFullResource
+    public function update(UpdateProjectRequest $request, Project $project): ProjectFullResource
     {
         $project->update($request->safe()->except(['maintainers']));
 

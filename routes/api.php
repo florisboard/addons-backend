@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\CheckUpdateControllers;
+use App\Http\Controllers\CheckUpdateController;
 use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\Domain\DomainController;
 use App\Http\Controllers\Domain\DomainVerifyController;
@@ -30,7 +30,7 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::get('home', HomeController::class)->name('home');
-Route::get('check-updates', CheckUpdateControllers::class)->name('updates.check');
+Route::get('check-updates', CheckUpdateController::class)->name('updates.check');
 
 Route::apiResource('projects', ProjectController::class);
 Route::apiSingleton('projects.image', ProjectImageController::class)->creatable()->only(['store', 'destroy']);

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProjectRequest;
+use App\Http\Requests\Project\StoreProjectRequest;
 use App\Http\Requests\Release\StoreReleaseRequest;
 use App\Http\Resources\CheckUpdateResource;
 use App\Models\Project;
@@ -10,7 +10,7 @@ use App\Models\Scopes\ActiveScope;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
-class CheckUpdateControllers extends Controller
+class CheckUpdateController extends Controller
 {
     /**
      * @throws ValidationException
@@ -19,7 +19,7 @@ class CheckUpdateControllers extends Controller
     {
         $request->validate([
             'projects' => ['required', 'array', 'distinct'],
-            'projects.*' => ['required', 'string', 'max:255', 'regex:'.ProjectRequest::$packageNameRegex],
+            'projects.*' => ['required', 'string', 'max:255', 'regex:'.StoreProjectRequest::$packageNameRegex],
             'versions' => ['required', 'array'],
             'versions.*' => ['required', 'string', 'regex:'.StoreReleaseRequest::$versionNameRegex],
         ]);

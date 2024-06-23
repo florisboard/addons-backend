@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Project;
 
 use App\Enums\ProjectTypeEnum;
 use App\Models\Category;
 use App\Models\Domain;
-use App\Models\Project;
 use App\Models\User;
 use App\Services\ProjectService;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
-class ProjectRequest extends FormRequest
+class StoreProjectRequest extends FormRequest
 {
     public static string $packageNameRegex = '/^[a-z][a-z0-9_]*(\.[a-z0-9][a-z0-9_]*)*$/';
 
@@ -31,11 +31,7 @@ class ProjectRequest extends FormRequest
      */
     public function rules(): array
     {
-
-        /** @var Project|null $project */
-        $project = $this->route('project');
-
-        $baseRules = [
+        return [
             'category_id' => ['bail', 'required', 'numeric', Rule::exists(Category::class, 'id')],
             'title' => ['required', 'string', 'min:3', 'max:255'],
             'type' => ['required', Rule::enum(ProjectTypeEnum::class)],
@@ -46,10 +42,15 @@ class ProjectRequest extends FormRequest
             /* @var int[] */
             'maintainers' => ['bail', 'nullable', 'array', 'between:0,5'],
             'maintainers.*' => ['bail', 'required', 'numeric', Rule::notIn([Auth::id()]), Rule::exists(User::class, 'id')],
-        ];
-
-        if (! $project) {
-            $baseRules['package_name'] = [
+            'verified_domain_id' => [
+                'bail',
+                'required',
+                'integer',
+                Rule::exists('domains', 'id')
+                    ->where('user_id', Auth::id())
+                    ->whereNotNull('verified_at'),
+            ],
+            'package_name' => [
                 'bail',
                 'required',
                 'string',
@@ -59,19 +60,14 @@ class ProjectRequest extends FormRequest
                 'regex:'.static::$packageNameRegex,
                 Rule::unique('projects'),
                 function ($attribute, $value, $fail) {
-                    $result = app(ProjectService::class)->extractPackageName($this->input('package_name'));
-                    $exists = Domain::where('user_id', Auth::id())
-                        ->whereNotNull('verified_at')
-                        ->where('name', $result['domain'])
-                        ->exists();
+                    $domain = Domain::find($this->input('verified_domain_id'));
+                    $expectedDomain = app(ProjectService::class)->convertToPackageName('', $domain->name);
 
-                    if (! $exists) {
+                    if (! Str::startsWith($value, $expectedDomain)) {
                         $fail("You don't own or verified the {$attribute} domain.");
                     }
                 },
-            ];
-        }
-
-        return $baseRules;
+            ],
+        ];
     }
 }
