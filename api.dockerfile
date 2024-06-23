@@ -26,7 +26,7 @@ RUN npm config set update-notifier false && npm set progress=false
 #     npm install --loglevel=error --no-audit; \
 #     fi
 
-# COPY --link . .
+COPY --link . .
 
 # RUN npm run build
 
