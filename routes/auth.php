@@ -15,7 +15,3 @@ Route::prefix('api/auth')->group(function () {
     Route::get('github/callback', [GithubController::class, 'callback'])
         ->name('github.callback');
 });
-
-Route::get('login', [AuthController::class, 'login'])
-    ->middleware('guest')
-    ->name('login');
