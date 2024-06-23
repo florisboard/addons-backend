@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: api.dockerfile
     networks:
-      - app
+      - addons
     environment:
       - CONTAINER_MODE=http
       - WITH_HORIZON=true
@@ -29,7 +29,7 @@ services:
       POSTGRES_PASSWORD: '${DB_PASSWORD}'
       PGPASSWORD: '${DB_PASSWORD}'
     networks:
-      - app
+      - addons
     healthcheck:
       test:
         - CMD
@@ -45,7 +45,7 @@ services:
     image: redis:alpine
     restart: unless-stopped
     networks:
-      - app
+      - addons
     volumes:
       - redis-data:/data
     ports:
@@ -68,7 +68,7 @@ services:
     volumes:
       - 'minio-data:/data/minio'
     networks:
-      - app
+      - addons
     command: 'minio server /data/minio --console-address ":8900"'
     healthcheck:
       test:
