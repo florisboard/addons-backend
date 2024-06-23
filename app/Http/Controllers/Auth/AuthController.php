@@ -12,7 +12,7 @@ class AuthController extends Controller
 {
     public function login(): RedirectResponse
     {
-        return response()->redirectToIntended(config('app.frontend_url').'/login');
+        return response()->redirectToIntended(config('app.frontend_url') . '/auth');
     }
 
     public function destroy(Request $request): Response
