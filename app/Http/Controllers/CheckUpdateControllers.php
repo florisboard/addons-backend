@@ -19,9 +19,9 @@ class CheckUpdateControllers extends Controller
     {
         $request->validate([
             'projects' => ['required', 'array', 'distinct'],
-            'projects.*' => ['required', 'string', 'max:255', 'regex:' . ProjectRequest::$packageNameRegex],
+            'projects.*' => ['required', 'string', 'max:255', 'regex:'.ProjectRequest::$packageNameRegex],
             'versions' => ['required', 'array'],
-            'versions.*' => ['required', 'string', 'regex:' . StoreReleaseRequest::$versionNameRegex],
+            'versions.*' => ['required', 'string', 'regex:'.StoreReleaseRequest::$versionNameRegex],
         ]);
 
         if (count($request->input('projects')) !== count($request->input('versions'))) {
@@ -33,7 +33,6 @@ class CheckUpdateControllers extends Controller
             ->whereIn('package_name', $request->input('projects'))
             ->with('latestRelease.user')
             ->get();
-
 
         return [
             'data' => CheckUpdateResource::collection($projects),

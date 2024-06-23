@@ -28,7 +28,7 @@ class DomainService
 
     public function generateVerificationText(string $code): string
     {
-        return "florisboard-addons-verification-$code";
+        return "florisboard-addons-verification=$code";
     }
 
     public function isInExcludedDomains(string $name): bool

@@ -4,7 +4,9 @@ namespace App\Filament\Resources;
 
 use App\Enums\AuthProviderEnum;
 use App\Filament\Custom\CustomResource;
-use App\Filament\Forms\Layouts\BasicForm;
+use App\Filament\Forms\Layouts\BasicSection;
+use App\Filament\Forms\Layouts\ComplexForm;
+use App\Filament\Forms\Layouts\StatusSection;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Filament\Tables\Components\TimestampsColumn;
@@ -25,7 +27,7 @@ class UserResource extends CustomResource
 
     public static function form(Form $form): Form
     {
-        return BasicForm::make($form, [
+        $basicSection = BasicSection::make([
             Forms\Components\TextInput::make('username')
                 ->minLength(3)
                 ->maxLength(33)->unique(ignoreRecord: true)
@@ -35,8 +37,15 @@ class UserResource extends CustomResource
                 ->options(AuthProviderEnum::class)
                 ->searchable()
                 ->required(),
+
             Forms\Components\DateTimePicker::make('username_changed_at'),
         ]);
+
+        $statusSection = StatusSection::make([
+            Forms\Components\Toggle::make('is_admin'),
+        ]);
+
+        return ComplexForm::make($form, [$basicSection], [$statusSection]);
     }
 
     public static function table(Table $table): Table
