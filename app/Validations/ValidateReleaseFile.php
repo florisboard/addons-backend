@@ -32,10 +32,11 @@ class ValidateReleaseFile
         $fileExtensionName = pathinfo($filePath, PATHINFO_EXTENSION);
 
         $tempDirPath = $filesystemService->createTempDirectory('projects', $project->id);
-        file_put_contents("$tempDirPath/file.$fileExtensionName", Storage::get("$tempDirPath/file.$fileExtensionName"));
+        file_put_contents("$tempDirPath/file.$fileExtensionName", Storage::get($filePath));
         $filesystemService->extractZipFile($tempDirPath, "file.$fileExtensionName");
 
         $result = $releaseService->parseExtensionJson($tempDirPath);
+        $filesystemService->deleteDirectory($tempDirPath);
 
         if (! $result) {
             $validator->errors()->add('file_path', "The uploaded file doesn't have extension.json");
@@ -43,7 +44,6 @@ class ValidateReleaseFile
             return;
         }
 
-        $filesystemService->deleteDirectory($tempDirPath);
         $filePackageName = data_get($result, '$');
         $fileVersionName = data_get($result, 'meta.version');
 

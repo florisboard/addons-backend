@@ -105,6 +105,22 @@ describe('Create', function () {
             ->assertCreated();
     });
 
+    test('users cannot create a project when package name and verified domain id does not match', function () {
+        Sanctum::actingAs($user = User::factory()->create());
+        $domain = Domain::factory()->for($user)->verified()->create();
+        $packageName = app(ProjectService::class)->convertToPackageName('test', 'example.com');
+
+        $data = [
+            ...Project::factory()->make()->toArray(),
+            'verified_domain_id' => $domain->id,
+            'package_name' => $packageName,
+            'category_id' => Category::first()->id,
+        ];
+
+        $this->postJson(route('projects.store'), $data)
+            ->assertJsonValidationErrorFor('package_name');
+    });
+
     test('current user cannot be in the maintainers list', function () {
         Sanctum::actingAs($user = User::factory()->create());
         $domain = Domain::factory()->for($user)->verified()->create();

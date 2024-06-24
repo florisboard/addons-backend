@@ -58,8 +58,7 @@ class FilesystemService
         $zip = new \ZipArchive();
         $isZipOpen = $zip->open("$basePath/$file");
         throw_unless($isZipOpen === true, new \RuntimeException("Couldn't open the zip file $basePath/$file"));
-
-        $zip->extractTo("$basePath/extracted");
+        $zip->extractTo("$basePath/extracted/");
         $zip->close();
     }
 }
