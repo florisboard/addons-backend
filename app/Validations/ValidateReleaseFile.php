@@ -6,6 +6,7 @@ use App\Models\Project;
 use App\Services\FilesystemService;
 use App\Services\ReleaseService;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
 
 class ValidateReleaseFile
@@ -38,16 +39,31 @@ class ValidateReleaseFile
         $result = $releaseService->parseExtensionJson($tempDirPath);
         $filesystemService->deleteDirectory($tempDirPath);
 
-        if (! $result) {
+        if (!$result) {
             $validator->errors()->add('file_path', "The uploaded file doesn't have extension.json");
 
             return;
         }
 
-        $filePackageName = data_get($result, 'meta.id');
-        $fileVersionName = data_get($result, 'meta.version');
+        ray($result);
+        $jsonValidator = \Illuminate\Support\Facades\Validator::make($result, [
+            '$' => ['required', 'string', Rule::in($project->type->getValidationId())],
+            'meta.id' => ['required', 'string', Rule::in($project->package_name)],
+            'meta.version' => ['required', 'string', Rule::in($validator->getData()['version_name'])],
+            'meta.title' => ['required', 'string', 'min:3'],
+            'meta.license' => ['required', 'string', 'min:1'],
+            'meta.maintainers' => ['required', 'array', 'min:1'],
+            'meta.maintainers.*' => ['required', 'string', 'min:1'],
+        ], [
+            '$.in' => "The provided file ID was :input but it should be {$project->type->getValidationId()}.",
+            'meta.id.in' => "The provided file ID was :input but it should be {$project->package_name}.",
+            'meta.version.in' => "The provided version was :input but it should be {$validator->getData()['version_name']}.",
+        ]);
 
-        $validator->errors()->addIf($filePackageName !== $project->package_name, 'file_path', "The file package_name doesn't match the project package name. The file package name is $filePackageName but the project package name is {$project->package_name} ");
-        $validator->errors()->addIf($fileVersionName !== $validator->getData()['version_name'], 'file_path', "The file version_name doesn't match the project package name. The file version is $fileVersionName but the provided version is {$validator->getData()['version_name']} ");
+        if ($jsonValidator->fails()) {
+            foreach ($jsonValidator->errors()->all() as $error) {
+                $validator->errors()->add('file_path', $error);
+            }
+        }
     }
 }

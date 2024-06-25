@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 enum ProjectTypeEnum: string implements HasColor, HasLabel
 {
     use EnumConcern;
+
     case Extension = 'EXTENSION';
 
     public function getLabel(): string
@@ -20,5 +21,12 @@ enum ProjectTypeEnum: string implements HasColor, HasLabel
     public function getColor(): string
     {
         return 'primary';
+    }
+
+    public function getValidationId(): string
+    {
+        return match ($this) {
+            self::Extension => 'ime.extension.theme'
+        };
     }
 }
