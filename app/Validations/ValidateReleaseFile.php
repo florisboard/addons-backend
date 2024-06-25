@@ -39,13 +39,12 @@ class ValidateReleaseFile
         $result = $releaseService->parseExtensionJson($tempDirPath);
         $filesystemService->deleteDirectory($tempDirPath);
 
-        if (!$result) {
+        if (! $result) {
             $validator->errors()->add('file_path', "The uploaded file doesn't have extension.json");
 
             return;
         }
 
-        ray($result);
         $jsonValidator = \Illuminate\Support\Facades\Validator::make($result, [
             '$' => ['required', 'string', Rule::in($project->type->getValidationId())],
             'meta.id' => ['required', 'string', Rule::in($project->package_name)],
