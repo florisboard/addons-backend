@@ -44,10 +44,10 @@ class ValidateReleaseFile
             return;
         }
 
-        $filePackageName = data_get($result, '$');
+        $filePackageName = data_get($result, 'meta.id');
         $fileVersionName = data_get($result, 'meta.version');
 
         $validator->errors()->addIf($filePackageName !== $project->package_name, 'file_path', "The file package_name doesn't match the project package name. The file package name is $filePackageName but the project package name is {$project->package_name} ");
-        $validator->errors()->addIf($fileVersionName !== $validator->getData()['version_name'], 'file_path', "The file version_name doesn't match the project package name. The file package name is $fileVersionName but the project package name is {$validator->getData()['version_name']} ");
+        $validator->errors()->addIf($fileVersionName !== $validator->getData()['version_name'], 'file_path', "The file version_name doesn't match the project package name. The file version is $fileVersionName but the provided version is {$validator->getData()['version_name']} ");
     }
 }
