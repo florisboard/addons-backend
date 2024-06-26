@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Custom\CustomResource;
 use App\Filament\Forms\Layouts\BasicSection;
 use App\Filament\Forms\Layouts\ComplexForm;
+use App\Filament\Forms\Layouts\StatusSection;
 use App\Filament\Resources\ReviewResource\Pages;
 use App\Filament\Resources\ReviewResource\RelationManagers;
 use App\Filament\Tables\Components\TimestampsColumn;
@@ -50,7 +51,11 @@ class ReviewResource extends CustomResource
                 ->required(),
         ]);
 
-        return ComplexForm::make($form, [$basicSection]);
+        $statusSection = StatusSection::make([
+            Forms\Components\Toggle::make('is_active'),
+        ]);
+
+        return ComplexForm::make($form, [$basicSection], [$statusSection]);
     }
 
     public static function table(Table $table): Table
@@ -58,6 +63,7 @@ class ReviewResource extends CustomResource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id'),
+                Tables\Columns\IconColumn::make('is_active')->boolean(),
                 Tables\Columns\TextColumn::make('user.username')
                     ->hiddenOn([UserResource\RelationManagers\ReviewsRelationManager::class]),
                 Tables\Columns\TextColumn::make('project.title')
