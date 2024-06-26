@@ -31,19 +31,19 @@ class ProjectResource extends JsonResource
             'type' => $this->type,
             'is_recommended' => $this->is_recommended,
             'is_active' => $this->is_active,
-            /* @var string */
+            /** @var string */
             'created_at' => $this->created_at,
-            /* @var string */
+            /** @var string */
             'updated_at' => $this->updated_at,
-            /* @var ImageResource|null */
+            /** @var ImageResource|null */
             'image' => new ImageResource($this->image),
-            /* @var int */
+            /** @var int */
             'reviews_avg_score' => round((int) $this->reviews_avg_score),
-            /* @var int */
+            /** @var int */
             'releases_sum_downloads_count' => (int) $this->releases_sum_downloads_count,
-            /* @var ReleaseResource|null */
+            /** @var ReleaseResource|null */
             'latest_release' => new ReleaseResource($this->latestRelease),
-            /* @var int */
+            /** @var int */
             'reviews_count' => $this->reviews_count,
         ];
     }

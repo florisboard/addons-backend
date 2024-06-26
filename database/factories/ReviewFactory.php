@@ -25,6 +25,7 @@ class ReviewFactory extends Factory
             'description' => fake()->realText(),
             'score' => rand(1, 5),
             'deleted_at' => app()->runningUnitTests() ? null : $deletedAt,
+            'is_active' => fake()->boolean(90),
             'user_id' => User::factory(),
             'project_id' => Project::factory(),
         ];

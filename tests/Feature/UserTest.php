@@ -19,7 +19,7 @@ describe('Me', function () {
 
 describe('Destroy', function () {
     test('user can delete his account', function () {
-        /* @var User $user */
+        /** @var User $user */
         global $user;
         $this->postJson(route('users.me.destroy'), [
             'username' => $user->username,
@@ -38,7 +38,7 @@ describe('Destroy', function () {
 
 describe('Update', function () {
     test('user can update his username', function () {
-        /* @var User $user */
+        /** @var User $user */
         global $user;
         $user->update(['username_changed_at' => now()]);
         $this->travel(15)->days();
@@ -55,7 +55,7 @@ describe('Update', function () {
     });
 
     test('user cannot update his username when enough time has not passed', function () {
-        /* @var User $user */
+        /** @var User $user */
         global $user;
         $user->update(['username_changed_at' => now()]);
 

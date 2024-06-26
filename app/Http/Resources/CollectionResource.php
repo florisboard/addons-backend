@@ -22,12 +22,12 @@ class CollectionResource extends JsonResource
             'user_id' => $this->user_id,
             'title' => $this->title,
             'is_public' => $this->is_public,
-            /* @var string */
+            /** @var string */
             'created_at' => $this->created_at,
-            /* @var string */
+            /** @var string */
             'updated_at' => $this->updated_at,
             'user' => new UserResource($this->whenLoaded('user')),
-            /* @var int */
+            /** @var int */
             'projects_count' => $this->whenCounted('projects'),
         ];
     }

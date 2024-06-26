@@ -21,14 +21,16 @@ class ReviewResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'description' => $this->description,
-            /* @var int */
+            /** @var int */
             'score' => $this->score,
             'project_id' => $this->project_id,
-            /* @var string */
+            /** @var bool */
+            'is_active' => $this->is_active,
+            /** @var string */
             'created_at' => $this->created_at,
-            /* @var string */
+            /** @var string */
             'updated_at' => $this->updated_at,
-            /* @var UserResource */
+            /** @var UserResource */
             'user' => new UserResource($this->user),
         ];
     }

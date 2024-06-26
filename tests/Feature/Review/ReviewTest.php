@@ -53,6 +53,17 @@ describe('Update', function () {
             ->assertOk();
     });
 
+    test('when user updates his review it should get reviewed again', function () {
+        Sanctum::actingAs($user = User::factory()->create());
+        $review = Review::factory()->for($user)->create();
+        $data = Review::factory()->make()->toArray();
+
+        $this->putJson(route('reviews.update', [$review]), $data)
+            ->assertOk();
+
+        expect($review->refresh()->is_active)->toBeFalse();
+    });
+
     test('users cannot update other review', function () {
         Sanctum::actingAs(User::factory()->create());
         $review = Review::factory()->create();

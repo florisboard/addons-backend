@@ -7,6 +7,7 @@ use App\Http\Requests\ReviewRequest;
 use App\Http\Resources\ReviewResource;
 use App\Models\Project;
 use App\Models\Review;
+use App\Models\Scopes\ActiveScope;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
@@ -46,8 +47,8 @@ class ReviewController extends Controller
                 AllowedFilter::exact('score'),
             ])
             ->allowedSorts('id')
-            ->when($request->input('filter.project_id') && Auth::check(), function (Builder $builder) {
-                $builder->where('user_id', '!=', Auth::id());
+            ->when($request->input('filter.user_id') !== Auth::id(), function (Builder $builder) {
+                $builder->withGlobalScope('active', new ActiveScope);
             })
             ->with('user')
             ->fastPaginate(20);
@@ -77,11 +78,17 @@ class ReviewController extends Controller
         return new ReviewResource($review);
     }
 
-    public function update(ReviewRequest $request, Review $review): ReviewResource
+    public function update(ReviewRequest $request, Review $review): JsonResponse
     {
-        $review->update($request->validated());
+        $shouldBeReviewedAgain = $review->description !== $request->input('description')
+            || $review->title !== $request->input('title');
 
-        return $this->show($review);
+        $review->update([
+            ...$request->validated(),
+            'is_active' => $shouldBeReviewedAgain ? false : $review->is_active,
+        ]);
+
+        return new JsonResponse(['message' => 'Review updated successfully.']);
     }
 
     public function destroy(Review $review): JsonResponse

@@ -31,16 +31,16 @@ class ProjectFullResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            /* @var int */
+            /** @var int */
             'id' => $this->id,
-            /* @var int */
+            /** @var int */
             'category_id' => $this->category_id,
-            /* @var int */
+            /** @var int */
             'user_id' => $this->user_id,
             'title' => $this->title,
             'package_name' => $this->package_name,
             'short_description' => $this->short_description,
-            /* @var ProjectTypeEnum */
+            /** @var ProjectTypeEnum */
             'type' => $this->type,
             'description' => $this->description,
             'links' => [
@@ -48,35 +48,35 @@ class ProjectFullResource extends JsonResource
             ],
             'is_recommended' => $this->is_recommended,
             'is_active' => $this->is_active,
-            /* @var string */
+            /** @var string */
             'created_at' => $this->created_at,
-            /* @var string */
+            /** @var string */
             'updated_at' => $this->updated_at,
-            /* @var ImageResource|null */
+            /** @var ImageResource|null */
             'image' => new ImageResource($this->image),
             'screenshots' => ImageResource::collection($this->screenshots),
             'user' => new UserResource($this->user),
             'category' => new CategoryResource($this->category),
             'maintainers' => UserResource::collection($this->maintainers),
-            /* @var int */
+            /** @var int */
             'reviews_avg_score' => round((int) $this->reviews_avg_score),
-            /* @var int */
+            /** @var int */
             'releases_sum_downloads_count' => (int) $this->releases_sum_downloads_count,
-            /* @var ReleaseFullResource|null */
+            /** @var ReleaseFullResource|null */
             'latest_release' => new ReleaseFullResource($this->latestRelease),
             'reviews' => ReviewResource::collection($this->reviews),
             'user_review' => new ReviewResource($this->whenLoaded('userReview')),
-            /* @var int */
+            /** @var int */
             'reviews_count' => $this->reviews_count,
-            /* @var int */
+            /** @var int */
             'one_reviews_count' => $this->one_reviews_count,
-            /* @var int */
+            /** @var int */
             'two_reviews_count' => $this->two_reviews_count,
-            /* @var int */
+            /** @var int */
             'three_reviews_count' => $this->three_reviews_count,
-            /* @var int */
+            /** @var int */
             'four_reviews_count' => $this->four_reviews_count,
-            /* @var int */
+            /** @var int */
             'five_reviews_count' => $this->five_reviews_count,
         ];
     }

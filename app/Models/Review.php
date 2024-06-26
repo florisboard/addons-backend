@@ -17,6 +17,7 @@ class Review extends Model
 
     protected $casts = [
         'score' => 'int',
+        'is_active' => 'boolean',
     ];
 
     /**

@@ -22,15 +22,15 @@ class HomeController extends Controller
     public function __invoke(Request $request): array
     {
         return [
-            /* @var CategoryResource[] */
+            /** @var CategoryResource[] */
             'top_categories' => $this->categoryService->top(),
-            /* @var ProjectResource[] */
+            /** @var ProjectResource[] */
             'picks_of_the_day' => $this->projectService->picksOfTheDay(),
-            /* @var ProjectResource[] */
+            /** @var ProjectResource[] */
             'latest_releases' => $this->projectService->latestReleases(),
-            /* @var ProjectResource[] */
+            /** @var ProjectResource[] */
             'latest_projects' => $this->projectService->latestProjects(),
-            /* @var ProjectResource[] */
+            /** @var ProjectResource[] */
             'recommended' => $this->projectService->recommended(),
         ];
     }

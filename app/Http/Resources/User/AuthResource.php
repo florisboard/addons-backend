@@ -17,14 +17,14 @@ class AuthResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            /* @var int */
+            /** @var int */
             'id' => $this->id,
             'username' => $this->username,
-            /* @var string|null */
+            /** @var string|null */
             'username_changed_at' => $this->username_changed_at,
-            /* @var string */
+            /** @var string */
             'created_at' => $this->created_at,
-            /* @var string */
+            /** @var string */
             'updated_at' => $this->updated_at,
         ];
     }

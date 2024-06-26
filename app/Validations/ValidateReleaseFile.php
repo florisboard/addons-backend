@@ -24,7 +24,7 @@ class ValidateReleaseFile
             return;
         }
 
-        /* @var Project $project */
+        /** @var Project $project */
         $project = request()->route('project');
         $filesystemService = app(FilesystemService::class);
         $releaseService = app(ReleaseService::class);

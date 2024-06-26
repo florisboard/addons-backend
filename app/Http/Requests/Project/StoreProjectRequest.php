@@ -38,8 +38,8 @@ class StoreProjectRequest extends FormRequest
             'short_description' => ['required', 'string', 'min:3', 'max:255'],
             'description' => ['required', 'string', 'min:3', 'max:1024'],
             'links' => ['required', 'array:source_code'],
-            'links.source_code' => ['required', 'string', 'url', 'max:255', 'starts_with:https://github.com'],
-            /* @var int[] */
+            'links.source_code' => ['required', 'string', 'url', 'max:255'],
+            /** @var int[] */
             'maintainers' => ['bail', 'nullable', 'array', 'between:0,5'],
             'maintainers.*' => ['bail', 'required', 'numeric', Rule::notIn([Auth::id()]), Rule::exists(User::class, 'id')],
             'verified_domain_id' => [

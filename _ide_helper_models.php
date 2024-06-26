@@ -21,7 +21,7 @@ namespace App\Models{
  * @property string $circle_fg
  * @property int $order_column
  * @property bool $is_active
- * @property int $is_top
+ * @property bool $is_top
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Project> $projects
@@ -303,10 +303,9 @@ namespace App\Models{
  * @property string|null $reviewed_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Project> $projects
- * @property-read int|null $projects_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Review> $reviews
- * @property-read int|null $reviews_count
+ * @property-read mixed $is_reviewed
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $reportable
+ * @property-read \App\Models\User $user
  * @method static \Database\Factories\ReportFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Report newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Report newQuery()
@@ -336,6 +335,7 @@ namespace App\Models{
  * @property string $title
  * @property string $description
  * @property int $score
+ * @property bool $is_active
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -352,6 +352,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Review whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Review whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Review whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Review whereIsActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Review whereProjectId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Review whereScore($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Review whereTitle($value)
