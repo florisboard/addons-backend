@@ -96,10 +96,6 @@ class ProjectResource extends CustomResource
                 Tables\Columns\TextColumn::make('package_name')->sortable()->searchable(isIndividual: true)->toggleable(),
                 Tables\Columns\TextColumn::make('description')->searchable(isIndividual: true)->toggleable()->toggledHiddenByDefault()->limit(30),
                 Tables\Columns\TextColumn::make('short_description')->searchable(isIndividual: true)->toggleable()->toggledHiddenByDefault()->limit(30),
-                Tables\Columns\TextColumn::make('home_page')->searchable(isIndividual: true)->toggleable()->toggledHiddenByDefault()->limit(30),
-                Tables\Columns\TextColumn::make('support_email')->searchable(isIndividual: true)->toggleable()->toggledHiddenByDefault()->limit(30),
-                Tables\Columns\TextColumn::make('support_site')->searchable(isIndividual: true)->toggleable()->toggledHiddenByDefault()->limit(30),
-                Tables\Columns\TextColumn::make('donate_site')->searchable(isIndividual: true)->toggleable()->toggledHiddenByDefault()->limit(30),
                 ...TimestampsColumn::make(),
             ])
             ->filters([
