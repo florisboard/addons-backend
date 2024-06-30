@@ -51,6 +51,40 @@ namespace App\Models{
  * 
  *
  * @property int $id
+ * @property string $model_type
+ * @property int $model_id
+ * @property int|null $user_id
+ * @property \App\Enums\ChangeProposalStatusEnum $status
+ * @property string|null $reviewer_description
+ * @property array $data
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $model
+ * @property-read \App\Models\User|null $user
+ * @method static \Database\Factories\ChangeProposalFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|ChangeProposal newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ChangeProposal newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ChangeProposal query()
+ * @method static \Illuminate\Database\Eloquent\Builder|ChangeProposal whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ChangeProposal whereData($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ChangeProposal whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ChangeProposal whereModelId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ChangeProposal whereModelType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ChangeProposal whereReviewerDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ChangeProposal whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ChangeProposal whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ChangeProposal whereUserId($value)
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperChangeProposal {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
  * @property int $user_id
  * @property string $title
  * @property bool $is_public
@@ -208,6 +242,8 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Category|null $category
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ChangeProposal> $changeProposals
+ * @property-read int|null $change_proposals_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Collection> $collections
  * @property-read int|null $collections_count
  * @property-read \App\Models\Media|null $image

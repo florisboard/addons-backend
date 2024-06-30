@@ -119,6 +119,7 @@ class ProjectResource extends CustomResource
     public static function getRelations(): array
     {
         return [
+            RelationManagers\ChangeProposalsRelationManager::class,
             RelationManagers\ReleasesRelationManager::class,
             RelationManagers\CollectionsRelationManager::class,
             RelationManagers\ReviewsRelationManager::class,

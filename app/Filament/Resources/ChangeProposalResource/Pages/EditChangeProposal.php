@@ -1,0 +1,34 @@
+<?php
+
+namespace App\Filament\Resources\ChangeProposalResource\Pages;
+
+use App\Enums\ChangeProposalStatusEnum;
+use App\Filament\Resources\ChangeProposalResource;
+use App\Models\ChangeProposal;
+use Filament\Actions;
+use Filament\Notifications\Notification;
+use Filament\Resources\Pages\EditRecord;
+
+class EditChangeProposal extends EditRecord
+{
+    protected static string $resource = ChangeProposalResource::class;
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            Actions\DeleteAction::make(),
+            Actions\Action::make('merge')
+                ->hidden(fn(ChangeProposal $changeProposal) => $changeProposal->status !== ChangeProposalStatusEnum::Approved)
+                ->action(function (ChangeProposal $changeProposal) {
+                    $changeProposal->model()->update($changeProposal->data);
+
+                    Notification::make()
+                        ->title('Project Updated.')
+                        ->success()
+                        ->send();
+                })
+                ->requiresConfirmation(),
+
+        ];
+    }
+}

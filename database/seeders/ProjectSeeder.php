@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Enums\ChangeProposalStatusEnum;
 use App\Models\Category;
+use App\Models\ChangeProposal;
 use App\Models\Maintainer;
 use App\Models\Project;
 use App\Models\Release;
@@ -14,9 +16,8 @@ use Illuminate\Database\Seeder;
 
 class ProjectSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
+    private array $changeProposalFields = ['title', 'description', 'short_description', 'links'];
+
     public function run(): void
     {
         $users = User::all('id');
@@ -46,10 +47,27 @@ class ProjectSeeder extends Seeder
                 ->forEachSequence(...$maintainerIds)
                 ->create();
 
+            $getRandomMaintainerId = fn () => collect([$ownerId, ...$maintainerIds])->flatten()->random();
+
+            ChangeProposal::factory(rand(0, 4))
+                ->for($project, 'model')
+                ->sequence(fn () => [
+                    'user_id' => $getRandomMaintainerId(),
+                    'data' => Project::factory()->make()->only($this->changeProposalFields),
+                ])
+                ->create();
+
+            // The last change proposal must match the current model data
+            $project->changeProposals()->create([
+                'status' => ChangeProposalStatusEnum::Approved,
+                'user_id' => $getRandomMaintainerId(),
+                'data' => $project->only($this->changeProposalFields),
+            ]);
+
             Release::factory(rand(0, 10))
                 ->for($project)
                 ->sequence(fn (Sequence $sequence) => [
-                    'user_id' => collect([$ownerId, ...$maintainerIds])->flatten()->random(),
+                    'user_id' => $getRandomMaintainerId(),
                     'version_code' => $sequence->index + 1,
                     'version_name' => $sequence->index + 1 .'.0.0',
                 ])

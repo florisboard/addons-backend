@@ -8,7 +8,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "*",
+        "php": "^8.2",
         "ext-zip": "*",
         "dedoc/scramble": "^0.8.6",
         "emreyarligan/enum-concern": "^1.0",
@@ -24,6 +24,7 @@
         "laravel/socialite": "^5.14",
         "laravel/tinker": "^2.9",
         "league/flysystem-aws-s3-v3": "^3.28",
+        "novadaemon/filament-pretty-json": "^2.2",
         "opcodesio/log-viewer": "^3.10",
         "spatie/eloquent-sortable": "^4.4",
         "spatie/laravel-medialibrary": "^11.6",

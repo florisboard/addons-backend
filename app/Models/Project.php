@@ -128,4 +128,20 @@ class Project extends Model implements HasMedia
     {
         return $this->morphMany(Report::class, 'reportable');
     }
+
+    /**
+     * @return MorphMany<ChangeProposal>
+     */
+    public function changeProposals(): MorphMany
+    {
+        return $this->morphMany(ChangeProposal::class, 'model');
+    }
+
+    /**
+     * @return MorphOne<ChangeProposal>
+     */
+    public function latestChangeProposal(): MorphOne
+    {
+        return $this->changeProposals()->one()->latestOfMany();
+    }
 }

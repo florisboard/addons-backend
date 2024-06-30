@@ -70,6 +70,9 @@ class ReportResource extends CustomResource
                 Tables\Filters\SelectFilter::make('type')
                     ->searchable()
                     ->options(ReportTypeEnum::class),
+                Tables\Filters\TernaryFilter::make('reviewed_at')
+                    ->label('Reviewed')
+                    ->nullable(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -85,7 +88,6 @@ class ReportResource extends CustomResource
 
                         return route("filament.admin.resources.$resource.edit", $report->reportable_id);
                     }),
-
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
