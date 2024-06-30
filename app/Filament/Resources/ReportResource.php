@@ -28,6 +28,7 @@ class ReportResource extends CustomResource
             Forms\Components\Select::make('user_id')
                 ->searchable()
                 ->preload()
+                ->optionsLimit(50)
                 ->relationship('user', 'username')
                 ->required(),
             Forms\Components\Select::make('type')

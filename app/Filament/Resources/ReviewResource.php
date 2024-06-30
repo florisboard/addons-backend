@@ -29,12 +29,14 @@ class ReviewResource extends CustomResource
             Forms\Components\Select::make('user_id')
                 ->searchable()
                 ->preload()
+                ->optionsLimit(50)
                 ->hiddenOn([UserResource\RelationManagers\ReviewsRelationManager::class])
                 ->relationship('user', 'username')
                 ->required(),
             Forms\Components\Select::make('project_id')
                 ->searchable()
                 ->preload()
+                ->optionsLimit(50)
                 ->hiddenOn([ProjectResource\RelationManagers\ReviewsRelationManager::class])
                 ->relationship('project', 'title')
                 ->required(),

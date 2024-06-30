@@ -34,6 +34,12 @@ class ChangeProposalResource extends CustomResource
                 ->maxLength(1024),
             PrettyJson::make('data')
                 ->columnSpanFull(),
+            Forms\Components\Select::make('user_id')
+                ->searchable()
+                ->preload()
+                ->optionsLimit(50)
+                ->columnSpanFull()
+                ->relationship('user', 'username'),
             Forms\Components\MorphToSelect::make('model')
                 ->columnSpanFull()
                 ->searchable()

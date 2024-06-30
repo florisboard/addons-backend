@@ -31,6 +31,7 @@ class CollectionResource extends CustomResource
             Forms\Components\Select::make('user_id')
                 ->searchable()
                 ->preload()
+                ->optionsLimit(50)
                 ->columnSpanFull()
                 ->hiddenOn(UserResource\RelationManagers\CollectionsRelationManager::class)
                 ->relationship('user', 'username')

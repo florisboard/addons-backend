@@ -18,7 +18,7 @@ class EditChangeProposal extends EditRecord
         return [
             Actions\DeleteAction::make(),
             Actions\Action::make('merge')
-                ->hidden(fn(ChangeProposal $changeProposal) => $changeProposal->status !== ChangeProposalStatusEnum::Approved)
+                ->hidden(fn (ChangeProposal $changeProposal) => $changeProposal->status !== ChangeProposalStatusEnum::Approved)
                 ->action(function (ChangeProposal $changeProposal) {
                     $changeProposal->model()->update($changeProposal->data);
 

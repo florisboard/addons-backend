@@ -35,12 +35,14 @@ class ProjectResource extends CustomResource
             Forms\Components\Select::make('user_id')
                 ->searchable()
                 ->preload()
+                ->optionsLimit(50)
                 ->relationship('user', 'username')
                 ->hiddenOn([UserResource\RelationManagers\ProjectsRelationManager::class])
                 ->required(),
             Forms\Components\Select::make('category_id')
                 ->searchable()
                 ->preload()
+                ->optionsLimit(50)
                 ->relationship('category', 'title')
                 ->hiddenOn([CategoryResource\RelationManagers\ProjectsRelationManager::class])
                 ->required(),
@@ -64,6 +66,7 @@ class ProjectResource extends CustomResource
             Forms\Components\Select::make('maintainers')
                 ->searchable()
                 ->preload()
+                ->optionsLimit(50)
                 ->multiple()
                 ->relationship('maintainers', 'username'),
         ]);
