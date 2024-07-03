@@ -23,6 +23,7 @@ class ReleaseFactory extends Factory
             'version_name' => rand(0, 3).'.'.rand(0, 9).'.'.rand(0, 9),
             'version_code' => rand(0, 1000),
             'downloads_count' => rand(0, 1_000_000),
+            'is_active' => app()->runningUnitTests() || fake()->boolean(90),
             'user_id' => User::factory(),
             'project_id' => Project::factory(),
         ];

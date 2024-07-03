@@ -301,6 +301,7 @@ namespace App\Models{
  * @property int $version_code
  * @property string|null $description
  * @property int $downloads_count
+ * @property bool $is_active
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Media|null $file
@@ -316,6 +317,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Release whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Release whereDownloadsCount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Release whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Release whereIsActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Release whereProjectId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Release whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Release whereUserId($value)

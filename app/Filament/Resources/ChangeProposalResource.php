@@ -25,6 +25,11 @@ class ChangeProposalResource extends CustomResource
 
     protected static ?string $navigationIcon = 'heroicon-o-bolt';
 
+    public static function getNavigationBadge(): ?string
+    {
+        return ChangeProposal::where('status', ChangeProposalStatusEnum::Pending)->count();
+    }
+
     public static function canCreate(): bool
     {
         return false;

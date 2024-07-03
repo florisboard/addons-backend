@@ -16,6 +16,10 @@ class Release extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia;
 
+    protected $casts = [
+        'is_active' => 'boolean',
+    ];
+
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('file')

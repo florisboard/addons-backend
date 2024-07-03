@@ -24,6 +24,11 @@ class ReportResource extends CustomResource
 
     protected static ?string $navigationIcon = 'heroicon-o-flag';
 
+    public static function getNavigationBadge(): ?string
+    {
+        return Report::where('is_reviewed', false)->count();
+    }
+
     public static function form(Form $form): Form
     {
         $basicSection = BasicSection::make([

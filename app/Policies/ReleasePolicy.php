@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Project;
 use App\Models\Release;
 use App\Models\User;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Http\Request;
 
 class ReleasePolicy
@@ -28,9 +29,11 @@ class ReleasePolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(?User $user, Release $release): bool
+    public function view(?User $user, Release $release): Response
     {
-        return true;
+        return $release->is_active
+            ? Response::allow()
+            : Response::denyAsNotFound();
     }
 
     /**
@@ -46,7 +49,8 @@ class ReleasePolicy
      */
     public function update(User $user, Release $release): bool
     {
-        return $user->can('update', [$release->project]);
+        return false;
+        //        return $user->can('update', [$release->project]);
     }
 
     /**

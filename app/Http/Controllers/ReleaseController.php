@@ -6,6 +6,8 @@ use App\Http\Requests\Release\StoreReleaseRequest;
 use App\Http\Resources\Release\ReleaseFullResource;
 use App\Models\Project;
 use App\Models\Release;
+use App\Models\Scopes\ActiveScope;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -38,6 +40,7 @@ class ReleaseController extends Controller
             ->allowedFilters([
                 AllowedFilter::exact('project_id'),
             ])
+            ->withGlobalScope('active', new ActiveScope)
             ->allowedSorts('id')
             ->with('user')
             ->fastPaginate(20);
@@ -76,8 +79,13 @@ class ReleaseController extends Controller
         return new ReleaseFullResource($release);
     }
 
+    /**
+     * @throws AuthorizationException
+     */
     public function download(Release $release): JsonResponse
     {
+        $this->authorize('view', $release);
+
         Release::where('id', $release->id)->increment('downloads_count');
 
         return new JsonResponse(['link' => $release->file->getFullUrl()]);

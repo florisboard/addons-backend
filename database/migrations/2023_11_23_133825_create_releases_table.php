@@ -19,6 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('version_code');
             $table->text('description')->nullable();
             $table->unsignedBigInteger('downloads_count')->default(0);
+            $table->boolean('is_active')->default(false);
             $table->timestamps();
         });
     }

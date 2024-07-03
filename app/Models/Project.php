@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\ProjectTypeEnum;
+use App\Models\Scopes\ActiveScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -21,7 +22,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  */
 class Project extends Model implements HasMedia
 {
-    use HasFactory , InteractsWithMedia , SoftDeletes;
+    use HasFactory, InteractsWithMedia, SoftDeletes;
 
     protected $casts = [
         'is_recommended' => 'boolean',
@@ -102,7 +103,10 @@ class Project extends Model implements HasMedia
      */
     public function latestRelease(): HasOne
     {
-        return $this->hasOne(Release::class)->latestOfMany();
+        return $this->releases()
+            ->one()
+            ->latestOfMany()
+            ->withGlobalScope('active', new ActiveScope);
     }
 
     /**

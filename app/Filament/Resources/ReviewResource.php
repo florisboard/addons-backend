@@ -23,6 +23,11 @@ class ReviewResource extends CustomResource
 
     protected static ?string $navigationGroup = 'Projects';
 
+    public static function getNavigationBadge(): ?string
+    {
+        return Review::where('is_active', false)->count();
+    }
+
     public static function form(Form $form): Form
     {
         $basicSection = BasicSection::make([
