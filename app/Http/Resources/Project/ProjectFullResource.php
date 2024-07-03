@@ -47,7 +47,7 @@ class ProjectFullResource extends JsonResource
                 'source_code' => data_get($this->links, 'source_code'),
             ],
             'is_recommended' => $this->is_recommended,
-            'is_active' => $this->is_active,
+            'status' => $this->status,
             /** @var string */
             'created_at' => $this->created_at,
             /** @var string */

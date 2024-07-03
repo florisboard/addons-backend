@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->string('type');
+            $table->string('type')->index();
+            $table->string('status')->index();
             $table->morphs('reportable');
             $table->text('description');
-            $table->boolean('is_reviewed')->default(false);
             $table->timestamps();
         });
     }

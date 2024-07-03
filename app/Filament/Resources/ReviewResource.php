@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\StatusEnum;
 use App\Filament\Custom\CustomResource;
 use App\Filament\Forms\Layouts\BasicSection;
 use App\Filament\Forms\Layouts\ComplexForm;
@@ -25,7 +26,7 @@ class ReviewResource extends CustomResource
 
     public static function getNavigationBadge(): ?string
     {
-        return Review::where('is_active', false)->count();
+        return (string) Review::where('status', StatusEnum::Pending)->count();
     }
 
     public static function form(Form $form): Form
@@ -58,9 +59,7 @@ class ReviewResource extends CustomResource
                 ->required(),
         ]);
 
-        $statusSection = StatusSection::make([
-            Forms\Components\Toggle::make('is_active'),
-        ]);
+        $statusSection = StatusSection::make(includeStatusSelect: true);
 
         return ComplexForm::make($form, [$basicSection], [$statusSection]);
     }
@@ -70,7 +69,7 @@ class ReviewResource extends CustomResource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id'),
-                Tables\Columns\IconColumn::make('is_active')->boolean(),
+                Tables\Columns\TextColumn::make('status')->badge(),
                 Tables\Columns\TextColumn::make('user.username')
                     ->hiddenOn([UserResource\RelationManagers\ReviewsRelationManager::class]),
                 Tables\Columns\TextColumn::make('project.title')
@@ -95,6 +94,9 @@ class ReviewResource extends CustomResource
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
+                Tables\Filters\SelectFilter::make('status')
+                    ->searchable()
+                    ->options(StatusEnum::class),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

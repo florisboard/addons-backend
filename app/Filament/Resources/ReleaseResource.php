@@ -2,9 +2,12 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\StatusEnum;
 use App\Filament\Custom\CustomResource;
 use App\Filament\Forms\Components\FileInput;
-use App\Filament\Forms\Layouts\BasicForm;
+use App\Filament\Forms\Layouts\BasicSection;
+use App\Filament\Forms\Layouts\ComplexForm;
+use App\Filament\Forms\Layouts\StatusSection;
 use App\Filament\Resources\ReleaseResource\Pages;
 use App\Filament\Tables\Components\TimestampsColumn;
 use App\Http\Requests\Release\StoreReleaseRequest;
@@ -22,9 +25,14 @@ class ReleaseResource extends CustomResource
 
     protected static ?string $navigationGroup = 'Projects';
 
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) Release::where('status', StatusEnum::Pending)->count();
+    }
+
     public static function form(Form $form): Form
     {
-        return BasicForm::make($form, [
+        $basicSection = BasicSection::make([
             Forms\Components\TextInput::make('version_name')
                 ->maxLength(255)
                 ->regex(StoreReleaseRequest::$versionNameRegex)
@@ -54,12 +62,17 @@ class ReleaseResource extends CustomResource
             FileInput::make('file')
                 ->required(),
         ]);
+
+        $statusSection = StatusSection::make(includeStatusSelect: true);
+
+        return ComplexForm::make($form, [$basicSection], [$statusSection]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('status')->badge(),
                 Tables\Columns\TextColumn::make('user.username')
                     ->hiddenOn([UserResource\RelationManagers\ReleasesRelationManager::class]),
                 Tables\Columns\TextColumn::make('project.title')
@@ -77,7 +90,9 @@ class ReleaseResource extends CustomResource
                 ...TimestampsColumn::make(),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('status')
+                    ->searchable()
+                    ->options(StatusEnum::class),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

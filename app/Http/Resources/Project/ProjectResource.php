@@ -30,7 +30,7 @@ class ProjectResource extends JsonResource
             'short_description' => $this->short_description,
             'type' => $this->type,
             'is_recommended' => $this->is_recommended,
-            'is_active' => $this->is_active,
+            'status' => $this->status,
             /** @var string */
             'created_at' => $this->created_at,
             /** @var string */

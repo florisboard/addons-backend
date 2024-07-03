@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Enums\ProjectTypeEnum;
-use App\Models\Scopes\ActiveScope;
+use App\Enums\StatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -26,7 +26,7 @@ class Project extends Model implements HasMedia
 
     protected $casts = [
         'is_recommended' => 'boolean',
-        'is_active' => 'boolean',
+        'status' => StatusEnum::class,
         'type' => ProjectTypeEnum::class,
         'links' => 'json',
     ];
@@ -106,7 +106,7 @@ class Project extends Model implements HasMedia
         return $this->releases()
             ->one()
             ->latestOfMany()
-            ->withGlobalScope('active', new ActiveScope);
+            ->where('status', StatusEnum::Approved);
     }
 
     /**

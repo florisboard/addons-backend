@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Enums\ChangeProposalStatusEnum;
+use App\Enums\StatusEnum;
 use App\Models\Category;
 use App\Models\ChangeProposal;
 use App\Models\Maintainer;
@@ -59,7 +59,7 @@ class ProjectSeeder extends Seeder
 
             // The last change proposal must match the current model data
             $project->changeProposals()->create([
-                'status' => ChangeProposalStatusEnum::Approved,
+                'status' => StatusEnum::Approved,
                 'user_id' => $getRandomMaintainerId(),
                 'data' => $project->only($this->changeProposalFields),
             ]);

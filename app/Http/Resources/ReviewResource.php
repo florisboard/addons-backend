@@ -24,8 +24,6 @@ class ReviewResource extends JsonResource
             /** @var int */
             'score' => $this->score,
             'project_id' => $this->project_id,
-            /** @var bool */
-            'is_active' => $this->is_active,
             /** @var string */
             'created_at' => $this->created_at,
             /** @var string */

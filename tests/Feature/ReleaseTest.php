@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\StatusEnum;
 use App\Models\Project;
 use App\Models\Release;
 use App\Models\User;
@@ -21,7 +22,7 @@ describe('Download', function () {
     test('users can download a release', function () {
         Storage::fake();
 
-        $release = Release::factory()->create();
+        $release = Release::factory()->create(['status' => StatusEnum::Approved]);
 
         $file = UploadedFile::fake()->create('file.flex', 1);
         $release->addMedia($file)->toMediaCollection('file');

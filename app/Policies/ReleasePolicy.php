@@ -2,10 +2,10 @@
 
 namespace App\Policies;
 
+use App\Enums\StatusEnum;
 use App\Models\Project;
 use App\Models\Release;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 use Illuminate\Http\Request;
 
 class ReleasePolicy
@@ -29,11 +29,9 @@ class ReleasePolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(?User $user, Release $release): Response
+    public function view(?User $user, Release $release): bool
     {
-        return $release->is_active
-            ? Response::allow()
-            : Response::denyAsNotFound();
+        return $release->status === StatusEnum::Approved;
     }
 
     /**

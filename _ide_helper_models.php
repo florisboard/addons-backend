@@ -54,7 +54,7 @@ namespace App\Models{
  * @property string $model_type
  * @property int $model_id
  * @property int|null $user_id
- * @property \App\Enums\ChangeProposalStatusEnum $status
+ * @property \App\Enums\StatusEnum $status
  * @property string|null $reviewer_description
  * @property array $data
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -233,11 +233,11 @@ namespace App\Models{
  * @property string $title
  * @property string $package_name
  * @property \App\Enums\ProjectTypeEnum $type
+ * @property \App\Enums\StatusEnum $status
  * @property string $description
  * @property string $short_description
  * @property array $links
  * @property bool $is_recommended
- * @property bool $is_active
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -273,11 +273,11 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Project whereIsActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereIsRecommended($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereLinks($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project wherePackageName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereShortDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereUpdatedAt($value)
@@ -299,9 +299,9 @@ namespace App\Models{
  * @property int $user_id
  * @property string $version_name
  * @property int $version_code
+ * @property \App\Enums\StatusEnum $status
  * @property string|null $description
  * @property int $downloads_count
- * @property bool $is_active
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Media|null $file
@@ -317,8 +317,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Release whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Release whereDownloadsCount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Release whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Release whereIsActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Release whereProjectId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Release whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Release whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Release whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Release whereVersionCode($value)
@@ -336,10 +336,10 @@ namespace App\Models{
  * @property int $id
  * @property int $user_id
  * @property \App\Enums\ReportTypeEnum $type
+ * @property \App\Enums\StatusEnum $status
  * @property string $reportable_type
  * @property int $reportable_id
  * @property string $description
- * @property bool $is_reviewed
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $reportable
@@ -351,9 +351,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Report whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Report whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Report whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Report whereIsReviewed($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Report whereReportableId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Report whereReportableType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Report whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Report whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Report whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Report whereUserId($value)
@@ -371,9 +371,9 @@ namespace App\Models{
  * @property int $project_id
  * @property int $user_id
  * @property string $title
+ * @property \App\Enums\StatusEnum $status
  * @property string $description
  * @property int $score
- * @property bool $is_active
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -390,9 +390,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Review whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Review whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Review whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Review whereIsActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Review whereProjectId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Review whereScore($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Review whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Review whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Review whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Review whereUserId($value)

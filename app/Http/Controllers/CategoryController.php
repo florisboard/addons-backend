@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
+use App\Models\Scopes\ActiveScope;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -27,6 +28,7 @@ class CategoryController extends Controller
             ->allowedFilters([
                 AllowedFilter::partial('title'),
             ])
+            ->withGlobalScope('active', new ActiveScope)
             ->fastPaginate(20);
 
         return CategoryResource::collection($categories);

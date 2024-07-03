@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\StatusEnum;
 use App\Http\Requests\Project\StoreProjectRequest;
 use App\Http\Requests\Release\StoreReleaseRequest;
 use App\Http\Resources\CheckUpdateResource;
 use App\Models\Project;
-use App\Models\Scopes\ActiveScope;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
@@ -29,7 +29,7 @@ class CheckUpdateController extends Controller
         }
 
         $projects = Project::query()
-            ->withGlobalScope('active', new ActiveScope)
+            ->where('status', StatusEnum::Approved)
             ->whereIn('package_name', $request->input('projects'))
             ->with('latestRelease.user')
             ->get();

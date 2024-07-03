@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Review;
 
+use App\Enums\StatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreReportRequest;
 use App\Models\Report;
@@ -25,6 +26,7 @@ class ReviewReportController extends Controller
         $review->reports()->create([
             ...$request->validated(),
             'user_id' => Auth::id(),
+            'status' => StatusEnum::Pending,
         ]);
 
         return new JsonResponse([

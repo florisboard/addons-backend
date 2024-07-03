@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources;
 
-use App\Enums\ChangeProposalStatusEnum;
+use App\Enums\StatusEnum;
 use App\Filament\Custom\CustomResource;
 use App\Filament\Forms\Layouts\BasicSection;
 use App\Filament\Forms\Layouts\ComplexForm;
@@ -27,7 +27,7 @@ class ChangeProposalResource extends CustomResource
 
     public static function getNavigationBadge(): ?string
     {
-        return ChangeProposal::where('status', ChangeProposalStatusEnum::Pending)->count();
+        return (string) ChangeProposal::where('status', StatusEnum::Pending)->count();
     }
 
     public static function canCreate(): bool
@@ -63,12 +63,7 @@ class ChangeProposalResource extends CustomResource
                 ]),
         ]);
 
-        $statusSection = StatusSection::make([
-            Forms\Components\Select::make('status')
-                ->searchable()
-                ->options(ChangeProposalStatusEnum::class)
-                ->required(),
-        ]);
+        $statusSection = StatusSection::make(includeStatusSelect: true);
 
         return ComplexForm::make($form, [$basicSection], [$statusSection]);
     }
@@ -89,7 +84,7 @@ class ChangeProposalResource extends CustomResource
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
                     ->searchable()
-                    ->options(ChangeProposalStatusEnum::class),
+                    ->options(StatusEnum::class),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

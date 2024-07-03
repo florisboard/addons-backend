@@ -17,9 +17,9 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('version_name');
             $table->unsignedBigInteger('version_code');
+            $table->string('status')->index();
             $table->text('description')->nullable();
             $table->unsignedBigInteger('downloads_count')->default(0);
-            $table->boolean('is_active')->default(false);
             $table->timestamps();
         });
     }

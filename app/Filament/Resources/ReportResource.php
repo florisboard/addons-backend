@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Enums\ReportTypeEnum;
+use App\Enums\StatusEnum;
 use App\Filament\Custom\CustomResource;
 use App\Filament\Forms\Layouts\BasicSection;
 use App\Filament\Forms\Layouts\ComplexForm;
@@ -26,7 +27,7 @@ class ReportResource extends CustomResource
 
     public static function getNavigationBadge(): ?string
     {
-        return Report::where('is_reviewed', false)->count();
+        return (string) Report::where('status', StatusEnum::Pending)->count();
     }
 
     public static function form(Form $form): Form
@@ -59,9 +60,7 @@ class ReportResource extends CustomResource
                 ]),
         ]);
 
-        $statusSection = StatusSection::make([
-            Forms\Components\Toggle::make('is_reviewed'),
-        ]);
+        $statusSection = StatusSection::make(includeStatusSelect: true);
 
         return ComplexForm::make($form, [$basicSection], [$statusSection]);
     }
@@ -71,9 +70,9 @@ class ReportResource extends CustomResource
         return $table
             ->defaultSort('created_at', 'desc')
             ->columns([
-                Tables\Columns\IconColumn::make('is_reviewed')->boolean(),
                 Tables\Columns\TextColumn::make('user.username')->searchable(),
                 Tables\Columns\TextColumn::make('type')->badge(),
+                Tables\Columns\TextColumn::make('status')->badge(),
                 Tables\Columns\TextColumn::make('reportable_type')->toggleable()->toggledHiddenByDefault(),
                 Tables\Columns\TextColumn::make('reportable_id')->toggleable()->toggledHiddenByDefault(),
                 Tables\Columns\TextColumn::make('description')->toggleable()->limit(60),
@@ -84,9 +83,9 @@ class ReportResource extends CustomResource
                 Tables\Filters\SelectFilter::make('type')
                     ->searchable()
                     ->options(ReportTypeEnum::class),
-                Tables\Filters\TernaryFilter::make('reviewed_at')
-                    ->label('Reviewed')
-                    ->nullable(),
+                Tables\Filters\SelectFilter::make('status')
+                    ->searchable()
+                    ->options(StatusEnum::class),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

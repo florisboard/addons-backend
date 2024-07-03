@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Project;
 
+use App\Enums\StatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Project\StoreProjectRequest;
 use App\Http\Requests\Project\UpdateProjectRequest;
 use App\Http\Resources\Project\ProjectFullResource;
 use App\Http\Resources\Project\ProjectResource;
 use App\Models\Project;
-use App\Models\Scopes\ActiveScope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\JsonResponse;
@@ -56,7 +56,7 @@ class ProjectController extends Controller
             ->allowedSorts(['title', 'package_name', 'id'])
             ->with(['image', 'latestRelease'])
             ->when(Auth::guest() || $request->input('filter.user_id') != Auth::id(), function (Builder $builder) {
-                $builder->withGlobalScope('active', new ActiveScope);
+                $builder->where('status', StatusEnum::Approved);
             })
             ->withCount('reviews')
             ->withSum('releases', 'downloads_count')
@@ -71,6 +71,7 @@ class ProjectController extends Controller
         $project = Project::create([
             ...$request->safe()->except(['maintainers', 'verified_domain_id']),
             'user_id' => Auth::id(),
+            'status' => StatusEnum::Pending,
         ]);
 
         $project->maintainers()->attach($request->maintainers);

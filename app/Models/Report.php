@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\ReportTypeEnum;
+use App\Enums\StatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,6 +18,7 @@ class Report extends Model
 
     protected $casts = [
         'type' => ReportTypeEnum::class,
+        'status' => StatusEnum::class,
     ];
 
     /**

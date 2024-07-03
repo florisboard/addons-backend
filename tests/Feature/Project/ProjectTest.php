@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\StatusEnum;
 use App\Models\Category;
 use App\Models\Domain;
 use App\Models\Project;
@@ -15,16 +16,16 @@ describe('Index', function () {
 
         $this->getJson(route('projects.index'))
             ->assertOk()
-            ->assertJsonFragment(['is_active' => true]);
+            ->assertJsonFragment(['status' => StatusEnum::Approved]);
     });
 
-    test('users can get their un active projects', function () {
+    test('users can get their pending projects', function () {
         Sanctum::actingAs($user = User::factory()->create());
-        Project::factory()->for($user)->create(['is_active' => false]);
+        Project::factory()->for($user)->create(['status' => StatusEnum::Pending]);
 
         $this->getJson(route('projects.index', ['filter' => ['user_id' => $user->id]]))
             ->assertOk()
-            ->assertJsonFragment(['is_active' => false]);
+            ->assertJsonFragment(['status' => StatusEnum::Pending]);
     });
 });
 

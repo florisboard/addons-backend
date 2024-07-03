@@ -7,7 +7,7 @@ use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Support\Str;
 
-enum ChangeProposalStatusEnum: string implements HasColor, HasLabel
+enum StatusEnum: string implements HasColor, HasLabel
 {
     use EnumConcern;
 

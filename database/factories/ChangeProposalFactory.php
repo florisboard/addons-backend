@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Enums\ChangeProposalStatusEnum;
+use App\Enums\StatusEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,7 +18,7 @@ class ChangeProposalFactory extends Factory
     public function definition(): array
     {
         return [
-            'status' => ChangeProposalStatusEnum::randomValue(),
+            'status' => StatusEnum::randomValue(),
             'reviewer_description' => fake()->boolean() ? fake()->paragraphs(rand(1, 3), true) : null,
         ];
     }

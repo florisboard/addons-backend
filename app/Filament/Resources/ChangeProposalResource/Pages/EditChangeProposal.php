@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\ChangeProposalResource\Pages;
 
-use App\Enums\ChangeProposalStatusEnum;
+use App\Enums\StatusEnum;
 use App\Filament\Resources\ChangeProposalResource;
 use App\Models\ChangeProposal;
 use Filament\Actions;
@@ -28,7 +28,7 @@ class EditChangeProposal extends EditRecord
         return [
             //            Actions\DeleteAction::make(),
             Actions\Action::make('merge')
-                ->hidden(fn (ChangeProposal $changeProposal) => $changeProposal->status !== ChangeProposalStatusEnum::Approved)
+                ->hidden(fn (ChangeProposal $changeProposal) => $changeProposal->status !== StatusEnum::Approved)
                 ->action(function (ChangeProposal $changeProposal) {
                     $this->mergeChangeProposal($changeProposal);
                 })

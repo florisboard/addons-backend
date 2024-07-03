@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\StatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,7 +18,7 @@ class Review extends Model
 
     protected $casts = [
         'score' => 'int',
-        'is_active' => 'boolean',
+        'status' => StatusEnum::class,
     ];
 
     /**

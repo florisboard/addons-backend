@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\StatusEnum;
 use App\Http\Requests\Release\StoreReleaseRequest;
 use App\Http\Resources\Release\ReleaseFullResource;
 use App\Models\Project;
 use App\Models\Release;
-use App\Models\Scopes\ActiveScope;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -40,8 +40,8 @@ class ReleaseController extends Controller
             ->allowedFilters([
                 AllowedFilter::exact('project_id'),
             ])
-            ->withGlobalScope('active', new ActiveScope)
             ->allowedSorts('id')
+            ->where('status', StatusEnum::Approved)
             ->with('user')
             ->fastPaginate(20);
 
@@ -61,6 +61,7 @@ class ReleaseController extends Controller
             ...$request->safe()->except('file_path'),
             'user_id' => Auth::id(),
             'version_code' => $versionCode,
+            'status' => StatusEnum::Pending,
         ]);
 
         $release->addMediaFromDisk($request->input('file_path'))->toMediaCollection('file');

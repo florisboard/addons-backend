@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\StatusEnum;
 use App\Models\Project;
 use App\Models\Review;
 use App\Models\User;
@@ -61,7 +62,7 @@ describe('Update', function () {
         $this->putJson(route('reviews.update', [$review]), $data)
             ->assertOk();
 
-        expect($review->refresh()->is_active)->toBeFalse();
+        expect($review->refresh()->status)->toBe(StatusEnum::Pending);
     });
 
     test('users cannot update other review', function () {

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\ChangeProposalStatusEnum;
+use App\Enums\StatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -16,7 +16,7 @@ class ChangeProposal extends Model
     use HasFactory;
 
     protected $casts = [
-        'status' => ChangeProposalStatusEnum::class,
+        'status' => StatusEnum::class,
         'data' => 'array',
     ];
 

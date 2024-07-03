@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Enums\StatusEnum;
 use App\Models\Category;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -14,6 +15,13 @@ class DatabaseSeeder extends Seeder
         $imageId = fake()->randomNumber(1, 1000);
 
         return "https://picsum.photos/seed/$imageId/$with/$height";
+    }
+
+    public static function randomStatus(): StatusEnum
+    {
+        return app()->runningUnitTests()
+            ? StatusEnum::Approved
+            : StatusEnum::from(StatusEnum::randomValue());
     }
 
     /**
