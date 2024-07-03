@@ -26,9 +26,9 @@ class EditChangeProposal extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-//            Actions\DeleteAction::make(),
+            //            Actions\DeleteAction::make(),
             Actions\Action::make('merge')
-                ->hidden(fn(ChangeProposal $changeProposal) => $changeProposal->status !== ChangeProposalStatusEnum::Approved)
+                ->hidden(fn (ChangeProposal $changeProposal) => $changeProposal->status !== ChangeProposalStatusEnum::Approved)
                 ->action(function (ChangeProposal $changeProposal) {
                     $this->mergeChangeProposal($changeProposal);
                 })

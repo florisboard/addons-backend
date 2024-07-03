@@ -9,9 +9,7 @@ use Random\RandomException;
 
 class UserObserver
 {
-    public function __construct(private readonly DomainService $domainService)
-    {
-    }
+    public function __construct(private readonly DomainService $domainService) {}
 
     /**
      * Handle the User "created" event.
