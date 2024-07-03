@@ -4,7 +4,9 @@ namespace App\Filament\Resources;
 
 use App\Enums\ReportTypeEnum;
 use App\Filament\Custom\CustomResource;
-use App\Filament\Forms\Layouts\BasicForm;
+use App\Filament\Forms\Layouts\BasicSection;
+use App\Filament\Forms\Layouts\ComplexForm;
+use App\Filament\Forms\Layouts\StatusSection;
 use App\Filament\Resources\ReportResource\Pages;
 use App\Filament\Tables\Components\TimestampsColumn;
 use App\Models\Project;
@@ -24,7 +26,7 @@ class ReportResource extends CustomResource
 
     public static function form(Form $form): Form
     {
-        return BasicForm::make($form, [
+        $basicSection = BasicSection::make([
             Forms\Components\Select::make('user_id')
                 ->searchable()
                 ->preload()
@@ -51,6 +53,12 @@ class ReportResource extends CustomResource
                         ->titleAttribute('id'),
                 ]),
         ]);
+
+        $statusSection = StatusSection::make([
+            Forms\Components\Toggle::make('is_reviewed'),
+        ]);
+
+        return ComplexForm::make($form, [$basicSection], [$statusSection]);
     }
 
     public static function table(Table $table): Table

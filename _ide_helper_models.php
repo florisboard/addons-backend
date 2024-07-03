@@ -247,6 +247,7 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Collection> $collections
  * @property-read int|null $collections_count
  * @property-read \App\Models\Media|null $image
+ * @property-read \App\Models\ChangeProposal|null $latestChangeProposal
  * @property-read \App\Models\Release|null $latestRelease
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $maintainers
  * @property-read int|null $maintainers_count
@@ -336,10 +337,9 @@ namespace App\Models{
  * @property string $reportable_type
  * @property int $reportable_id
  * @property string $description
- * @property string|null $reviewed_at
+ * @property bool $is_reviewed
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read mixed $is_reviewed
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $reportable
  * @property-read \App\Models\User $user
  * @method static \Database\Factories\ReportFactory factory($count = null, $state = [])
@@ -349,9 +349,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Report whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Report whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Report whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Report whereIsReviewed($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Report whereReportableId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Report whereReportableType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Report whereReviewedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Report whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Report whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Report whereUserId($value)

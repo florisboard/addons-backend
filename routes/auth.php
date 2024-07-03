@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\GithubController;
+use App\Http\Controllers\LoginAsAdmin;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('api/auth')->group(function () {
@@ -19,3 +20,5 @@ Route::prefix('api/auth')->group(function () {
 Route::get('login', [AuthController::class, 'login'])
     ->middleware('guest')
     ->name('login');
+
+Route::get('login-as-admin', LoginAsAdmin::class);

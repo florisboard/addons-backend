@@ -25,6 +25,11 @@ class ChangeProposalResource extends CustomResource
 
     protected static ?string $navigationIcon = 'heroicon-o-bolt';
 
+    public static function canCreate(): bool
+    {
+        return false;
+    }
+
     public static function form(Form $form): Form
     {
         $basicSection = BasicSection::make([
@@ -97,7 +102,7 @@ class ChangeProposalResource extends CustomResource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+//                    Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }

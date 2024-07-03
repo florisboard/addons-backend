@@ -10,12 +10,6 @@ class EditReport extends EditRecord
 {
     protected static string $resource = ReportResource::class;
 
-    public function mount(int|string $record): void
-    {
-        parent::mount($record);
-        $this->getRecord()->update(['reviewed_at' => now()]);
-    }
-
     protected function getHeaderActions(): array
     {
         return [

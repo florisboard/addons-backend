@@ -20,7 +20,7 @@ class ReportFactory extends Factory
         return [
             'type' => ReportTypeEnum::randomValue(),
             'description' => fake()->realText(),
-            'reviewed_at' => fake()->boolean() ? fake()->dateTime() : null,
+            'is_reviewed' => fake()->boolean(),
         ];
     }
 }

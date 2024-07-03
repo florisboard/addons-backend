@@ -13,22 +13,26 @@ class EditChangeProposal extends EditRecord
 {
     protected static string $resource = ChangeProposalResource::class;
 
+    protected function mergeChangeProposal(ChangeProposal $changeProposal): void
+    {
+        $changeProposal->model()->update($changeProposal->data);
+
+        Notification::make()
+            ->title('Change Proposal merged successfully.')
+            ->success()
+            ->send();
+    }
+
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+//            Actions\DeleteAction::make(),
             Actions\Action::make('merge')
-                ->hidden(fn (ChangeProposal $changeProposal) => $changeProposal->status !== ChangeProposalStatusEnum::Approved)
+                ->hidden(fn(ChangeProposal $changeProposal) => $changeProposal->status !== ChangeProposalStatusEnum::Approved)
                 ->action(function (ChangeProposal $changeProposal) {
-                    $changeProposal->model()->update($changeProposal->data);
-
-                    Notification::make()
-                        ->title('Project Updated.')
-                        ->success()
-                        ->send();
+                    $this->mergeChangeProposal($changeProposal);
                 })
                 ->requiresConfirmation(),
-
         ];
     }
 }

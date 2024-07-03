@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('type');
             $table->morphs('reportable');
             $table->text('description');
-            $table->timestamp('reviewed_at')->nullable();
+            $table->boolean('is_reviewed')->default(false);
             $table->timestamps();
         });
     }
