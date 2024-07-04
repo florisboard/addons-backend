@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Project;
 
+use App\Enums\StatusEnum;
 use App\Http\Resources\Media\ImageResource;
 use App\Http\Resources\Release\ReleaseResource;
 use App\Models\Project;
@@ -30,6 +31,7 @@ class ProjectResource extends JsonResource
             'short_description' => $this->short_description,
             'type' => $this->type,
             'is_recommended' => $this->is_recommended,
+            /** @var StatusEnum */
             'status' => $this->status,
             /** @var string */
             'created_at' => $this->created_at,

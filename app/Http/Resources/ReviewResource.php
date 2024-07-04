@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Enums\StatusEnum;
 use App\Http\Resources\User\UserResource;
 use App\Models\Review;
 use Illuminate\Http\Request;
@@ -23,6 +24,8 @@ class ReviewResource extends JsonResource
             'description' => $this->description,
             /** @var int */
             'score' => $this->score,
+            /** @var StatusEnum */
+            'status' => $this->status,
             'project_id' => $this->project_id,
             /** @var string */
             'created_at' => $this->created_at,

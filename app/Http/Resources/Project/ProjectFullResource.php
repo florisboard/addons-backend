@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Project;
 
 use App\Enums\ProjectTypeEnum;
+use App\Enums\StatusEnum;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\Media\ImageResource;
 use App\Http\Resources\Release\ReleaseFullResource;
@@ -47,6 +48,7 @@ class ProjectFullResource extends JsonResource
                 'source_code' => data_get($this->links, 'source_code'),
             ],
             'is_recommended' => $this->is_recommended,
+            /** @var StatusEnum */
             'status' => $this->status,
             /** @var string */
             'created_at' => $this->created_at,
