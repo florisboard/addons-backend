@@ -106,6 +106,21 @@ class ProjectService
         });
     }
 
+    public function isMaintainer(int $userId, int $projectId): bool
+    {
+        $project = Project::find($projectId);
+
+        if (! $project) {
+            return false;
+        }
+
+        if ($project->user_id === $userId) {
+            return true;
+        }
+
+        return $project->maintainers()->where('user_id', $userId)->exists();
+    }
+
     /**
      * @return array{domain: string, name: string}
      */

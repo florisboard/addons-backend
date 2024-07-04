@@ -7,7 +7,9 @@ use App\Http\Requests\Release\StoreReleaseRequest;
 use App\Http\Resources\Release\ReleaseFullResource;
 use App\Models\Project;
 use App\Models\Release;
+use App\Services\ProjectService;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -19,7 +21,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ReleaseController extends Controller
 {
-    public function __construct()
+    public function __construct(private readonly ProjectService $projectService)
     {
         $this->authorizeResource(Release::class);
     }
@@ -36,12 +38,18 @@ class ReleaseController extends Controller
             'sort' => ['nullable', 'string', Rule::in('id', '-id')],
         ]);
 
+        $isMaintainer = Auth::check()
+            && $request->input('filter.project.id')
+            && $this->projectService->isMaintainer(Auth::id(), $request->input('filter.project_id'));
+
         $releases = QueryBuilder::for(Release::class)
             ->allowedFilters([
                 AllowedFilter::exact('project_id'),
             ])
             ->allowedSorts('id')
-            ->where('status', StatusEnum::Approved)
+            ->unless($isMaintainer, function (Builder $builder) {
+                return $builder->where('status', StatusEnum::Approved);
+            })
             ->with('user')
             ->fastPaginate(20);
 

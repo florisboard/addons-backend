@@ -47,7 +47,7 @@ class ReviewController extends Controller
                 AllowedFilter::exact('score'),
             ])
             ->allowedSorts('id')
-            ->when($request->input('filter.user_id') !== Auth::id(), function (Builder $builder) {
+            ->when(Auth::guest() || $request->input('filter.user_id') != Auth::id(), function (Builder $builder) {
                 $builder->where('status', StatusEnum::Approved);
             })
             ->with('user')

@@ -89,7 +89,10 @@ class ProjectController extends Controller
             'category',
             'user',
             'userReview.user',
-            'reviews' => fn (HasMany $builder) => $builder->with('user')->take(10),
+            'reviews' => fn(HasMany $builder) => $builder
+                ->with('user')
+                ->where('status', StatusEnum::Approved)
+                ->take(10),
         ]);
         $project->loadAvg('reviews', 'score');
         $project->loadSum('releases', 'downloads_count');
