@@ -2,9 +2,9 @@
 
 namespace App\Http\Resources\Release;
 
+use App\Enums\StatusEnum;
 use App\Http\Resources\User\UserResource;
 use App\Models\Release;
-use App\Enums\StatusEnum;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 

@@ -3,12 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class LoginAsAdminController extends Controller
+class LoginAsController extends Controller
 {
-    public function __invoke(Request $request): string
+    public function admin(): string
     {
         abort_unless(app()->isLocal(), 404);
 
@@ -17,5 +16,15 @@ class LoginAsAdminController extends Controller
         Auth::loginUsingId($user->id);
 
         return "You're logged in as an admin.";
+    }
+
+    public function user(int $id): string
+    {
+        abort_unless(app()->isLocal(), 404);
+
+        User::findOrFail($id);
+        Auth::loginUsingId($id);
+
+        return "You're logged in as $id.";
     }
 }
