@@ -26,8 +26,7 @@ class UpdateProjectRequest extends FormRequest
      */
     public function rules(): array
     {
-
-        return [
+        $base = [
             'category_id' => ['bail', 'required', 'numeric', Rule::exists(Category::class, 'id')],
             'title' => ['required', 'string', 'min:3', 'max:255'],
             'type' => ['required', Rule::enum(ProjectTypeEnum::class)],
@@ -35,9 +34,17 @@ class UpdateProjectRequest extends FormRequest
             'description' => ['required', 'string', 'min:3', 'max:1024'],
             'links' => ['required', 'array:source_code'],
             'links.source_code' => ['required', 'string', 'url', 'max:255'],
-            /** @var int[] */
-            'maintainers' => ['bail', 'nullable', 'array', 'between:0,5'],
-            'maintainers.*' => ['bail', 'required', 'numeric', Rule::notIn([Auth::id()]), Rule::exists(User::class, 'id')],
         ];
+
+        /** @var Project $project */
+        $project = $this->route('project');
+
+        if ($project?->user_id === Auth::Id()) {
+            /** @var int[] */
+            $base['maintainers'] = ['bail', 'nullable', 'array', 'between:0,5'];
+            $base['maintainers.*'] = ['bail', 'required', 'numeric', Rule::notIn([Auth::id()]), Rule::exists(User::class, 'id')];
+        }
+
+        return $base;
     }
 }

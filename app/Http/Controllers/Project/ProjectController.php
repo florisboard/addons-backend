@@ -9,6 +9,7 @@ use App\Http\Requests\Project\UpdateProjectRequest;
 use App\Http\Resources\Project\ProjectFullResource;
 use App\Http\Resources\Project\ProjectResource;
 use App\Models\Project;
+use App\Services\ProjectService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\JsonResponse;
@@ -22,7 +23,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ProjectController extends Controller
 {
-    public function __construct()
+    public function __construct(private readonly ProjectService $projectService)
     {
         $this->authorizeResource(Project::class);
     }
@@ -81,6 +82,10 @@ class ProjectController extends Controller
 
     public function show(Project $project): ProjectFullResource
     {
+        if (Auth::check() && $this->projectService->isMaintainer(Auth::id(), $project)) {
+            $project->load('latestChangeProposal');
+        }
+
         $project->load([
             'image',
             'screenshots',
@@ -89,7 +94,7 @@ class ProjectController extends Controller
             'category',
             'user',
             'userReview.user',
-            'reviews' => fn(HasMany $builder) => $builder
+            'reviews' => fn (HasMany $builder) => $builder
                 ->with('user')
                 ->where('status', StatusEnum::Approved)
                 ->take(10),
@@ -120,9 +125,11 @@ class ProjectController extends Controller
 
     public function update(UpdateProjectRequest $request, Project $project): ProjectFullResource
     {
-        $project->update($request->safe()->except(['maintainers']));
-
-        $project->maintainers()->sync($request->input('maintainers'));
+        $project->changeProposals()->create([
+            'data' => $request->validated(),
+            'user_id' => Auth::id(),
+            'status' => StatusEnum::Pending,
+        ]);
 
         return $this->show($project);
     }

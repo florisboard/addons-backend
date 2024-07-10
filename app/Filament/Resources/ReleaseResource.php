@@ -54,7 +54,7 @@ class ReleaseResource extends CustomResource
                 ->preload()
                 ->optionsLimit(50)
                 ->hiddenOn([ProjectResource\RelationManagers\ReleasesRelationManager::class])
-                ->relationship('project', 'title')
+                ->relationship('project', 'package_name')
                 ->required(),
             Forms\Components\MarkdownEditor::make('description')
                 ->columnSpanFull()

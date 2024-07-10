@@ -5,6 +5,7 @@ namespace App\Http\Resources\Project;
 use App\Enums\ProjectTypeEnum;
 use App\Enums\StatusEnum;
 use App\Http\Resources\CategoryResource;
+use App\Http\Resources\ChangeProposalResource;
 use App\Http\Resources\Media\ImageResource;
 use App\Http\Resources\Release\ReleaseFullResource;
 use App\Http\Resources\ReviewResource;
@@ -80,6 +81,7 @@ class ProjectFullResource extends JsonResource
             'four_reviews_count' => $this->four_reviews_count,
             /** @var int */
             'five_reviews_count' => $this->five_reviews_count,
+            'latest_change_proposal' => new ChangeProposalResource($this->whenLoaded('latestChangeProposal')),
         ];
     }
 }

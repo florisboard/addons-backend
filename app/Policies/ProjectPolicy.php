@@ -5,10 +5,13 @@ namespace App\Policies;
 use App\Enums\StatusEnum;
 use App\Models\Project;
 use App\Models\User;
+use App\Services\ProjectService;
 use Illuminate\Auth\Access\Response;
 
 class ProjectPolicy
 {
+    public function __construct(private readonly ProjectService $projectService) {}
+
     /**
      * Determine whether the user can view any models.
      */
@@ -38,14 +41,19 @@ class ProjectPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Project $project): bool
+    public function update(User $user, Project $project): Response
     {
-        $isMaintainer = $project
-            ->maintainers()
-            ->where('user_id', $user->id)
-            ->exists();
+        if ($project->status === StatusEnum::Pending) {
+            return Response::deny("You can't update the project if it's in Pending state.");
+        }
 
-        return $user->id === $project->user_id || $isMaintainer;
+        if ($project->latestChangeProposal?->status === StatusEnum::Pending) {
+            return Response::deny("You can't update the project if there's a change proposal in Pending state.");
+        }
+
+        return $this->projectService->isMaintainer($user->id, $project)
+            ? Response::allow()
+            : Response::deny("You're not a maintainer of this project");
     }
 
     /**

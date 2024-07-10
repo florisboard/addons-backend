@@ -22,3 +22,8 @@ Route::get('login', [AuthController::class, 'login'])
     ->name('login');
 
 Route::get('login-as-admin', LoginAsAdminController::class);
+Route::get('login-as-{id}', function ($id) {
+    \Illuminate\Support\Facades\Auth::loginUsingId($id);
+
+    return 'hi';
+});

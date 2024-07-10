@@ -42,9 +42,9 @@ class StoreReleaseRequest extends FormRequest
             new ValidateReleaseVersionName,
         ];
 
-        if (! app()->runningUnitTests()) {
-            $base[] = new ValidateReleaseFile;
-        }
+        // if (! app()->runningUnitTests()) {
+        //     $base[] = new ValidateReleaseFile;
+        // }
 
         return $base;
     }

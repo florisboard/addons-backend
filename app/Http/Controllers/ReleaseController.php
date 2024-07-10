@@ -39,7 +39,7 @@ class ReleaseController extends Controller
         ]);
 
         $isMaintainer = Auth::check()
-            && $request->input('filter.project.id')
+            && $request->filled('filter.project_id')
             && $this->projectService->isMaintainer(Auth::id(), $request->input('filter.project_id'));
 
         $releases = QueryBuilder::for(Release::class)

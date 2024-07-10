@@ -106,9 +106,11 @@ class ProjectService
         });
     }
 
-    public function isMaintainer(int $userId, int $projectId): bool
+    public function isMaintainer(int $userId, int|Project $project): bool
     {
-        $project = Project::find($projectId);
+        if (is_int($project)) {
+            $project = Project::find($project);
+        }
 
         if (! $project) {
             return false;
@@ -119,18 +121,6 @@ class ProjectService
         }
 
         return $project->maintainers()->where('user_id', $userId)->exists();
-    }
-
-    /**
-     * @return array{domain: string, name: string}
-     */
-    public function extractPackageName(string $packageName): array
-    {
-        $segments = explode('.', $packageName);
-
-        $domain = collect($segments)->slice(0, -1)->reverse()->implode('.');
-
-        return ['domain' => $domain, 'name' => end($segments)];
     }
 
     public function convertToPackageName(string $name, string $domain): string

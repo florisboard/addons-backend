@@ -44,7 +44,7 @@ class ReviewResource extends CustomResource
                 ->preload()
                 ->optionsLimit(50)
                 ->hiddenOn([ProjectResource\RelationManagers\ReviewsRelationManager::class])
-                ->relationship('project', 'title')
+                ->relationship('project', 'package_name')
                 ->required(),
             Forms\Components\TextInput::make('title')
                 ->maxLength(255)
