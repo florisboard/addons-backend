@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Project;
 use App\Models\Review;
 use App\Models\User;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Http\Request;
 
 class ReviewPolicy
@@ -36,9 +37,11 @@ class ReviewPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(User $user): Response
     {
-        return ! $user->reviews()->where('project_id', $this->project?->id)->exists();
+        return $user->reviews()->where('project_id', $this->project?->id)->exists()
+            ? Response::deny('You already have a review for this project')
+            : Response::allow();
     }
 
     /**
