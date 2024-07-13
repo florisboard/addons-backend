@@ -28,7 +28,7 @@ class StoreReleaseRequest extends FormRequest
     {
         return [
             'description' => ['required', 'string', 'min:3', 'max:1024'],
-            'version_name' => ['required', 'string', 'regex:' . static::$versionNameRegex],
+            'version_name' => ['required', 'string', 'regex:'.static::$versionNameRegex],
             'file_path' => ['bail', 'required', new FileUpload(validExtensions: ['flex'])],
         ];
     }
@@ -42,7 +42,7 @@ class StoreReleaseRequest extends FormRequest
             new ValidateReleaseVersionName,
         ];
 
-        if (!app()->runningUnitTests()) {
+        if (! app()->runningUnitTests()) {
             $base[] = new ValidateReleaseFile;
         }
 

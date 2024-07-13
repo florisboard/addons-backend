@@ -247,6 +247,7 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Collection> $collections
  * @property-read int|null $collections_count
  * @property-read \App\Models\Media|null $image
+ * @property-read \App\Models\Release|null $latestApprovedRelease
  * @property-read \App\Models\ChangeProposal|null $latestChangeProposal
  * @property-read \App\Models\Release|null $latestRelease
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $maintainers

@@ -72,7 +72,9 @@ class ReleaseController extends Controller
             'status' => StatusEnum::UnderReview,
         ]);
 
-        $release->addMediaFromDisk($request->input('file_path'))->toMediaCollection('file');
+        $release
+            ->addMediaFromDisk($request->input('file_path'))
+            ->toMediaCollection('file');
 
         return new JsonResponse(new ReleaseFullResource($release), 201);
     }
