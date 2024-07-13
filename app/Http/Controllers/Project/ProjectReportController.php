@@ -26,7 +26,7 @@ class ProjectReportController extends Controller
         $project->reports()->create([
             ...$request->validated(),
             'user_id' => Auth::id(),
-            'status' => StatusEnum::Pending,
+            'status' => StatusEnum::Draft,
         ]);
 
         return new JsonResponse([

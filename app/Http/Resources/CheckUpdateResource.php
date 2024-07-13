@@ -22,7 +22,7 @@ class CheckUpdateResource extends JsonResource
         return [
             'project' => new ProjectSlimResource($this),
             /** @var ReleaseFullResource|null */
-            'latest_release' => new ReleaseFullResource($this->latestRelease),
+            'latest_release' => new ReleaseFullResource($this->latestApprovedRelease),
         ];
     }
 }

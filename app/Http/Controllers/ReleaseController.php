@@ -61,7 +61,7 @@ class ReleaseController extends Controller
      */
     public function store(StoreReleaseRequest $request, Project $project): JsonResponse
     {
-        $previousVersionCode = $project->latestRelease?->version_code;
+        $previousVersionCode = $project->latestApprovedRelease?->version_code;
         $versionCode = $previousVersionCode ? $previousVersionCode + 1 : 1;
 
         /** @var Release $release */
@@ -69,23 +69,12 @@ class ReleaseController extends Controller
             ...$request->safe()->except('file_path'),
             'user_id' => Auth::id(),
             'version_code' => $versionCode,
-            'status' => StatusEnum::Pending,
+            'status' => StatusEnum::UnderReview,
         ]);
 
         $release->addMediaFromDisk($request->input('file_path'))->toMediaCollection('file');
 
         return new JsonResponse(new ReleaseFullResource($release), 201);
-    }
-
-    public function update(Request $request, Release $release): ReleaseFullResource
-    {
-        $validated = $request->validate([
-            'description' => ['required', 'string', 'min:3', 'max:1024'],
-        ]);
-
-        $release->update($validated);
-
-        return new ReleaseFullResource($release);
     }
 
     /**

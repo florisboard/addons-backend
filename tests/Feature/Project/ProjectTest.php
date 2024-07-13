@@ -21,11 +21,11 @@ describe('Index', function () {
 
     test('users can get their pending projects', function () {
         Sanctum::actingAs($user = User::factory()->create());
-        Project::factory()->for($user)->create(['status' => StatusEnum::Pending]);
+        Project::factory()->for($user)->create(['status' => StatusEnum::UnderReview]);
 
         $this->getJson(route('projects.index', ['filter' => ['user_id' => $user->id]]))
             ->assertOk()
-            ->assertJsonFragment(['status' => StatusEnum::Pending]);
+            ->assertJsonFragment(['status' => StatusEnum::UnderReview]);
     });
 });
 
@@ -39,12 +39,20 @@ describe('Show', function () {
 });
 
 describe('Delete', function () {
-    test('users can delete their project', function () {
+    test('users can delete their project when it is in draft', function () {
         Sanctum::actingAs($user = User::factory()->create());
-        $project = Project::factory()->for($user)->create();
+        $project = Project::factory()->for($user)->create(['status' => StatusEnum::Draft]);
 
         $this->deleteJson(route('projects.destroy', [$project]))
             ->assertOk();
+    });
+
+    test('users cannot delete their project when it is not in draft', function () {
+        Sanctum::actingAs($user = User::factory()->create());
+        $project = Project::factory()->for($user)->create(['status' => StatusEnum::UnderReview]);
+
+        $this->deleteJson(route('projects.destroy', [$project]))
+            ->assertForbidden();
     });
 
     test('users cannot delete other project', function () {
@@ -137,5 +145,38 @@ describe('Create', function () {
 
         $this->postJson(route('projects.store'), $data)
             ->assertJsonValidationErrorFor('maintainers.0');
+    });
+});
+
+describe('Publish', function () {
+    test('users can publish a project in draft', function () {
+        Sanctum::actingAs($user = User::factory()->create());
+        $project = Project::factory()
+            ->for($user)
+            ->hasReleases()
+            ->create(['status' => StatusEnum::Draft]);
+
+        $this->postJson(route('projects.publish', [$project]))
+            ->assertOk();
+
+        expect($project->refresh()->status)->toBe(StatusEnum::UnderReview);
+    });
+
+    test('users cannot publish a project when it is not in draft', function () {
+        Sanctum::actingAs($user = User::factory()->create());
+        $project = Project::factory()
+            ->for($user)
+            ->create(['status' => StatusEnum::UnderReview]);
+
+        $this->postJson(route('projects.publish', [$project]))
+            ->assertForbidden();
+    });
+
+    test('users cannot publish a release from another project', function () {
+        Sanctum::actingAs(User::factory()->create());
+        $project = Project::factory()->create(['status' => StatusEnum::Draft]);
+
+        $this->postJson(route('projects.publish', [$project]))
+            ->assertForbidden();
     });
 });

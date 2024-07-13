@@ -44,7 +44,7 @@ class ProjectResource extends JsonResource
             /** @var int */
             'releases_sum_downloads_count' => (int) $this->releases_sum_downloads_count,
             /** @var ReleaseResource|null */
-            'latest_release' => new ReleaseResource($this->latestRelease),
+            'latest_release' => new ReleaseResource($this->latestApprovedRelease),
             /** @var int */
             'reviews_count' => $this->reviews_count,
         ];

@@ -31,7 +31,7 @@ class CheckUpdateController extends Controller
         $projects = Project::query()
             ->where('status', StatusEnum::Approved)
             ->whereIn('package_name', $request->input('projects'))
-            ->with('latestRelease.user')
+            ->with('latestApprovedRelease.user')
             ->get();
 
         return [

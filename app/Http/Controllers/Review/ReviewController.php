@@ -64,7 +64,7 @@ class ReviewController extends Controller
         $review = $project->reviews()->create([
             ...$request->validated(),
             'user_id' => Auth::id(),
-            'status' => StatusEnum::Pending,
+            'status' => StatusEnum::UnderReview,
         ]);
 
         $review->load('user');
@@ -86,7 +86,7 @@ class ReviewController extends Controller
 
         $review->update([
             ...$request->validated(),
-            'status' => $shouldBeReviewedAgain ? StatusEnum::Pending : $review->status,
+            'status' => $shouldBeReviewedAgain ? StatusEnum::UnderReview : $review->status,
         ]);
 
         return new JsonResponse(['message' => 'Review updated successfully.']);

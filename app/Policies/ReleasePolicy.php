@@ -45,7 +45,7 @@ class ReleasePolicy
             return Response::deny("You're not a maintainer of this project");
         }
 
-        if ($this->project->releases()->where('status', StatusEnum::Pending)->exists()) {
+        if ($this->project->releases()->where('status', StatusEnum::UnderReview)->exists()) {
             return Response::deny('You already have a pending release.');
         }
 

@@ -26,7 +26,7 @@ class ReviewReportController extends Controller
         $review->reports()->create([
             ...$request->validated(),
             'user_id' => Auth::id(),
-            'status' => StatusEnum::Pending,
+            'status' => StatusEnum::UnderReview,
         ]);
 
         return new JsonResponse([

@@ -26,7 +26,7 @@ class ReviewResource extends CustomResource
 
     public static function getNavigationBadge(): ?string
     {
-        return (string) Review::where('status', StatusEnum::Pending)->count();
+        return (string) Review::where('status', StatusEnum::UnderReview)->count();
     }
 
     public static function form(Form $form): Form

@@ -29,7 +29,7 @@ class ProjectResource extends CustomResource
 
     public static function getNavigationBadge(): ?string
     {
-        return (string) Project::where('status', StatusEnum::Pending)->count();
+        return (string) Project::where('status', StatusEnum::UnderReview)->count();
     }
 
     public static function form(Form $form): Form

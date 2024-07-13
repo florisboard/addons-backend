@@ -36,7 +36,7 @@ class ProjectService
             $ids = $this->choosePicksOfTheDayIds();
 
             $projects = Project::query()
-                ->with(['image', 'latestRelease'])
+                ->with(['image', 'latestApprovedRelease'])
                 ->where('status', StatusEnum::Approved)
                 ->withCount('reviews')
                 ->withSum('releases', 'downloads_count')
@@ -56,7 +56,7 @@ class ProjectService
                 ->groupBy('project_id');
 
             $projects = Project::query()
-                ->with(['image', 'latestRelease'])
+                ->with(['image', 'latestApprovedRelease'])
                 ->where('status', StatusEnum::Approved)
                 ->withCount('reviews')
                 ->withSum('releases', 'downloads_count')
@@ -76,7 +76,7 @@ class ProjectService
     {
         return Cache::remember('projects.latestProjects', now()->addMinutes(5), function () {
             $projects = Project::query()
-                ->with(['image', 'latestRelease'])
+                ->with(['image', 'latestApprovedRelease'])
                 ->where('status', StatusEnum::Approved)
                 ->withCount('reviews')
                 ->withSum('releases', 'downloads_count')
@@ -93,7 +93,7 @@ class ProjectService
     {
         return Cache::remember('projects.recommended', now()->addMinutes(5), function () {
             $projects = Project::query()
-                ->with(['image', 'latestRelease'])
+                ->with(['image', 'latestApprovedRelease'])
                 ->where('status', StatusEnum::Approved)
                 ->withCount('reviews')
                 ->withSum('releases', 'downloads_count')

@@ -9,13 +9,11 @@ use Illuminate\Auth\Access\Response;
 
 class DomainPolicy
 {
-    public function __construct(private readonly DomainService $domainService)
-    {
-    }
+    public function __construct(private readonly DomainService $domainService) {}
 
     public function isTheOwner(User $user, Domain $domain): bool
     {
-        return $user->id === $domain->user_id && !$this->domainService->isInExcludedDomains($domain->name);
+        return $user->id === $domain->user_id && ! $this->domainService->isInExcludedDomains($domain->name);
     }
 
     /**

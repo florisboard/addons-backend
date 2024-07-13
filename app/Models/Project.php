@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\ProjectTypeEnum;
 use App\Enums\StatusEnum;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -105,8 +106,19 @@ class Project extends Model implements HasMedia
     {
         return $this->releases()
             ->one()
-            ->latestOfMany()
-            ->where('status', StatusEnum::Approved);
+            ->latestOfMany();
+    }
+
+    /**
+     * @return HasOne<Release>
+     */
+    public function latestApprovedRelease(): HasOne
+    {
+        return $this->releases()
+            ->one()
+            ->ofMany(['id' => 'MAX'], function (Builder $query) {
+                $query->where('status', StatusEnum::Approved);
+            });
     }
 
     /**

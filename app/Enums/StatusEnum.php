@@ -11,7 +11,9 @@ enum StatusEnum: string implements HasColor, HasLabel
 {
     use EnumConcern;
 
-    case Pending = 'PENDING';
+    case Draft = 'DRAFT';
+
+    case UnderReview = 'UNDER_REVIEW';
 
     case Approved = 'APPROVED';
 
@@ -25,9 +27,9 @@ enum StatusEnum: string implements HasColor, HasLabel
     public function getColor(): string
     {
         return match ($this) {
+            self::Draft, self::UnderReview => 'warning',
             self::Approved => 'primary',
             self::Rejected => 'danger',
-            self::Pending => 'warning',
         };
     }
 }

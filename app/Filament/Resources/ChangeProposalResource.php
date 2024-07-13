@@ -27,7 +27,7 @@ class ChangeProposalResource extends CustomResource
 
     public static function getNavigationBadge(): ?string
     {
-        return (string) ChangeProposal::where('status', StatusEnum::Pending)->count();
+        return (string) ChangeProposal::where('status', StatusEnum::UnderReview)->count();
     }
 
     public static function canCreate(): bool

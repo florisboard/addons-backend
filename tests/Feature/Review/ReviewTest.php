@@ -62,7 +62,7 @@ describe('Update', function () {
         $this->putJson(route('reviews.update', [$review]), $data)
             ->assertOk();
 
-        expect($review->refresh()->status)->toBe(StatusEnum::Pending);
+        expect($review->refresh()->status)->toBe(StatusEnum::UnderReview);
     });
 
     test('users cannot update other review', function () {

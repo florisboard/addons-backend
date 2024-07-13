@@ -63,28 +63,3 @@ describe('Create', function () {
             ->assertForbidden();
     });
 });
-
-describe('Update', function () {
-    test('users can update a release', function () {
-        Sanctum::actingAs($user = User::factory()->create());
-        $project = Project::factory()
-            ->has(Release::factory())
-            ->for($user)
-            ->create();
-
-        $data = Release::factory()->make()->toArray();
-
-        $this->putJson(route('releases.update', [$project->latestRelease]), $data)
-            ->assertOk();
-    });
-
-    test('users cannot update a release from another project', function () {
-        Sanctum::actingAs(User::factory()->create());
-        $release = Release::factory()->create();
-
-        $data = Release::factory()->make()->toArray();
-
-        $this->putJson(route('releases.update', [$release]), $data)
-            ->assertForbidden();
-    });
-})->skip();

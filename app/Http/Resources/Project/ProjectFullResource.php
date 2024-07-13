@@ -66,9 +66,10 @@ class ProjectFullResource extends JsonResource
             /** @var int */
             'releases_sum_downloads_count' => (int) $this->releases_sum_downloads_count,
             /** @var ReleaseFullResource|null */
-            'latest_release' => new ReleaseFullResource($this->latestRelease),
+            'latest_release' => new ReleaseFullResource($this->latestApprovedRelease),
             'reviews' => ReviewResource::collection($this->reviews),
             'user_review' => new ReviewResource($this->whenLoaded('userReview')),
+            'latest_change_proposal' => new ChangeProposalResource($this->whenLoaded('latestChangeProposal')),
             /** @var int */
             'reviews_count' => $this->reviews_count,
             /** @var int */
@@ -81,7 +82,6 @@ class ProjectFullResource extends JsonResource
             'four_reviews_count' => $this->four_reviews_count,
             /** @var int */
             'five_reviews_count' => $this->five_reviews_count,
-            'latest_change_proposal' => new ChangeProposalResource($this->whenLoaded('latestChangeProposal')),
         ];
     }
 }

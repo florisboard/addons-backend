@@ -27,7 +27,7 @@ class ReleaseResource extends CustomResource
 
     public static function getNavigationBadge(): ?string
     {
-        return (string) Release::where('status', StatusEnum::Pending)->count();
+        return (string) Release::where('status', StatusEnum::UnderReview)->count();
     }
 
     public static function form(Form $form): Form

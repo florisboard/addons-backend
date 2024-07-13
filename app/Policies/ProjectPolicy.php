@@ -7,10 +7,13 @@ use App\Models\Project;
 use App\Models\User;
 use App\Services\ProjectService;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Auth;
 
 class ProjectPolicy
 {
-    public function __construct(private readonly ProjectService $projectService) {}
+    public function __construct(private readonly ProjectService $projectService)
+    {
+    }
 
     /**
      * Determine whether the user can view any models.
@@ -38,16 +41,33 @@ class ProjectPolicy
         return true;
     }
 
+    public function publish(User $user, Project $project): Response
+    {
+        if ($project->status !== StatusEnum::Draft) {
+            return Response::deny("You can publish a project to get reviewed only when It's in Draft");
+        }
+
+        if (!$this->projectService->isMaintainer($user->id, $project)) {
+            return Response::deny('You are not the maintainer of this project');
+        }
+
+        if ($project->releases()->count() <= 0) {
+            return Response::deny('The project must have at least one release to get published and reviewed.');
+        }
+
+        return Response::allow();
+    }
+
     /**
      * Determine whether the user can update the model.
      */
     public function update(User $user, Project $project): Response
     {
-        if ($project->status === StatusEnum::Pending) {
+        if ($project->status === StatusEnum::UnderReview) {
             return Response::deny("You can't update the project if it's in Pending state.");
         }
 
-        if ($project->latestChangeProposal?->status === StatusEnum::Pending) {
+        if ($project->latestChangeProposal?->status === StatusEnum::UnderReview) {
             return Response::deny("You can't update the project if there's a change proposal in Pending state.");
         }
 
@@ -59,9 +79,17 @@ class ProjectPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Project $project): bool
+    public function delete(User $user, Project $project): Response
     {
-        return $user->id === $project->user_id;
+        if ($user->id !== $project->user_id) {
+            return Response::deny('You are not the owner of this project');
+        }
+
+        if ($project->status !== StatusEnum::Draft) {
+            return Response::deny("You can only delete a project if it's in Draft mode");
+        }
+
+        return Response::allow();
     }
 
     /**
