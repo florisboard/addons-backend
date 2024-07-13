@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Project;
 
+use App\Enums\StatusEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
 use App\Rules\FileUpload;
@@ -20,28 +21,24 @@ class ProjectImageController extends Controller
      */
     public function store(Request $request, Project $project): JsonResponse
     {
-        $this->authorize('update', $project);
+        $this->authorize('updateImages', $project);
 
         $request->validate([
             'image_path' => ['bail', 'required', 'string', new FileUpload(['image/png', 'image/jpeg'])],
         ]);
 
-        $project
-            ->addMediaFromDisk($request->input('image_path'))
-            ->toMediaCollection('image');
+        if ($project->status === StatusEnum::Draft) {
+            $project
+                ->addMediaFromDisk($request->input('image_path'))
+                ->toMediaCollection('image');
+        } else {
+            $changeProposal = $project->latestChangeProposal;
+            $changeProposal->update(['data' => [
+                ...$changeProposal->data,
+                'image_path' => $request->input('image_path'),
+            ]]);
+        }
 
         return new JsonResponse(['message' => 'Image has been saved successfully.']);
-    }
-
-    /**
-     * @throws AuthorizationException
-     */
-    public function destroy(Project $project): JsonResponse
-    {
-        $this->authorize('update', $project);
-
-        $project->image?->delete();
-
-        return new JsonResponse(['message' => 'Image has been deleted successfully.']);
     }
 }

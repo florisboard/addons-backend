@@ -27,12 +27,19 @@ class DeleteTempUploadedFiles extends Command
      */
     public function handle(): void
     {
-        foreach (Storage::directories('tmp') as $directory) {
-            $directoryLastModified = Carbon::createFromTimestamp(Storage::lastModified($directory));
+        $startTime = microtime(true);
+        foreach (Storage::files('tmp') as $file) {
+            $lastModified = Carbon::createFromTimestamp(Storage::lastModified($file));
 
-            if (now()->diffInHours($directoryLastModified) > 24) {
-                Storage::deleteDirectory($directory);
+            $this->info("Checking $file");
+            if (now()->diffInDays($lastModified) > 3) {
+                Storage::delete($file);
+                $this->info("Deleted $file");
             }
         }
+        $endTime = microtime(true);
+        $executionTime = $endTime - $startTime;
+
+        $this->info("[{$executionTime}] Deleting temp files finished successfully.");
     }
 }

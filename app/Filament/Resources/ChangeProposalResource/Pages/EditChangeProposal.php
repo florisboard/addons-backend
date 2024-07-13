@@ -9,6 +9,7 @@ use App\Models\Project;
 use Filament\Actions;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
 
 class EditChangeProposal extends EditRecord
 {
@@ -23,8 +24,27 @@ class EditChangeProposal extends EditRecord
         /** @var Project $project */
         $project = $changeProposal->model;
 
-        $project->update($collection->except('maintainers')->toArray());
+        $project->update($collection->except(['maintainers', 'image_path', 'screenshots_path'])->toArray());
         $project->maintainers()->sync($collection->get('maintainers'));
+
+        if ($collection->has('image_path')) {
+            try {
+                $project
+                    ->addMediaFromDisk($collection->get('image_path'))
+                    ->toMediaCollection('image');
+            } catch (FileDoesNotExist $e) {
+            }
+        }
+
+        if ($collection->has('screenshots_path')) {
+            foreach ($collection->get('screenshots_path') as $screenshot) {
+                try {
+                    $project->addMediaFromDisk($screenshot)
+                        ->toMediaCollection('screenshots');
+                } catch (FileDoesNotExist $e) {
+                }
+            }
+        }
 
         Notification::make()
             ->title('Change Proposal merged successfully.')

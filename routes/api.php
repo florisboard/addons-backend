@@ -34,7 +34,7 @@ Route::get('check-updates', CheckUpdateController::class)->name('updates.check')
 
 Route::apiResource('projects', ProjectController::class);
 Route::post('projects/{project}/publish', [ProjectController::class, 'publish'])->name('projects.publish');
-Route::apiSingleton('projects.image', ProjectImageController::class)->creatable()->only(['store', 'destroy']);
+Route::apiSingleton('projects.image', ProjectImageController::class)->creatable()->only(['store']);
 Route::apiResource('projects.screenshots', ScreenshotController::class)->only(['store', 'destroy']);
 
 Route::apiResource('categories', CategoryController::class)->only(['index', 'show']);

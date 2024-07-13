@@ -7,13 +7,10 @@ use App\Models\Project;
 use App\Models\User;
 use App\Services\ProjectService;
 use Illuminate\Auth\Access\Response;
-use Illuminate\Support\Facades\Auth;
 
 class ProjectPolicy
 {
-    public function __construct(private readonly ProjectService $projectService)
-    {
-    }
+    public function __construct(private readonly ProjectService $projectService) {}
 
     /**
      * Determine whether the user can view any models.
@@ -47,7 +44,7 @@ class ProjectPolicy
             return Response::deny("You can publish a project to get reviewed only when It's in Draft");
         }
 
-        if (!$this->projectService->isMaintainer($user->id, $project)) {
+        if (! $this->projectService->isMaintainer($user->id, $project)) {
             return Response::deny('You are not the maintainer of this project');
         }
 
@@ -74,6 +71,28 @@ class ProjectPolicy
         return $this->projectService->isMaintainer($user->id, $project)
             ? Response::allow()
             : Response::deny("You're not a maintainer of this project");
+    }
+
+    public function updateImages(User $user, Project $project): Response
+    {
+        if (! $this->projectService->isMaintainer($user->id, $project)) {
+            Response::deny("You're not a maintainer of this project");
+        }
+
+        if ($project->status !== StatusEnum::Draft && $project->latestChangeProposal?->status !== StatusEnum::UnderReview) {
+            return Response::deny("You can update the images when there's a UnderReview change proposal.");
+        }
+
+        return Response::allow();
+    }
+
+    public function deleteImages(User $user, Project $project): Response
+    {
+        if (! $this->projectService->isMaintainer($user->id, $project)) {
+            Response::deny("You're not a maintainer of this project");
+        }
+
+        return Response::allow();
     }
 
     /**

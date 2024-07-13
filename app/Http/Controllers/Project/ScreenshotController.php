@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Project;
 
+use App\Enums\StatusEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
 use App\Rules\FileUpload;
@@ -20,16 +21,24 @@ class ScreenshotController extends Controller
      */
     public function store(Request $request, Project $project): JsonResponse
     {
-        $this->authorize('update', $project);
+        $this->authorize('updateImages', $project);
 
         $request->validate([
             'screenshots_path' => ['required', 'array', 'max:5'],
             'screenshots_path.*' => ['bail', 'required', 'string', new FileUpload(['image/png', 'image/jpeg'])],
         ]);
 
-        foreach ($request->input('screenshots_path') as $screenshot) {
-            $project->addMediaFromDisk($screenshot)
-                ->toMediaCollection('screenshots');
+        if ($project->status === StatusEnum::Draft) {
+            foreach ($request->input('screenshots_path') as $screenshot) {
+                $project->addMediaFromDisk($screenshot)
+                    ->toMediaCollection('screenshots');
+            }
+        } else {
+            $changeProposal = $project->latestChangeProposal;
+            $changeProposal->update(['data' => [
+                ...$changeProposal->data,
+                'screenshots_path' => $request->input('screenshots_path'),
+            ]]);
         }
 
         return new JsonResponse(['message' => 'Screenshots has been saved successfully.']);
@@ -40,7 +49,7 @@ class ScreenshotController extends Controller
      */
     public function destroy(Project $project, int $media): JsonResponse
     {
-        $this->authorize('update', $project);
+        $this->authorize('deleteImages', $project);
 
         $project->screenshots()
             ->where('id', $media)

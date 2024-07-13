@@ -17,6 +17,8 @@ use Filament\Forms\Components\MorphToSelect;
 use Filament\Forms\Form;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\HtmlString;
 use Novadaemon\FilamentPrettyJson\PrettyJson;
 
 class ChangeProposalResource extends CustomResource
@@ -37,6 +39,8 @@ class ChangeProposalResource extends CustomResource
 
     public static function form(Form $form): Form
     {
+        $data = $form->getRecord()->data;
+
         $basicSection = BasicSection::make([
             Forms\Components\Textarea::make('reviewer_description')
                 ->minLength(3)
@@ -44,6 +48,27 @@ class ChangeProposalResource extends CustomResource
                 ->maxLength(1024),
             PrettyJson::make('data')
                 ->columnSpanFull(),
+            Forms\Components\Section::make('Images')
+                ->visible(function () use ($data) {
+                    return collect($data)
+                        ->hasAny(['image_path', 'screenshots_path']);
+                })
+                ->schema([
+                    Forms\Components\Placeholder::make('image')
+                        ->visible(fn () => collect($data)->has('image_path'))
+                        ->content(function () use ($data) {
+                            return new HtmlString('<img src="'.Storage::url(data_get($data, 'image_path')).'" />');
+                        }),
+                    Forms\Components\Placeholder::make('screenshots')
+                        ->visible(fn () => collect($data)->has('screenshots_path'))
+                        ->content(function () use ($data) {
+                            return new HtmlString(
+                                collect(data_get($data, 'screenshots_path'))->map(function ($path) {
+                                    return '<img src="'.Storage::url($path).'" />';
+                                })->implode(' ')
+                            );
+                        }),
+                ]),
             Forms\Components\Select::make('user_id')
                 ->searchable()
                 ->preload()
