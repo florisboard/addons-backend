@@ -13,16 +13,25 @@ use Laravel\Socialite\Facades\Socialite;
 
 class GithubController extends Controller
 {
+    private array $scopes = [];
+
     public function redirect(): JsonResponse
     {
-        $url = Socialite::with('github')->stateless()->redirect()->getTargetUrl();
+        $url = Socialite::with('github')
+            ->setScopes($this->scopes)
+            ->stateless()
+            ->redirect()
+            ->getTargetUrl();
 
         return new JsonResponse(['url' => $url]);
     }
 
     public function callback(): RedirectResponse
     {
-        $result = Socialite::with('github')->stateless()->user();
+        $result = Socialite::with('github')
+            ->setScopes($this->scopes)
+            ->stateless()
+            ->user();
 
         $user = User::firstOrCreate([
             'provider_id' => $result->getId(),
