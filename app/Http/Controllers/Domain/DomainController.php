@@ -55,6 +55,7 @@ class DomainController extends Controller
             'name' => [
                 'required',
                 'string',
+                'lowercase',
                 'min:3',
                 'max:255',
                 Rule::unique(Domain::class),
