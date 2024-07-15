@@ -126,6 +126,7 @@ class ProjectService
     public function convertToPackageName(string $name, string $domain): string
     {
         return Str::of($domain)
+            ->replace('-', '_')
             ->explode('.')
             ->reverse()
             ->push($name)

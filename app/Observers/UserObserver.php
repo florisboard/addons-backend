@@ -19,7 +19,7 @@ class UserObserver
     public function created(User $user): void
     {
         $user->domains()->firstOrCreate([
-            'name' => sprintf('%s.github.io', Str::of($user->username)->replace('-','_')->lower()),
+            'name' => sprintf('%s.github.io', Str::lower($user->username)),
             'verified_at' => now(),
             'verification_code' => $this->domainService->generateVerificationCode(),
         ]);
