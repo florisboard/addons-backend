@@ -11,10 +11,5 @@
 |
 */
 
-use App\Models\Project;
 
-require __DIR__.'/auth.php';
-
-Route::get('/test', function () {
-    dd(Project::find(20)->latestApprovedRelease);
-});
+require __DIR__ . '/auth.php';
