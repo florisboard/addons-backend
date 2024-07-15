@@ -23,7 +23,7 @@ class ReviewRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'min:3', 'max:50'],
-            'description' => ['required', 'string', 'min:3', 'max:2024'],
+            'description' => ['required', 'string', 'min:3', 'max:1024'],
             'score' => ['required', 'integer', 'between:1,5'],
         ];
     }

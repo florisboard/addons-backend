@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Project;
 
+use App\Enums\StatusEnum;
 use App\Http\Resources\Media\ImageResource;
 use App\Http\Resources\Release\ReleaseResource;
 use App\Models\Project;
@@ -30,7 +31,8 @@ class ProjectResource extends JsonResource
             'short_description' => $this->short_description,
             'type' => $this->type,
             'is_recommended' => $this->is_recommended,
-            'is_active' => $this->is_active,
+            /** @var StatusEnum */
+            'status' => $this->status,
             /** @var string */
             'created_at' => $this->created_at,
             /** @var string */
@@ -42,7 +44,7 @@ class ProjectResource extends JsonResource
             /** @var int */
             'releases_sum_downloads_count' => (int) $this->releases_sum_downloads_count,
             /** @var ReleaseResource|null */
-            'latest_release' => new ReleaseResource($this->latestRelease),
+            'latest_release' => new ReleaseResource($this->latestApprovedRelease),
             /** @var int */
             'reviews_count' => $this->reviews_count,
         ];

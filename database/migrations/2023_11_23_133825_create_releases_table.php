@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('releases', function (Blueprint $table) {
             $table->id();
             $table->foreignId('project_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->string('version_name');
             $table->unsignedBigInteger('version_code');
+            $table->string('status')->index();
             $table->text('description')->nullable();
             $table->unsignedBigInteger('downloads_count')->default(0);
             $table->timestamps();

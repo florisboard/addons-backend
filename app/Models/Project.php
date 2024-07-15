@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Enums\ProjectTypeEnum;
+use App\Enums\StatusEnum;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -21,11 +23,11 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  */
 class Project extends Model implements HasMedia
 {
-    use HasFactory , InteractsWithMedia , SoftDeletes;
+    use HasFactory, InteractsWithMedia, SoftDeletes;
 
     protected $casts = [
         'is_recommended' => 'boolean',
-        'is_active' => 'boolean',
+        'status' => StatusEnum::class,
         'type' => ProjectTypeEnum::class,
         'links' => 'json',
     ];
@@ -102,7 +104,21 @@ class Project extends Model implements HasMedia
      */
     public function latestRelease(): HasOne
     {
-        return $this->hasOne(Release::class)->latestOfMany();
+        return $this->releases()
+            ->one()
+            ->latestOfMany();
+    }
+
+    /**
+     * @return HasOne<Release>
+     */
+    public function latestApprovedRelease(): HasOne
+    {
+        return $this->releases()
+            ->one()
+            ->ofMany(['id' => 'MAX'], function (Builder $query) {
+                $query->where('status', StatusEnum::Approved);
+            });
     }
 
     /**
@@ -127,5 +143,21 @@ class Project extends Model implements HasMedia
     public function reports(): MorphMany
     {
         return $this->morphMany(Report::class, 'reportable');
+    }
+
+    /**
+     * @return MorphMany<ChangeProposal>
+     */
+    public function changeProposals(): MorphMany
+    {
+        return $this->morphMany(ChangeProposal::class, 'model');
+    }
+
+    /**
+     * @return MorphOne<ChangeProposal>
+     */
+    public function latestChangeProposal(): MorphOne
+    {
+        return $this->changeProposals()->one()->latestOfMany();
     }
 }

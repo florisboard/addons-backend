@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\StatusEnum;
 use App\Models\Project;
 use App\Models\Release;
 use App\Models\User;
@@ -21,7 +22,7 @@ describe('Download', function () {
     test('users can download a release', function () {
         Storage::fake();
 
-        $release = Release::factory()->create();
+        $release = Release::factory()->create(['status' => StatusEnum::Approved]);
 
         $file = UploadedFile::fake()->create('file.flex', 1);
         $release->addMedia($file)->toMediaCollection('file');
@@ -59,31 +60,6 @@ describe('Create', function () {
         $project = Project::factory()->create();
 
         $this->postJson(route('projects.releases.store', [$project]))
-            ->assertForbidden();
-    });
-});
-
-describe('Update', function () {
-    test('users can update a release', function () {
-        Sanctum::actingAs($user = User::factory()->create());
-        $project = Project::factory()
-            ->has(Release::factory())
-            ->for($user)
-            ->create();
-
-        $data = Release::factory()->make()->toArray();
-
-        $this->putJson(route('releases.update', [$project->latestRelease]), $data)
-            ->assertOk();
-    });
-
-    test('users cannot update a release from another project', function () {
-        Sanctum::actingAs(User::factory()->create());
-        $release = Release::factory()->create();
-
-        $data = Release::factory()->make()->toArray();
-
-        $this->putJson(route('releases.update', [$release]), $data)
             ->assertForbidden();
     });
 });

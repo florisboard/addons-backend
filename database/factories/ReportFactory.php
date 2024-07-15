@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Enums\ReportTypeEnum;
+use Database\Seeders\DatabaseSeeder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,8 +20,8 @@ class ReportFactory extends Factory
     {
         return [
             'type' => ReportTypeEnum::randomValue(),
+            'status' => DatabaseSeeder::randomStatus(),
             'description' => fake()->realText(),
-            'reviewed_at' => fake()->boolean() ? fake()->dateTime() : null,
         ];
     }
 }

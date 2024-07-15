@@ -11,9 +11,7 @@ use Illuminate\Validation\ValidationException;
 
 class DomainVerifyController extends Controller
 {
-    public function __construct(private readonly DomainService $domainService)
-    {
-    }
+    public function __construct(private readonly DomainService $domainService) {}
 
     /**
      * @throws AuthorizationException

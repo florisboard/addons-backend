@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Project;
 use App\Models\User;
+use Database\Seeders\DatabaseSeeder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -24,8 +25,8 @@ class ReviewFactory extends Factory
             'title' => fake()->words(rand(2, 5), true),
             'description' => fake()->realText(),
             'score' => rand(1, 5),
+            'status' => DatabaseSeeder::randomStatus(),
             'deleted_at' => app()->runningUnitTests() ? null : $deletedAt,
-            'is_active' => fake()->boolean(90),
             'user_id' => User::factory(),
             'project_id' => Project::factory(),
         ];

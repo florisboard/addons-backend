@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Enums\ProjectTypeEnum;
+use App\Enums\StatusEnum;
 use App\Filament\Custom\CustomResource;
 use App\Filament\Forms\Components\ImageInput;
 use App\Filament\Forms\Layouts\BasicSection;
@@ -26,6 +27,11 @@ class ProjectResource extends CustomResource
 
     protected static ?string $navigationGroup = 'Projects';
 
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) Project::where('status', StatusEnum::UnderReview)->count();
+    }
+
     public static function form(Form $form): Form
     {
         $basicSection = BasicSection::make([
@@ -35,12 +41,14 @@ class ProjectResource extends CustomResource
             Forms\Components\Select::make('user_id')
                 ->searchable()
                 ->preload()
+                ->optionsLimit(50)
                 ->relationship('user', 'username')
                 ->hiddenOn([UserResource\RelationManagers\ProjectsRelationManager::class])
                 ->required(),
             Forms\Components\Select::make('category_id')
                 ->searchable()
                 ->preload()
+                ->optionsLimit(50)
                 ->relationship('category', 'title')
                 ->hiddenOn([CategoryResource\RelationManagers\ProjectsRelationManager::class])
                 ->required(),
@@ -64,6 +72,7 @@ class ProjectResource extends CustomResource
             Forms\Components\Select::make('maintainers')
                 ->searchable()
                 ->preload()
+                ->optionsLimit(50)
                 ->multiple()
                 ->relationship('maintainers', 'username'),
         ]);
@@ -75,8 +84,7 @@ class ProjectResource extends CustomResource
 
         $statusSection = StatusSection::make([
             Forms\Components\Toggle::make('is_recommended'),
-            Forms\Components\Toggle::make('is_active'),
-        ]);
+        ], includeStatusSelect: true);
 
         return ComplexForm::make($form, [$basicSection, $imagesSection], [$statusSection]);
     }
@@ -84,25 +92,24 @@ class ProjectResource extends CustomResource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultSort('created_at', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('id'),
                 Tables\Columns\IconColumn::make('is_recommended')->boolean(),
-                Tables\Columns\IconColumn::make('is_active')->boolean(),
+                Tables\Columns\TextColumn::make('status')->badge(),
                 Tables\Columns\TextColumn::make('type')->badge(),
                 Tables\Columns\TextColumn::make('title')->sortable()->searchable(isIndividual: true),
                 Tables\Columns\TextColumn::make('package_name')->sortable()->searchable(isIndividual: true)->toggleable(),
                 Tables\Columns\TextColumn::make('description')->searchable(isIndividual: true)->toggleable()->toggledHiddenByDefault()->limit(30),
                 Tables\Columns\TextColumn::make('short_description')->searchable(isIndividual: true)->toggleable()->toggledHiddenByDefault()->limit(30),
-                Tables\Columns\TextColumn::make('home_page')->searchable(isIndividual: true)->toggleable()->toggledHiddenByDefault()->limit(30),
-                Tables\Columns\TextColumn::make('support_email')->searchable(isIndividual: true)->toggleable()->toggledHiddenByDefault()->limit(30),
-                Tables\Columns\TextColumn::make('support_site')->searchable(isIndividual: true)->toggleable()->toggledHiddenByDefault()->limit(30),
-                Tables\Columns\TextColumn::make('donate_site')->searchable(isIndividual: true)->toggleable()->toggledHiddenByDefault()->limit(30),
                 ...TimestampsColumn::make(),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
                 Tables\Filters\TernaryFilter::make('is_recommended'),
-                Tables\Filters\TernaryFilter::make('is_active'),
+                Tables\Filters\SelectFilter::make('status')
+                    ->searchable()
+                    ->options(StatusEnum::class),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -119,6 +126,7 @@ class ProjectResource extends CustomResource
     public static function getRelations(): array
     {
         return [
+            RelationManagers\ChangeProposalsRelationManager::class,
             RelationManagers\ReleasesRelationManager::class,
             RelationManagers\CollectionsRelationManager::class,
             RelationManagers\ReviewsRelationManager::class,

@@ -13,8 +13,7 @@ class HomeController extends Controller
     public function __construct(
         private readonly ProjectService $projectService,
         private readonly CategoryService $categoryService
-    ) {
-    }
+    ) {}
 
     /**
      * @return mixed[]

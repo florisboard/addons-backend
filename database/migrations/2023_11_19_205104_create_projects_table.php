@@ -18,11 +18,11 @@ return new class extends Migration
             $table->string('title');
             $table->string('package_name')->unique();
             $table->string('type')->index();
+            $table->string('status')->index();
             $table->text('description');
             $table->string('short_description');
             $table->json('links');
             $table->boolean('is_recommended')->default(false);
-            $table->boolean('is_active')->default(false);
             $table->softDeletes();
             $table->timestamps();
         });

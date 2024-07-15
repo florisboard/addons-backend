@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\StatusEnum;
 use App\Filament\Custom\CustomResource;
 use App\Filament\Forms\Layouts\BasicSection;
 use App\Filament\Forms\Layouts\ComplexForm;
@@ -23,20 +24,27 @@ class ReviewResource extends CustomResource
 
     protected static ?string $navigationGroup = 'Projects';
 
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) Review::where('status', StatusEnum::UnderReview)->count();
+    }
+
     public static function form(Form $form): Form
     {
         $basicSection = BasicSection::make([
             Forms\Components\Select::make('user_id')
                 ->searchable()
                 ->preload()
+                ->optionsLimit(50)
                 ->hiddenOn([UserResource\RelationManagers\ReviewsRelationManager::class])
                 ->relationship('user', 'username')
                 ->required(),
             Forms\Components\Select::make('project_id')
                 ->searchable()
                 ->preload()
+                ->optionsLimit(50)
                 ->hiddenOn([ProjectResource\RelationManagers\ReviewsRelationManager::class])
-                ->relationship('project', 'title')
+                ->relationship('project', 'package_name')
                 ->required(),
             Forms\Components\TextInput::make('title')
                 ->maxLength(255)
@@ -51,9 +59,7 @@ class ReviewResource extends CustomResource
                 ->required(),
         ]);
 
-        $statusSection = StatusSection::make([
-            Forms\Components\Toggle::make('is_active'),
-        ]);
+        $statusSection = StatusSection::make(includeStatusSelect: true);
 
         return ComplexForm::make($form, [$basicSection], [$statusSection]);
     }
@@ -61,9 +67,10 @@ class ReviewResource extends CustomResource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultSort('created_at', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('id'),
-                Tables\Columns\IconColumn::make('is_active')->boolean(),
+                Tables\Columns\TextColumn::make('status')->badge(),
                 Tables\Columns\TextColumn::make('user.username')
                     ->hiddenOn([UserResource\RelationManagers\ReviewsRelationManager::class]),
                 Tables\Columns\TextColumn::make('project.title')
@@ -88,6 +95,9 @@ class ReviewResource extends CustomResource
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
+                Tables\Filters\SelectFilter::make('status')
+                    ->searchable()
+                    ->options(StatusEnum::class),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

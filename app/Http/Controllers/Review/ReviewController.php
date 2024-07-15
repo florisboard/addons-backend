@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Review;
 
+use App\Enums\StatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ReviewRequest;
 use App\Http\Resources\ReviewResource;
 use App\Models\Project;
 use App\Models\Review;
-use App\Models\Scopes\ActiveScope;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
@@ -47,8 +47,8 @@ class ReviewController extends Controller
                 AllowedFilter::exact('score'),
             ])
             ->allowedSorts('id')
-            ->when($request->input('filter.user_id') !== Auth::id(), function (Builder $builder) {
-                $builder->withGlobalScope('active', new ActiveScope);
+            ->when(Auth::guest() || $request->input('filter.user_id') != Auth::id(), function (Builder $builder) {
+                $builder->where('status', StatusEnum::Approved);
             })
             ->with('user')
             ->fastPaginate(20);
@@ -64,6 +64,7 @@ class ReviewController extends Controller
         $review = $project->reviews()->create([
             ...$request->validated(),
             'user_id' => Auth::id(),
+            'status' => StatusEnum::UnderReview,
         ]);
 
         $review->load('user');
@@ -85,7 +86,7 @@ class ReviewController extends Controller
 
         $review->update([
             ...$request->validated(),
-            'is_active' => $shouldBeReviewedAgain ? false : $review->is_active,
+            'status' => $shouldBeReviewedAgain ? StatusEnum::UnderReview : $review->status,
         ]);
 
         return new JsonResponse(['message' => 'Review updated successfully.']);

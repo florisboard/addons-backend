@@ -16,6 +16,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
 
 class UserResource extends CustomResource
 {
@@ -43,7 +44,7 @@ class UserResource extends CustomResource
 
         $statusSection = StatusSection::make([
             Forms\Components\Toggle::make('is_admin'),
-        ]);
+        ])->hidden(fn (User $user) => $user->id === Auth::id());
 
         return ComplexForm::make($form, [$basicSection], [$statusSection]);
     }

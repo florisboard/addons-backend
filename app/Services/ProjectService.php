@@ -2,10 +2,10 @@
 
 namespace App\Services;
 
+use App\Enums\StatusEnum;
 use App\Http\Resources\Project\ProjectResource;
 use App\Models\Project;
 use App\Models\Release;
-use App\Models\Scopes\ActiveScope;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Cache;
@@ -22,7 +22,7 @@ class ProjectService
         return Cache::remember('projects.picksOfTheDay.ids', now()->endOfDay(), function () {
 
             return Project::query()
-                ->withGlobalScope('active', new ActiveScope)
+                ->where('status', StatusEnum::Approved)
                 ->inRandomOrder()
                 ->take(10)
                 ->pluck('id')
@@ -36,8 +36,8 @@ class ProjectService
             $ids = $this->choosePicksOfTheDayIds();
 
             $projects = Project::query()
-                ->with(['image', 'latestRelease'])
-                ->withGlobalScope('active', new ActiveScope)
+                ->with(['image', 'latestApprovedRelease'])
+                ->where('status', StatusEnum::Approved)
                 ->withCount('reviews')
                 ->withSum('releases', 'downloads_count')
                 ->withAvg('reviews', 'score')
@@ -56,8 +56,8 @@ class ProjectService
                 ->groupBy('project_id');
 
             $projects = Project::query()
-                ->with(['image', 'latestRelease'])
-                ->withGlobalScope('active', new ActiveScope)
+                ->with(['image', 'latestApprovedRelease'])
+                ->where('status', StatusEnum::Approved)
                 ->withCount('reviews')
                 ->withSum('releases', 'downloads_count')
                 ->withAvg('reviews', 'score')
@@ -76,8 +76,8 @@ class ProjectService
     {
         return Cache::remember('projects.latestProjects', now()->addMinutes(5), function () {
             $projects = Project::query()
-                ->with(['image', 'latestRelease'])
-                ->withGlobalScope('active', new ActiveScope)
+                ->with(['image', 'latestApprovedRelease'])
+                ->where('status', StatusEnum::Approved)
                 ->withCount('reviews')
                 ->withSum('releases', 'downloads_count')
                 ->withAvg('reviews', 'score')
@@ -93,8 +93,8 @@ class ProjectService
     {
         return Cache::remember('projects.recommended', now()->addMinutes(5), function () {
             $projects = Project::query()
-                ->with(['image', 'latestRelease'])
-                ->withGlobalScope('active', new ActiveScope)
+                ->with(['image', 'latestApprovedRelease'])
+                ->where('status', StatusEnum::Approved)
                 ->withCount('reviews')
                 ->withSum('releases', 'downloads_count')
                 ->withAvg('reviews', 'score')
@@ -106,21 +106,27 @@ class ProjectService
         });
     }
 
-    /**
-     * @return array{domain: string, name: string}
-     */
-    public function extractPackageName(string $packageName): array
+    public function isMaintainer(int $userId, int|Project $project): bool
     {
-        $segments = explode('.', $packageName);
+        if (is_int($project)) {
+            $project = Project::find($project);
+        }
 
-        $domain = collect($segments)->slice(0, -1)->reverse()->implode('.');
+        if (! $project) {
+            return false;
+        }
 
-        return ['domain' => $domain, 'name' => end($segments)];
+        if ($project->user_id === $userId) {
+            return true;
+        }
+
+        return $project->maintainers()->where('user_id', $userId)->exists();
     }
 
     public function convertToPackageName(string $name, string $domain): string
     {
         return Str::of($domain)
+            ->replace('-', '_')
             ->explode('.')
             ->reverse()
             ->push($name)

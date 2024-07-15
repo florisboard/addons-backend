@@ -2,9 +2,12 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\StatusEnum;
 use App\Filament\Custom\CustomResource;
 use App\Filament\Forms\Components\FileInput;
-use App\Filament\Forms\Layouts\BasicForm;
+use App\Filament\Forms\Layouts\BasicSection;
+use App\Filament\Forms\Layouts\ComplexForm;
+use App\Filament\Forms\Layouts\StatusSection;
 use App\Filament\Resources\ReleaseResource\Pages;
 use App\Filament\Tables\Components\TimestampsColumn;
 use App\Http\Requests\Release\StoreReleaseRequest;
@@ -22,9 +25,14 @@ class ReleaseResource extends CustomResource
 
     protected static ?string $navigationGroup = 'Projects';
 
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) Release::where('status', StatusEnum::UnderReview)->count();
+    }
+
     public static function form(Form $form): Form
     {
-        return BasicForm::make($form, [
+        $basicSection = BasicSection::make([
             Forms\Components\TextInput::make('version_name')
                 ->maxLength(255)
                 ->regex(StoreReleaseRequest::$versionNameRegex)
@@ -37,14 +45,16 @@ class ReleaseResource extends CustomResource
             Forms\Components\Select::make('user_id')
                 ->searchable()
                 ->preload()
+                ->optionsLimit(50)
                 ->relationship('user', 'username')
                 ->hiddenOn([UserResource\RelationManagers\ReleasesRelationManager::class])
                 ->required(),
             Forms\Components\Select::make('project_id')
                 ->searchable()
                 ->preload()
+                ->optionsLimit(50)
                 ->hiddenOn([ProjectResource\RelationManagers\ReleasesRelationManager::class])
-                ->relationship('project', 'title')
+                ->relationship('project', 'package_name')
                 ->required(),
             Forms\Components\MarkdownEditor::make('description')
                 ->columnSpanFull()
@@ -52,12 +62,18 @@ class ReleaseResource extends CustomResource
             FileInput::make('file')
                 ->required(),
         ]);
+
+        $statusSection = StatusSection::make(includeStatusSelect: true);
+
+        return ComplexForm::make($form, [$basicSection], [$statusSection]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultSort('created_at', 'desc')
             ->columns([
+                Tables\Columns\TextColumn::make('status')->badge(),
                 Tables\Columns\TextColumn::make('user.username')
                     ->hiddenOn([UserResource\RelationManagers\ReleasesRelationManager::class]),
                 Tables\Columns\TextColumn::make('project.title')
@@ -75,7 +91,9 @@ class ReleaseResource extends CustomResource
                 ...TimestampsColumn::make(),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('status')
+                    ->searchable()
+                    ->options(StatusEnum::class),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

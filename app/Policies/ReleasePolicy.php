@@ -2,16 +2,19 @@
 
 namespace App\Policies;
 
+use App\Enums\StatusEnum;
 use App\Models\Project;
 use App\Models\Release;
 use App\Models\User;
+use App\Services\ProjectService;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Http\Request;
 
 class ReleasePolicy
 {
     private ?Project $project;
 
-    public function __construct(Request $request)
+    public function __construct(Request $request, private readonly ProjectService $projectService)
     {
         // @phpstan-ignore-next-line
         $this->project = $request->route('project');
@@ -30,15 +33,23 @@ class ReleasePolicy
      */
     public function view(?User $user, Release $release): bool
     {
-        return true;
+        return $release->status === StatusEnum::Approved;
     }
 
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(User $user): Response
     {
-        return $user->can('update', [$this->project]);
+        if (! $this->projectService->isMaintainer($user->id, $this->project)) {
+            return Response::deny("You're not a maintainer of this project");
+        }
+
+        if ($this->project->releases()->where('status', StatusEnum::UnderReview)->exists()) {
+            return Response::deny('You already have a pending release.');
+        }
+
+        return Response::allow();
     }
 
     /**
@@ -46,7 +57,7 @@ class ReleasePolicy
      */
     public function update(User $user, Release $release): bool
     {
-        return $user->can('update', [$release->project]);
+        return false;
     }
 
     /**

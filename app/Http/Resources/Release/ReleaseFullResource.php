@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Release;
 
+use App\Enums\StatusEnum;
 use App\Http\Resources\User\UserResource;
 use App\Models\Release;
 use Illuminate\Http\Request;
@@ -24,6 +25,8 @@ class ReleaseFullResource extends JsonResource
             'project_id' => $this->project_id,
             'user_id' => $this->user_id,
             'version_name' => $this->version_name,
+            /** @var StatusEnum */
+            'status' => $this->status,
             /** @var int */
             'version_code' => $this->version_code,
             'description' => $this->description,

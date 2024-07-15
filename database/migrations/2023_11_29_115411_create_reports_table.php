@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->string('type');
+            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
+            $table->string('type')->index();
+            $table->string('status')->index();
             $table->morphs('reportable');
             $table->text('description');
-            $table->timestamp('reviewed_at')->nullable();
             $table->timestamps();
         });
     }

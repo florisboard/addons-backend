@@ -32,11 +32,11 @@ class ValidateReleaseVersionName
         $project = request()->route('project');
 
         // It's the first release
-        if (! $project->latestRelease) {
+        if (! $project->latestApprovedRelease) {
             return;
         }
 
-        $previousVersionName = $project->latestRelease->version_name;
+        $previousVersionName = $project->latestApprovedRelease->version_name;
 
         $isValid = static::isProvidedVersionNewer($validator->getData()['version_name'], $previousVersionName);
 

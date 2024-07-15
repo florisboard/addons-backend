@@ -18,9 +18,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class UserController extends Controller
 {
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     /**
      * @return AnonymousResourceCollection<LengthAwarePaginator<UserResource>>

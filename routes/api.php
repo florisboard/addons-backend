@@ -33,7 +33,8 @@ Route::get('home', HomeController::class)->name('home');
 Route::get('check-updates', CheckUpdateController::class)->name('updates.check');
 
 Route::apiResource('projects', ProjectController::class);
-Route::apiSingleton('projects.image', ProjectImageController::class)->creatable()->only(['store', 'destroy']);
+Route::post('projects/{project}/publish', [ProjectController::class, 'publish'])->name('projects.publish');
+Route::apiSingleton('projects.image', ProjectImageController::class)->creatable()->only(['store']);
 Route::apiResource('projects.screenshots', ScreenshotController::class)->only(['store', 'destroy']);
 
 Route::apiResource('categories', CategoryController::class)->only(['index', 'show']);
@@ -41,7 +42,7 @@ Route::apiResource('collections', CollectionController::class);
 Route::apiResource('users', UserController::class)->only(['index', 'show']);
 
 Route::apiResource('projects.releases', ReleaseController::class)->only('store');
-Route::apiResource('releases', ReleaseController::class)->only(['index', 'update']);
+Route::apiResource('releases', ReleaseController::class)->only(['index']);
 Route::get('releases/{release}/download', [ReleaseController::class, 'download'])->name('releases.download');
 
 Route::apiResource('projects.reviews', ReviewController::class)->shallow()->only('store');

@@ -16,9 +16,9 @@ return new class extends Migration
             $table->foreignId('project_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('title');
+            $table->string('status')->index();
             $table->text('description');
             $table->unsignedTinyInteger('score');
-            $table->boolean('is_active')->default(false);
             $table->softDeletes();
             $table->timestamps();
         });

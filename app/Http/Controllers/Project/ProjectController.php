@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Project;
 
+use App\Enums\StatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Project\StoreProjectRequest;
 use App\Http\Requests\Project\UpdateProjectRequest;
 use App\Http\Resources\Project\ProjectFullResource;
 use App\Http\Resources\Project\ProjectResource;
 use App\Models\Project;
-use App\Models\Scopes\ActiveScope;
+use App\Services\ProjectService;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\JsonResponse;
@@ -22,7 +24,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class ProjectController extends Controller
 {
-    public function __construct()
+    public function __construct(private readonly ProjectService $projectService)
     {
         $this->authorizeResource(Project::class);
     }
@@ -54,9 +56,9 @@ class ProjectController extends Controller
             ])
             ->allowedIncludes(['user', 'category'])
             ->allowedSorts(['title', 'package_name', 'id'])
-            ->with(['image', 'latestRelease'])
+            ->with(['image', 'latestApprovedRelease'])
             ->when(Auth::guest() || $request->input('filter.user_id') != Auth::id(), function (Builder $builder) {
-                $builder->withGlobalScope('active', new ActiveScope);
+                $builder->where('status', StatusEnum::Approved);
             })
             ->withCount('reviews')
             ->withSum('releases', 'downloads_count')
@@ -71,6 +73,7 @@ class ProjectController extends Controller
         $project = Project::create([
             ...$request->safe()->except(['maintainers', 'verified_domain_id']),
             'user_id' => Auth::id(),
+            'status' => StatusEnum::Draft,
         ]);
 
         $project->maintainers()->attach($request->maintainers);
@@ -80,15 +83,22 @@ class ProjectController extends Controller
 
     public function show(Project $project): ProjectFullResource
     {
+        if (Auth::check() && $this->projectService->isMaintainer(Auth::id(), $project)) {
+            $project->load('latestChangeProposal');
+        }
+
         $project->load([
             'image',
             'screenshots',
             'maintainers',
-            'latestRelease',
+            'latestApprovedRelease',
             'category',
             'user',
             'userReview.user',
-            'reviews' => fn (HasMany $builder) => $builder->with('user')->take(10),
+            'reviews' => fn (HasMany $builder) => $builder
+                ->with('user')
+                ->where('status', StatusEnum::Approved)
+                ->take(10),
         ]);
         $project->loadAvg('reviews', 'score');
         $project->loadSum('releases', 'downloads_count');
@@ -114,11 +124,30 @@ class ProjectController extends Controller
         return new ProjectFullResource($project);
     }
 
+    /**
+     * @throws AuthorizationException
+     */
+    public function publish(Project $project): JsonResponse
+    {
+        $this->authorize('publish', $project);
+
+        $project->update(['status' => StatusEnum::UnderReview]);
+
+        return new JsonResponse(['message' => "You've published the project successfully to get reviewed."]);
+    }
+
     public function update(UpdateProjectRequest $request, Project $project): ProjectFullResource
     {
-        $project->update($request->safe()->except(['maintainers']));
-
-        $project->maintainers()->sync($request->input('maintainers'));
+        if ($project->status === StatusEnum::Draft) {
+            $project->update($request->safe()->except('maintainers'));
+            $project->maintainers()->sync($request->input('maintainers'));
+        } else {
+            $project->changeProposals()->create([
+                'data' => $request->validated(),
+                'user_id' => Auth::id(),
+                'status' => StatusEnum::UnderReview,
+            ]);
+        }
 
         return $this->show($project);
     }

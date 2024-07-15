@@ -9,9 +9,7 @@ use Illuminate\Auth\Access\Response;
 
 class DomainPolicy
 {
-    public function __construct(private readonly DomainService $domainService)
-    {
-    }
+    public function __construct(private readonly DomainService $domainService) {}
 
     public function isTheOwner(User $user, Domain $domain): bool
     {
@@ -39,7 +37,9 @@ class DomainPolicy
      */
     public function create(User $user): Response
     {
-        return $user->domains()->whereNull('verified_at')->exists() ? Response::deny('You have unverified domain, verify it or delete it to create another domain.') : Response::allow();
+        return $user->domains()->whereNull('verified_at')->exists()
+            ? Response::deny('An unverified domain exists within your account. Please verify this domain or remove it to proceed with creating a new one.')
+            : Response::allow();
     }
 
     /**

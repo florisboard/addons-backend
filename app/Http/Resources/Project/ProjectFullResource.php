@@ -3,7 +3,9 @@
 namespace App\Http\Resources\Project;
 
 use App\Enums\ProjectTypeEnum;
+use App\Enums\StatusEnum;
 use App\Http\Resources\CategoryResource;
+use App\Http\Resources\ChangeProposalResource;
 use App\Http\Resources\Media\ImageResource;
 use App\Http\Resources\Release\ReleaseFullResource;
 use App\Http\Resources\ReviewResource;
@@ -47,7 +49,8 @@ class ProjectFullResource extends JsonResource
                 'source_code' => data_get($this->links, 'source_code'),
             ],
             'is_recommended' => $this->is_recommended,
-            'is_active' => $this->is_active,
+            /** @var StatusEnum */
+            'status' => $this->status,
             /** @var string */
             'created_at' => $this->created_at,
             /** @var string */
@@ -63,9 +66,10 @@ class ProjectFullResource extends JsonResource
             /** @var int */
             'releases_sum_downloads_count' => (int) $this->releases_sum_downloads_count,
             /** @var ReleaseFullResource|null */
-            'latest_release' => new ReleaseFullResource($this->latestRelease),
+            'latest_release' => new ReleaseFullResource($this->latestApprovedRelease),
             'reviews' => ReviewResource::collection($this->reviews),
             'user_review' => new ReviewResource($this->whenLoaded('userReview')),
+            'latest_change_proposal' => new ChangeProposalResource($this->whenLoaded('latestChangeProposal')),
             /** @var int */
             'reviews_count' => $this->reviews_count,
             /** @var int */

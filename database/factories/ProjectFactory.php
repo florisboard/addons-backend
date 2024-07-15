@@ -29,13 +29,13 @@ class ProjectFactory extends Factory
             'title' => fake()->unique()->words(rand(3, 6), true),
             'package_name' => Str::reverse(fake()->unique()->domainName()).'.'.fake()->word(),
             'type' => ProjectTypeEnum::randomValue(),
+            'status' => DatabaseSeeder::randomStatus(),
             'description' => fake()->realText(rand(200, 600)),
             'short_description' => fake()->realText(rand(50, 200)),
             'links' => [
                 'source_code' => 'https://github.com/'.fake()->slug(),
             ],
             'is_recommended' => fake()->boolean(30),
-            'is_active' => app()->runningUnitTests() || fake()->boolean(90),
             'user_id' => User::factory(),
             'category_id' => Category::factory(),
         ];

@@ -3,8 +3,11 @@
 namespace App\Filament\Resources;
 
 use App\Enums\ReportTypeEnum;
+use App\Enums\StatusEnum;
 use App\Filament\Custom\CustomResource;
-use App\Filament\Forms\Layouts\BasicForm;
+use App\Filament\Forms\Layouts\BasicSection;
+use App\Filament\Forms\Layouts\ComplexForm;
+use App\Filament\Forms\Layouts\StatusSection;
 use App\Filament\Resources\ReportResource\Pages;
 use App\Filament\Tables\Components\TimestampsColumn;
 use App\Models\Project;
@@ -22,12 +25,18 @@ class ReportResource extends CustomResource
 
     protected static ?string $navigationIcon = 'heroicon-o-flag';
 
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) Report::where('status', StatusEnum::UnderReview)->count();
+    }
+
     public static function form(Form $form): Form
     {
-        return BasicForm::make($form, [
+        $basicSection = BasicSection::make([
             Forms\Components\Select::make('user_id')
                 ->searchable()
                 ->preload()
+                ->optionsLimit(50)
                 ->relationship('user', 'username')
                 ->required(),
             Forms\Components\Select::make('type')
@@ -50,6 +59,10 @@ class ReportResource extends CustomResource
                         ->titleAttribute('id'),
                 ]),
         ]);
+
+        $statusSection = StatusSection::make(includeStatusSelect: true);
+
+        return ComplexForm::make($form, [$basicSection], [$statusSection]);
     }
 
     public static function table(Table $table): Table
@@ -57,9 +70,9 @@ class ReportResource extends CustomResource
         return $table
             ->defaultSort('created_at', 'desc')
             ->columns([
-                Tables\Columns\IconColumn::make('is_reviewed')->boolean(),
                 Tables\Columns\TextColumn::make('user.username')->searchable(),
                 Tables\Columns\TextColumn::make('type')->badge(),
+                Tables\Columns\TextColumn::make('status')->badge(),
                 Tables\Columns\TextColumn::make('reportable_type')->toggleable()->toggledHiddenByDefault(),
                 Tables\Columns\TextColumn::make('reportable_id')->toggleable()->toggledHiddenByDefault(),
                 Tables\Columns\TextColumn::make('description')->toggleable()->limit(60),
@@ -70,6 +83,9 @@ class ReportResource extends CustomResource
                 Tables\Filters\SelectFilter::make('type')
                     ->searchable()
                     ->options(ReportTypeEnum::class),
+                Tables\Filters\SelectFilter::make('status')
+                    ->searchable()
+                    ->options(StatusEnum::class),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -85,7 +101,6 @@ class ReportResource extends CustomResource
 
                         return route("filament.admin.resources.$resource.edit", $report->reportable_id);
                     }),
-
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
