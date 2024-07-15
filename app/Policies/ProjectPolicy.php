@@ -79,11 +79,9 @@ class ProjectPolicy
             Response::deny("You're not a maintainer of this project");
         }
 
-        if ($project->status !== StatusEnum::Draft && $project->latestChangeProposal?->status !== StatusEnum::UnderReview) {
-            return Response::deny("You can update the images when there's a UnderReview change proposal.");
-        }
-
-        return Response::allow();
+        return $project->status === StatusEnum::Draft || $project->latestChangeProposal?->status === StatusEnum::UnderReview
+            ? Response::allow()
+            : Response::deny("You can update the images when there's a UnderReview change proposal.");
     }
 
     public function deleteImages(User $user, Project $project): Response
