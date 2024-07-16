@@ -22,6 +22,7 @@ class CategoryFactory extends Factory
             'is_top' => fake()->boolean(),
             'circle_bg' => fake()->safeHexColor(),
             'circle_fg' => fake()->safeHexColor(),
+            'icon_name' => 'HiFire',
         ];
     }
 }

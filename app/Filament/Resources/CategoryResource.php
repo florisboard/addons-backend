@@ -29,8 +29,15 @@ class CategoryResource extends CustomResource
                 ->columnSpanFull()
                 ->required(),
             Forms\Components\ColorPicker::make('circle_bg')
+                ->hex()
                 ->required(),
             Forms\Components\ColorPicker::make('circle_fg')
+                ->hex()
+                ->required(),
+            Forms\Components\TextInput::make('icon_name')
+                ->maxLength(255)
+                ->startsWith('Hi')
+                ->columnSpanFull()
                 ->required(),
         ]);
 

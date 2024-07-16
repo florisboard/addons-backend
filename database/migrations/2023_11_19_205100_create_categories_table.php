@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('circle_bg');
             $table->string('circle_fg');
+            $table->string('icon_name');
             $table->unsignedBigInteger('order_column')->index();
             $table->boolean('is_active');
             $table->boolean('is_top');
