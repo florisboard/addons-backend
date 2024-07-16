@@ -28,9 +28,19 @@ class CategoryResource extends CustomResource
                 ->maxLength(255)
                 ->columnSpanFull()
                 ->required(),
+            Forms\Components\ColorPicker::make('circle_bg')
+                ->required(),
+            Forms\Components\ColorPicker::make('circle_fg')
+                ->required(),
         ]);
 
-        $statusSection = StatusSection::make(includeIsActive: true);
+        $statusSection = StatusSection::make(
+            [
+                Forms\Components\Toggle::make('is_top')
+                    ->default(false),
+            ],
+            includeIsActive: true
+        );
 
         return ComplexForm::make($form, [$basicSection], [$statusSection]);
     }
