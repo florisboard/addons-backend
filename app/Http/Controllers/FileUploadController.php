@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\File;
 
@@ -21,7 +22,8 @@ class FileUploadController extends Controller
     public function generatePath(string $extension): string
     {
         return sprintf(
-            'tmp/%s-%s.%s',
+            'tmp/%s-%s-%s.%s',
+            Auth::id(),
             now()->timestamp,
             Str::random(20),
             Str::remove('.', $extension)
