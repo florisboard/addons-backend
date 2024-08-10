@@ -53,12 +53,26 @@ class FilesystemService
     /**
      * @throws \Throwable
      */
-    public function extractZipFile(string $basePath, string $file): void
+    public function extractExtensionJsonFile(string $basePath, string $file): void
     {
         $zip = new \ZipArchive();
         $isZipOpen = $zip->open("$basePath/$file");
         throw_unless($isZipOpen === true, new \RuntimeException("Couldn't open the zip file $basePath/$file"));
-        $zip->extractTo("$basePath/extracted/");
+
+        if ($zip->numFiles > 80) {
+            $zip->close();
+
+            return;
+        }
+
+        $targetFileName = 'extension.json';
+        for ($i = 0; $i < $zip->numFiles; $i++) {
+            if ($targetFileName === $zip->getNameIndex($i)) {
+                $zip->extractTo("$basePath/extracted/", [$targetFileName]);
+                break;
+            }
+        }
+
         $zip->close();
     }
 }

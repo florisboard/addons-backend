@@ -34,7 +34,7 @@ class ValidateReleaseFile
 
         $tempDirPath = $filesystemService->createTempDirectory('projects', $project->id);
         file_put_contents("$tempDirPath/file.$fileExtensionName", Storage::get($filePath));
-        $filesystemService->extractZipFile($tempDirPath, "file.$fileExtensionName");
+        $filesystemService->extractExtensionJsonFile($tempDirPath, "file.$fileExtensionName");
 
         $result = $releaseService->parseExtensionJson($tempDirPath);
         $filesystemService->deleteDirectory($tempDirPath);
