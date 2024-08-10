@@ -8,6 +8,7 @@ use App\Filament\Forms\Layouts\BasicSection;
 use App\Filament\Forms\Layouts\ComplexForm;
 use App\Filament\Forms\Layouts\StatusSection;
 use App\Filament\Resources\ChangeProposalResource\Pages;
+use App\Filament\Resources\ChangeProposalResource\Pages\EditChangeProposal;
 use App\Filament\Tables\Components\TimestampsColumn;
 use App\Models\ChangeProposal;
 use App\Models\Project;
@@ -55,16 +56,16 @@ class ChangeProposalResource extends CustomResource
                 })
                 ->schema([
                     Forms\Components\Placeholder::make('image')
-                        ->visible(fn () => collect($data)->has('image_path'))
+                        ->visible(fn() => collect($data)->has('image_path'))
                         ->content(function () use ($data) {
-                            return new HtmlString('<img src="'.Storage::url(data_get($data, 'image_path')).'" />');
+                            return new HtmlString('<img src="' . Storage::url(data_get($data, 'image_path')) . '" />');
                         }),
                     Forms\Components\Placeholder::make('screenshots')
-                        ->visible(fn () => collect($data)->has('screenshots_path'))
+                        ->visible(fn() => collect($data)->has('screenshots_path'))
                         ->content(function () use ($data) {
                             return new HtmlString(
                                 collect(data_get($data, 'screenshots_path'))->map(function ($path) {
-                                    return '<img src="'.Storage::url($path).'" />';
+                                    return '<img src="' . Storage::url($path) . '" />';
                                 })->implode(' ')
                             );
                         }),
@@ -123,6 +124,13 @@ class ChangeProposalResource extends CustomResource
                         };
 
                         return route("filament.admin.resources.$resource.edit", $changeProposal->model_id);
+                    }),
+                Tables\Actions\Action::make('merge')
+                    ->icon('heroicon-o-check')
+                    ->hidden(fn(ChangeProposal $changeProposal) => $changeProposal->status !== StatusEnum::Approved)
+                    ->requiresConfirmation()
+                    ->action(function (ChangeProposal $changeProposal): void {
+                        EditChangeProposal::mergeChangeProposal($changeProposal);
                     }),
             ])
             ->bulkActions([

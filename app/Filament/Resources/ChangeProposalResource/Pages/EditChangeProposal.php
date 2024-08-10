@@ -18,9 +18,14 @@ class EditChangeProposal extends EditRecord
     /**
      * @throws \JsonException
      */
-    protected function mergeChangeProposal(ChangeProposal $changeProposal): void
+    public static function mergeChangeProposal(ChangeProposal $changeProposal): void
     {
-        $collection = collect(json_decode($changeProposal->data, false, 512, JSON_THROW_ON_ERROR));
+        $collection = collect(
+            is_array($changeProposal->data)
+                ? $changeProposal->data
+                : json_decode($changeProposal->data, false, 512, JSON_THROW_ON_ERROR)
+        );
+
         /** @var Project $project */
         $project = $changeProposal->model;
 
@@ -57,9 +62,9 @@ class EditChangeProposal extends EditRecord
         return [
             //            Actions\DeleteAction::make(),
             Actions\Action::make('merge')
-                ->hidden(fn (ChangeProposal $changeProposal) => $changeProposal->status !== StatusEnum::Approved)
+                ->hidden(fn(ChangeProposal $changeProposal) => $changeProposal->status !== StatusEnum::Approved)
                 ->action(function (ChangeProposal $changeProposal) {
-                    $this->mergeChangeProposal($changeProposal);
+                    static::mergeChangeProposal($changeProposal);
                 })
                 ->requiresConfirmation(),
         ];

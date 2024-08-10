@@ -127,7 +127,7 @@ COPY --link --chown=${USER}:${USER} --from=vendor /usr/bin/composer /usr/bin/com
 COPY --link --chown=${USER}:${USER} composer.json composer.lock ./
 
 RUN composer install \
-    # --no-dev \
+    --no-dev \
     --no-interaction \
     --no-autoloader \
     --no-ansi \
@@ -152,7 +152,7 @@ RUN composer install \
     --classmap-authoritative \
     --no-interaction \
     --no-ansi \
-    # --no-dev \
+    --no-dev \
     && composer clear-cache
 
 RUN chmod +x /usr/local/bin/start-container
@@ -162,5 +162,3 @@ RUN cat deployment/utilities.sh >> ~/.bashrc
 EXPOSE 8000
 
 ENTRYPOINT ["start-container"]
-
-HEALTHCHECK --start-period=5s --interval=2s --timeout=5s --retries=8 CMD php artisan octane:status || exit 1
