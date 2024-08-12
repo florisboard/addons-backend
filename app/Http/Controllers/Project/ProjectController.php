@@ -95,7 +95,7 @@ class ProjectController extends Controller
             'category',
             'user',
             'userReview.user',
-            'reviews' => fn (HasMany $builder) => $builder
+            'reviews' => fn(HasMany $builder) => $builder
                 ->with('user')
                 ->where('status', StatusEnum::Approved)
                 ->take(10),
@@ -154,7 +154,11 @@ class ProjectController extends Controller
 
     public function destroy(Project $project): JsonResponse
     {
-        $project->delete();
+        if ($project->status === StatusEnum::Draft) {
+            $project->forceDelete();
+        } else {
+            $project->delete();
+        }
 
         return new JsonResponse(['message' => 'Project has been deleted successfully.']);
     }
