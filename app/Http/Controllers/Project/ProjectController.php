@@ -95,7 +95,7 @@ class ProjectController extends Controller
             'category',
             'user',
             'userReview.user',
-            'reviews' => fn(HasMany $builder) => $builder
+            'reviews' => fn (HasMany $builder) => $builder
                 ->with('user')
                 ->where('status', StatusEnum::Approved)
                 ->take(10),

@@ -29,7 +29,7 @@ class Project extends Model implements HasMedia
         'is_recommended' => 'boolean',
         'status' => StatusEnum::class,
         'type' => ProjectTypeEnum::class,
-        'links' => 'json',
+        'links' => 'array',
     ];
 
     public function registerMediaCollections(): void
