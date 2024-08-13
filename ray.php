@@ -82,7 +82,7 @@ return [
     * When using Homestead with the VirtualBox provider, you can replace localhost with '10.0.2.2'
     * When using Homestead with the Parallels provider, you can replace localhost with '10.211.55.2'
     */
-    'host' => env('RAY_HOST', 'ray@172.17.0.1'),
+    'host' => env('RAY_HOST', 'ray@buggregator'),
 
     /*
     * The port number used to communicate with the Ray app.

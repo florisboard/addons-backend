@@ -26,6 +26,8 @@ class AuthResource extends JsonResource
             'created_at' => $this->created_at,
             /** @var string */
             'updated_at' => $this->updated_at,
+            /** @var bool */
+            'can_view_admin' => $this->isAdministrator(),
         ];
     }
 }
