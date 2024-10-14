@@ -75,6 +75,9 @@ class ProjectResource extends CustomResource
                 ->optionsLimit(50)
                 ->multiple()
                 ->relationship('maintainers', 'username'),
+            Forms\Components\Textarea::make('reviewer_description')
+                ->maxLength(1024)
+                ->columnSpanFull(),
         ]);
 
         $imagesSection = ImagesSection::make([

@@ -19,6 +19,7 @@ namespace App\Models{
  * @property string $title
  * @property string $circle_bg
  * @property string $circle_fg
+ * @property string $icon_name
  * @property int $order_column
  * @property bool $is_active
  * @property bool $is_top
@@ -34,6 +35,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereCircleBg($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereCircleFg($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Category whereIconName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereIsActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Category whereIsTop($value)
@@ -241,6 +243,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $reviewer_description
  * @property-read \App\Models\Category|null $category
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ChangeProposal> $changeProposals
  * @property-read int|null $change_proposals_count
@@ -277,6 +280,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereIsRecommended($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereLinks($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project wherePackageName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Project whereReviewerDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereShortDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Project whereTitle($value)
@@ -297,7 +301,7 @@ namespace App\Models{
  *
  * @property int $id
  * @property int $project_id
- * @property int $user_id
+ * @property int|null $user_id
  * @property string $version_name
  * @property int $version_code
  * @property \App\Enums\StatusEnum $status
@@ -309,7 +313,7 @@ namespace App\Models{
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection<int, \App\Models\Media> $media
  * @property-read int|null $media_count
  * @property-read \App\Models\Project $project
- * @property-read \App\Models\User $user
+ * @property-read \App\Models\User|null $user
  * @method static \Database\Factories\ReleaseFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Release newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Release newQuery()
@@ -335,7 +339,7 @@ namespace App\Models{
  * 
  *
  * @property int $id
- * @property int $user_id
+ * @property int|null $user_id
  * @property \App\Enums\ReportTypeEnum $type
  * @property \App\Enums\StatusEnum $status
  * @property string $reportable_type
@@ -344,7 +348,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $reportable
- * @property-read \App\Models\User $user
+ * @property-read \App\Models\User|null $user
  * @method static \Database\Factories\ReportFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Report newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Report newQuery()

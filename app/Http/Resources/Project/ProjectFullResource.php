@@ -13,6 +13,7 @@ use App\Http\Resources\User\UserResource;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 
 /** @mixin Project
  * @property int $one_reviews_count
@@ -45,6 +46,7 @@ class ProjectFullResource extends JsonResource
             /** @var ProjectTypeEnum */
             'type' => $this->type,
             'description' => $this->description,
+            'reviewer_description' => $this->when($this->user_id === Auth::id(), $this->reviewer_description),
             'links' => [
                 'source_code' => data_get($this->links, 'source_code'),
             ],
