@@ -13,11 +13,15 @@ class ValidateReleaseVersionName
             return false;
         }
 
-        $providedVersionParts = explode('.', $providedVersion);
-        $previousVersionParts = explode('.', $previousVersion);
+        $providedVersionParts = array_map('intval', explode('.', $providedVersion));
+        $previousVersionParts = array_map('intval', explode('.', $previousVersion));
 
         foreach ($providedVersionParts as $index => $part) {
-            if ((int) $part < (int) $previousVersionParts[$index]) {
+            if ($part > $previousVersionParts[$index]) {
+                return true;
+            }
+
+            if ($part < $previousVersionParts[$index]) {
                 return false;
             }
         }
