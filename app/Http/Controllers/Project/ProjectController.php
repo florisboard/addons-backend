@@ -63,7 +63,7 @@ class ProjectController extends Controller
             ->withCount('reviews')
             ->withSum('releases', 'downloads_count')
             ->withAvg('reviews', 'score')
-            ->fastPaginate(20);
+            ->paginate(20);
 
         return ProjectResource::collection($projects);
     }
@@ -95,7 +95,7 @@ class ProjectController extends Controller
             'category',
             'user',
             'userReview.user',
-            'reviews' => fn (HasMany $builder) => $builder
+            'reviews' => fn(HasMany $builder) => $builder
                 ->with('user')
                 ->where('status', StatusEnum::Approved)
                 ->take(10),

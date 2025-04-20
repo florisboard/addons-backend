@@ -29,7 +29,7 @@ class CategoryController extends Controller
                 AllowedFilter::partial('title'),
             ])
             ->withGlobalScope('active', new ActiveScope)
-            ->fastPaginate(20);
+            ->paginate(20);
 
         return CategoryResource::collection($categories);
     }

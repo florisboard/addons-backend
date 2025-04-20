@@ -51,7 +51,7 @@ class ReleaseController extends Controller
                 return $builder->where('status', StatusEnum::Approved);
             })
             ->with('user')
-            ->fastPaginate(20);
+            ->paginate(20);
 
         return ReleaseFullResource::collection($releases);
     }

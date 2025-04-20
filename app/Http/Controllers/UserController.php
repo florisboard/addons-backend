@@ -35,7 +35,7 @@ class UserController extends Controller
             ->allowedFilters([
                 AllowedFilter::partial('username'),
             ])
-            ->fastPaginate(20);
+            ->paginate(20);
 
         return UserResource::collection($users);
     }

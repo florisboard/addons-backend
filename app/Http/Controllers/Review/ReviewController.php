@@ -51,7 +51,7 @@ class ReviewController extends Controller
                 $builder->where('status', StatusEnum::Approved);
             })
             ->with('user')
-            ->fastPaginate(20);
+            ->paginate(20);
 
         return ReviewResource::collection($reviews);
     }

@@ -34,7 +34,7 @@ class CollectionController extends Controller
                 return $builder->with('image')->take(3);
             }])
             ->withCount(['projects'])
-            ->fastPaginate(20);
+            ->paginate(20);
 
         return CollectionResource::collection($collections);
     }

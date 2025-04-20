@@ -40,7 +40,7 @@ class DomainController extends Controller
                 AllowedFilter::partial('name'),
             ])
             ->allowedSorts(['name'])
-            ->fastPaginate(50);
+            ->paginate(50);
 
         return DomainResource::collection($domains);
     }
