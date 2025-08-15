@@ -32,7 +32,7 @@ class DeleteTempUploadedFiles extends Command
             $lastModified = Carbon::createFromTimestamp(Storage::lastModified($file));
 
             $this->info("Checking $file");
-            if (now()->diffInDays($lastModified) > 3) {
+            if (now()->diffInDays($lastModified) > 20) {
                 Storage::delete($file);
                 $this->info("Deleted $file");
             }
