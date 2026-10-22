@@ -14,25 +14,28 @@ use App\Filament\Resources\ProjectResource\Pages;
 use App\Filament\Resources\ProjectResource\RelationManagers;
 use App\Filament\Tables\Components\TimestampsColumn;
 use App\Models\Project;
+use BackedEnum;
+use Filament\Actions;
 use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class ProjectResource extends CustomResource
 {
     protected static ?string $model = Project::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-fire';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-fire';
 
-    protected static ?string $navigationGroup = 'Projects';
+    protected static string|UnitEnum|null $navigationGroup = 'Projects';
 
     public static function getNavigationBadge(): ?string
     {
         return (string) Project::where('status', StatusEnum::UnderReview)->count();
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
         $basicSection = BasicSection::make([
             Forms\Components\TextInput::make('title')
@@ -89,7 +92,7 @@ class ProjectResource extends CustomResource
             Forms\Components\Toggle::make('is_recommended'),
         ], includeStatusSelect: true);
 
-        return ComplexForm::make($form, [$basicSection, $imagesSection], [$statusSection]);
+        return ComplexForm::make($schema, [$basicSection, $imagesSection], [$statusSection]);
     }
 
     public static function table(Table $table): Table
@@ -114,14 +117,14 @@ class ProjectResource extends CustomResource
                     ->searchable()
                     ->options(StatusEnum::class),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
+            ->recordActions([
+                Actions\EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
+            ->toolbarActions([
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
+                    Actions\ForceDeleteBulkAction::make(),
+                    Actions\RestoreBulkAction::make(),
                 ]),
             ]);
     }

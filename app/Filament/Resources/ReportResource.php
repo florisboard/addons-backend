@@ -13,9 +13,11 @@ use App\Filament\Tables\Components\TimestampsColumn;
 use App\Models\Project;
 use App\Models\Report;
 use App\Models\Review;
+use BackedEnum;
+use Filament\Actions;
 use Filament\Forms;
 use Filament\Forms\Components\MorphToSelect;
-use Filament\Forms\Form;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 
@@ -23,14 +25,14 @@ class ReportResource extends CustomResource
 {
     protected static ?string $model = Report::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-flag';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-flag';
 
     public static function getNavigationBadge(): ?string
     {
         return (string) Report::where('status', StatusEnum::UnderReview)->count();
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
         $basicSection = BasicSection::make([
             Forms\Components\Select::make('user_id')
@@ -62,7 +64,7 @@ class ReportResource extends CustomResource
 
         $statusSection = StatusSection::make(includeStatusSelect: true);
 
-        return ComplexForm::make($form, [$basicSection], [$statusSection]);
+        return ComplexForm::make($schema, [$basicSection], [$statusSection]);
     }
 
     public static function table(Table $table): Table
@@ -87,9 +89,9 @@ class ReportResource extends CustomResource
                     ->searchable()
                     ->options(StatusEnum::class),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\Action::make('view_model')
+            ->recordActions([
+                Actions\EditAction::make(),
+                Actions\Action::make('view_model')
                     ->icon('heroicon-o-eye')
                     ->openUrlInNewTab()
                     ->url(function (Report $report): string {
@@ -102,9 +104,9 @@ class ReportResource extends CustomResource
                         return route("filament.admin.resources.$resource.edit", $report->reportable_id);
                     }),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }

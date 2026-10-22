@@ -4,7 +4,7 @@ namespace App\Filament\Resources\UserResource\RelationManagers;
 
 use App\Filament\Custom\AutoRelationManager;
 use App\Filament\Resources\ProjectResource;
-use Filament\Tables;
+use Filament\Actions;
 use Filament\Tables\Table;
 
 class MaintainingRelationManager extends AutoRelationManager
@@ -26,12 +26,12 @@ class MaintainingRelationManager extends AutoRelationManager
     public function table(Table $table): Table
     {
         return parent::table($table)
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DetachAction::make(),
+            ->recordActions([
+                Actions\EditAction::make(),
+                Actions\DetachAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\DetachBulkAction::make(),
+            ->toolbarActions([
+                Actions\DetachBulkAction::make(),
             ]);
     }
 }

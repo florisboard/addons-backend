@@ -2,16 +2,17 @@
 
 namespace App\Filament\Forms\Layouts;
 
-use Filament\Forms;
+use Filament\Schemas\Components\Component;
+use Filament\Schemas\Components\Group;
 
 class MainGroup
 {
     /**
-     * @param  array<Forms\Components\Component>  $components
+     * @param  array<Component>  $components
      */
-    public static function make(array $components): Forms\Components\Group
+    public static function make(array $components): Group
     {
-        return Forms\Components\Group::make($components)
+        return Group::make($components)
             ->columnSpan(2)
             ->columns(2);
     }

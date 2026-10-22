@@ -12,25 +12,28 @@ use App\Filament\Resources\ReleaseResource\Pages;
 use App\Filament\Tables\Components\TimestampsColumn;
 use App\Http\Requests\Release\StoreReleaseRequest;
 use App\Models\Release;
+use BackedEnum;
+use Filament\Actions;
 use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class ReleaseResource extends CustomResource
 {
     protected static ?string $model = Release::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-arrow-trending-up';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-arrow-trending-up';
 
-    protected static ?string $navigationGroup = 'Projects';
+    protected static string|UnitEnum|null $navigationGroup = 'Projects';
 
     public static function getNavigationBadge(): ?string
     {
         return (string) Release::where('status', StatusEnum::UnderReview)->count();
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
         $basicSection = BasicSection::make([
             Forms\Components\TextInput::make('version_name')
@@ -65,7 +68,7 @@ class ReleaseResource extends CustomResource
 
         $statusSection = StatusSection::make(includeStatusSelect: true);
 
-        return ComplexForm::make($form, [$basicSection], [$statusSection]);
+        return ComplexForm::make($schema, [$basicSection], [$statusSection]);
     }
 
     public static function table(Table $table): Table
@@ -95,12 +98,12 @@ class ReleaseResource extends CustomResource
                     ->searchable()
                     ->options(StatusEnum::class),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
+            ->recordActions([
+                Actions\EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }

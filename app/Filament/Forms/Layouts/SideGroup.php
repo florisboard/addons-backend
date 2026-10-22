@@ -2,15 +2,16 @@
 
 namespace App\Filament\Forms\Layouts;
 
-use Filament\Forms;
+use Filament\Schemas\Components\Component;
+use Filament\Schemas\Components\Group;
 
 class SideGroup
 {
     /**
-     * @param  array<Forms\Components\Component>  $components
+     * @param  array<Component>  $components
      */
-    public static function make(array $components): Forms\Components\Group
+    public static function make(array $components): Group
     {
-        return Forms\Components\Group::make($components)->columns(['lg' => 1]);
+        return Group::make($components)->columns(['lg' => 1]);
     }
 }

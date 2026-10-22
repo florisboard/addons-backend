@@ -1,5 +1,4 @@
-# Accepted values: 8.3 - 8.2
-ARG PHP_VERSION=8.3.36
+ARG PHP_VERSION=8.4.27
 
 ARG COMPOSER_VERSION=latest
 
@@ -34,7 +33,7 @@ COPY --link . .
 
 FROM composer:${COMPOSER_VERSION} AS vendor
 
-FROM php:${PHP_VERSION}-cli-bookworm
+FROM php:${PHP_VERSION}-cli-bookworm AS deps
 
 ARG WWWUSER=1000
 ARG WWWGROUP=1000
@@ -126,6 +125,12 @@ USER ${USER}
 COPY --link --chown=${WWWUSER}:${WWWGROUP} --from=vendor /usr/bin/composer /usr/bin/composer
 COPY --link --chown=${WWWUSER}:${WWWGROUP} composer.json composer.lock ./
 
+# RUN composer update \
+#     --no-dev \
+#     --no-interaction \
+#     --no-autoloader \
+#     --no-ansi \
+#     --no-scripts -W
 RUN composer install \
     --no-dev \
     --no-interaction \

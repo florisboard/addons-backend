@@ -2,17 +2,19 @@
 
 namespace App\Filament\Forms\Layouts;
 
-use Filament\Forms;
+use Filament\Schemas\Components\Component;
+use Filament\Schemas\Components\Section;
 
 class BasicSection
 {
     /**
-     * @param  array<Forms\Components\Component>  $components
+     * @param  array<Component>  $components
      */
-    public static function make(array $components): Forms\Components\Section
+    public static function make(array $components): Section
     {
-        return Forms\Components\Section::make()
-            ->schema($components)
+        return Section::make()
+            ->components($components)
+            ->columnSpanFull()
             ->columns(2);
     }
 }

@@ -3,13 +3,14 @@
 namespace App\Filament\Forms\Layouts;
 
 use Filament\Forms;
+use Filament\Schemas\Components\Section;
 
 class TimestampsSection
 {
-    public static function make(): Forms\Components\Section
+    public static function make(): Section
     {
-        return Forms\Components\Section::make('Timestamps')
-            ->schema([
+        return Section::make('Timestamps')
+            ->components([
                 Forms\Components\Placeholder::make('created_at')
                     ->content(fn ($record): ?string => $record->created_at?->diffForHumans()),
 
