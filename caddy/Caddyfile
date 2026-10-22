@@ -1,20 +1,20 @@
 {
-#	email {$CADDY_CERT_EMAIL}
-	acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
+	email {$CADDY_CERT_EMAIL}
+#	acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
 }
 
 api.addons.florisboard.org {
 	encode zstd gzip
-	reverse_proxy localhost:8000
+	reverse_proxy api:8000
 }
 
 beta.addons.florisboard.org {
 	encode zstd gzip
-	reverse_proxy localhost:3000
+	reverse_proxy ui:3000
 }
 
 s3.addons.florisboard.org {
-	reverse_proxy localhost:9000
+	reverse_proxy minio:9000
 	@isFlexFile {
 		path *.flex
 	}
@@ -22,5 +22,5 @@ s3.addons.florisboard.org {
 }
 
 #minio.addons.florisboard.org {
-#	reverse_proxy localhost:8900
+#	reverse_proxy minio:8900
 #}

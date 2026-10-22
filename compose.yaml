@@ -6,6 +6,8 @@ services:
     restart: unless-stopped
     env_file:
       - .env
+    networks:
+      - addons
     ports:
       - "80:80"
       - "443:443"
@@ -41,8 +43,6 @@ services:
     restart: unless-stopped
     volumes:
       - pgsql-data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
     environment:
       POSTGRES_DB: '${DB_DATABASE}'
       POSTGRES_USER: '${DB_USERNAME}'
@@ -69,8 +69,6 @@ services:
       - addons
     volumes:
       - redis-data:/data
-    ports:
-      - "6379:6379"
     healthcheck:
       test:
         - CMD
@@ -81,9 +79,6 @@ services:
 
   minio:
     image: 'minio/minio:latest'
-    ports:
-      - "9000:9000"
-      - "8900:8900"
     environment:
       MINIO_ROOT_USER: '${PUBLIC_AWS_ACCESS_KEY_ID}'
       MINIO_ROOT_PASSWORD: '${PUBLIC_AWS_SECRET_ACCESS_KEY}'
