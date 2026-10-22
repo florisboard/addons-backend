@@ -8,22 +8,25 @@ use App\Filament\Resources\DomainResource\Pages;
 use App\Filament\Tables\Components\TimestampsColumn;
 use App\Models\Domain;
 use App\Services\DomainService;
+use BackedEnum;
+use Filament\Actions;
 use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class DomainResource extends CustomResource
 {
     protected static ?string $model = Domain::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationGroup = 'Users';
+    protected static string|UnitEnum|null $navigationGroup = 'Users';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return BasicForm::make($form, [
+        return BasicForm::make($schema, [
             Forms\Components\TextInput::make('name')
                 ->maxLength(255)
                 ->regex(DomainService::REGEX)
@@ -59,12 +62,12 @@ class DomainResource extends CustomResource
                 Tables\Filters\TernaryFilter::make('verified_at')
                     ->nullable(),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
+            ->recordActions([
+                Actions\EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }

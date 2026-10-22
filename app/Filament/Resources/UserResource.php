@@ -12,21 +12,24 @@ use App\Filament\Resources\UserResource\RelationManagers;
 use App\Filament\Tables\Components\TimestampsColumn;
 use App\Models\User;
 use App\Rules\Username;
+use BackedEnum;
+use Filament\Actions;
 use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Auth;
+use UnitEnum;
 
 class UserResource extends CustomResource
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-users';
 
-    protected static ?string $navigationGroup = 'Users';
+    protected static string|UnitEnum|null $navigationGroup = 'Users';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
         $basicSection = BasicSection::make([
             Forms\Components\TextInput::make('username')
@@ -46,7 +49,7 @@ class UserResource extends CustomResource
             Forms\Components\Toggle::make('is_admin'),
         ])->hidden(fn (User $user) => $user->id === Auth::id());
 
-        return ComplexForm::make($form, [$basicSection], [$statusSection]);
+        return ComplexForm::make($schema, [$basicSection], [$statusSection]);
     }
 
     public static function table(Table $table): Table
@@ -64,12 +67,12 @@ class UserResource extends CustomResource
                 Tables\Filters\TernaryFilter::make('email_verified_at')->nullable(),
                 Tables\Filters\TernaryFilter::make('username_changed_at')->nullable(),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
+            ->recordActions([
+                Actions\EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }

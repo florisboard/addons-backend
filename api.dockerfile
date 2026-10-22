@@ -1,5 +1,4 @@
-# Accepted values: 8.3 - 8.2
-ARG PHP_VERSION=8.3
+ARG PHP_VERSION=8.4.27
 
 ARG COMPOSER_VERSION=latest
 
@@ -34,7 +33,7 @@ COPY --link . .
 
 FROM composer:${COMPOSER_VERSION} AS vendor
 
-FROM php:${PHP_VERSION}-cli-bookworm
+FROM php:${PHP_VERSION}-cli-bookworm AS deps
 
 ARG WWWUSER=1000
 ARG WWWGROUP=1000
@@ -123,9 +122,15 @@ RUN cp ${PHP_INI_DIR}/php.ini-production ${PHP_INI_DIR}/php.ini
 
 USER ${USER}
 
-COPY --link --chown=${USER}:${USER} --from=vendor /usr/bin/composer /usr/bin/composer
-COPY --link --chown=${USER}:${USER} composer.json composer.lock ./
+COPY --link --chown=${WWWUSER}:${WWWGROUP} --from=vendor /usr/bin/composer /usr/bin/composer
+COPY --link --chown=${WWWUSER}:${WWWGROUP} composer.json composer.lock ./
 
+# RUN composer update \
+#     --no-dev \
+#     --no-interaction \
+#     --no-autoloader \
+#     --no-ansi \
+#     --no-scripts -W
 RUN composer install \
     --no-dev \
     --no-interaction \
@@ -134,19 +139,19 @@ RUN composer install \
     --no-scripts \
     --audit
 
-COPY --link --chown=${USER}:${USER} . .
-COPY --link --chown=${USER}:${USER} --from=build ${ROOT}/public public
+COPY --link --chown=${WWWUSER}:${WWWGROUP} . .
+COPY --link --chown=${WWWUSER}:${WWWGROUP} --from=build ${ROOT}/public public
 
 RUN mkdir -p \
     storage/framework/{sessions,views,cache,testing} \
     storage/logs \
     bootstrap/cache && chmod -R a+rw storage
 
-COPY --link --chown=${USER}:${USER} deployment/supervisord.conf /etc/supervisor/
-COPY --link --chown=${USER}:${USER} deployment/octane/Swoole/supervisord.swoole.conf /etc/supervisor/conf.d/
-COPY --link --chown=${USER}:${USER} deployment/supervisord.*.conf /etc/supervisor/conf.d/
-COPY --link --chown=${USER}:${USER} deployment/php.ini ${PHP_INI_DIR}/conf.d/99-octane.ini
-COPY --link --chown=${USER}:${USER} deployment/start-container /usr/local/bin/start-container
+COPY --link --chown=${WWWUSER}:${WWWGROUP} deployment/supervisord.conf /etc/supervisor/
+COPY --link --chown=${WWWUSER}:${WWWGROUP} deployment/octane/Swoole/supervisord.swoole.conf /etc/supervisor/conf.d/
+COPY --link --chown=${WWWUSER}:${WWWGROUP} deployment/supervisord.*.conf /etc/supervisor/conf.d/
+COPY --link --chown=${WWWUSER}:${WWWGROUP} deployment/php.ini ${PHP_INI_DIR}/conf.d/99-octane.ini
+COPY --link --chown=${WWWUSER}:${WWWGROUP} deployment/start-container /usr/local/bin/start-container
 
 RUN composer install \
     --classmap-authoritative \

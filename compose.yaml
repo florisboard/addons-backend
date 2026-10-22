@@ -1,5 +1,25 @@
 services:
+  caddy:
+    profiles:
+      - proxy
+    image: docker.io/library/caddy:2.11.7-alpine
+    restart: unless-stopped
+    env_file:
+      - .env
+    networks:
+      - addons
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./caddy:/etc/caddy
+      - caddy-data:/data
+      - caddy-config:/config
+
   api:
+    profiles:
+      - api
     dns:
       - 8.8.8.8
       - 8.8.4.4
@@ -19,13 +39,14 @@ services:
     depends_on:
       - pgsql
       - redis
+
   pgsql:
+    profiles:
+      - api
     image: postgres:16
     restart: unless-stopped
     volumes:
       - pgsql-data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
     environment:
       POSTGRES_DB: '${DB_DATABASE}'
       POSTGRES_USER: '${DB_USERNAME}'
@@ -44,15 +65,16 @@ services:
         - '${DB_USERNAME}'
       retries: 3
       timeout: 5s
+
   redis:
+    profiles:
+      - api
     image: redis:alpine
     restart: unless-stopped
     networks:
       - addons
     volumes:
       - redis-data:/data
-    ports:
-      - "6379:6379"
     healthcheck:
       test:
         - CMD
@@ -60,11 +82,11 @@ services:
         - ping
       retries: 3
       timeout: 5s
+
   minio:
+    profiles:
+      - api
     image: 'minio/minio:latest'
-    ports:
-      - "9000:9000"
-      - "8900:8900"
     environment:
       MINIO_ROOT_USER: '${PUBLIC_AWS_ACCESS_KEY_ID}'
       MINIO_ROOT_PASSWORD: '${PUBLIC_AWS_SECRET_ACCESS_KEY}'
@@ -87,6 +109,8 @@ volumes:
   minio-data:
   pgsql-data:
   redis-data:
+  caddy-data:
+  caddy-config:
 
 networks:
   addons:

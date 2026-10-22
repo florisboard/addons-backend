@@ -13,9 +13,12 @@ use App\Filament\Tables\Components\TimestampsColumn;
 use App\Models\ChangeProposal;
 use App\Models\Project;
 use App\Models\Review;
+use BackedEnum;
+use Filament\Actions;
 use Filament\Forms;
 use Filament\Forms\Components\MorphToSelect;
-use Filament\Forms\Form;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Storage;
@@ -26,7 +29,7 @@ class ChangeProposalResource extends CustomResource
 {
     protected static ?string $model = ChangeProposal::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-bolt';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-bolt';
 
     public static function getNavigationBadge(): ?string
     {
@@ -38,9 +41,9 @@ class ChangeProposalResource extends CustomResource
         return false;
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        $data = $form->getRecord()->data;
+        $data = $schema->getRecord()->data;
 
         $basicSection = BasicSection::make([
             Forms\Components\Textarea::make('reviewer_description')
@@ -49,12 +52,13 @@ class ChangeProposalResource extends CustomResource
                 ->maxLength(1024),
             PrettyJson::make('data')
                 ->columnSpanFull(),
-            Forms\Components\Section::make('Images')
+            Section::make('Images')
+                ->columnSpanFull()
                 ->visible(function () use ($data) {
                     return collect($data)
                         ->hasAny(['image_path', 'screenshots_path']);
                 })
-                ->schema([
+                ->components([
                     Forms\Components\Placeholder::make('image')
                         ->visible(fn () => collect($data)->has('image_path'))
                         ->content(function () use ($data) {
@@ -91,7 +95,7 @@ class ChangeProposalResource extends CustomResource
 
         $statusSection = StatusSection::make(includeStatusSelect: true);
 
-        return ComplexForm::make($form, [$basicSection], [$statusSection]);
+        return ComplexForm::make($schema, [$basicSection], [$statusSection]);
     }
 
     public static function table(Table $table): Table
@@ -112,9 +116,9 @@ class ChangeProposalResource extends CustomResource
                     ->searchable()
                     ->options(StatusEnum::class),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\Action::make('view_model')
+            ->recordActions([
+                Actions\EditAction::make(),
+                Actions\Action::make('view_model')
                     ->icon('heroicon-o-eye')
                     ->openUrlInNewTab()
                     ->url(function (ChangeProposal $changeProposal): string {
@@ -125,7 +129,7 @@ class ChangeProposalResource extends CustomResource
 
                         return route("filament.admin.resources.$resource.edit", $changeProposal->model_id);
                     }),
-                Tables\Actions\Action::make('merge')
+                Actions\Action::make('merge')
                     ->icon('heroicon-o-check')
                     ->hidden(fn (ChangeProposal $changeProposal) => $changeProposal->status !== StatusEnum::Approved)
                     ->requiresConfirmation()
@@ -133,9 +137,9 @@ class ChangeProposalResource extends CustomResource
                         EditChangeProposal::mergeChangeProposal($changeProposal);
                     }),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    //                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                Actions\BulkActionGroup::make([
+                    //                    Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }

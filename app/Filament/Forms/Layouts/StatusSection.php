@@ -4,13 +4,15 @@ namespace App\Filament\Forms\Layouts;
 
 use App\Enums\StatusEnum;
 use Filament\Forms;
+use Filament\Schemas\Components\Component;
+use Filament\Schemas\Components\Section;
 
 class StatusSection
 {
     /**
-     * @param  array<Forms\Components\Component>  $components
+     * @param  array<Component>  $components
      */
-    public static function make(array $components = [], bool $includeIsActive = false, bool $includeStatusSelect = false): Forms\Components\Section
+    public static function make(array $components = [], bool $includeIsActive = false, bool $includeStatusSelect = false): Section
     {
         if ($includeIsActive) {
             array_unshift(
@@ -29,7 +31,7 @@ class StatusSection
             );
         }
 
-        return Forms\Components\Section::make('Status')
-            ->schema($components);
+        return Section::make('Status')
+            ->components($components);
     }
 }

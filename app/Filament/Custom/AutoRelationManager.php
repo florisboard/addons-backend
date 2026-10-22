@@ -2,9 +2,9 @@
 
 namespace App\Filament\Custom;
 
-use Filament\Forms\Form;
+use Filament\Actions;
 use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Tables;
+use Filament\Schemas\Schema;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -43,23 +43,23 @@ class AutoRelationManager extends RelationManager
         return static::getPluralRecordLabel();
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return static::$resource::form($form);
+        return static::$resource::form($schema);
     }
 
     public function table(Table $table): Table
     {
         return static::$resource::table($table)
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                Actions\CreateAction::make(),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                Actions\EditAction::make(),
+                Actions\DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                Actions\DeleteBulkAction::make(),
             ]);
     }
 }

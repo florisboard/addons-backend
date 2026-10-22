@@ -10,8 +10,10 @@ use App\Filament\Resources\CategoryResource\Pages;
 use App\Filament\Resources\CategoryResource\RelationManagers;
 use App\Filament\Tables\Components\TimestampsColumn;
 use App\Models\Category;
+use BackedEnum;
+use Filament\Actions;
 use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 
@@ -19,9 +21,9 @@ class CategoryResource extends CustomResource
 {
     protected static ?string $model = Category::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-circle-stack';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-circle-stack';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
         $basicSection = BasicSection::make([
             Forms\Components\TextInput::make('title')
@@ -49,7 +51,7 @@ class CategoryResource extends CustomResource
             includeIsActive: true
         );
 
-        return ComplexForm::make($form, [$basicSection], [$statusSection]);
+        return ComplexForm::make($schema, [$basicSection], [$statusSection]);
     }
 
     public static function table(Table $table): Table
@@ -65,12 +67,12 @@ class CategoryResource extends CustomResource
             ->filters([
                 Tables\Filters\TernaryFilter::make('is_active'),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
+            ->recordActions([
+                Actions\EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }

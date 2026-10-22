@@ -2,19 +2,19 @@
 
 namespace App\Filament\Forms\Layouts;
 
-use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Schemas\Components\Component;
+use Filament\Schemas\Schema;
 
 class BasicForm
 {
     /**
-     * @param  array<Forms\Components\Component>  $components
-     * @param  array<Forms\Components\Component>  $sideComponents
+     * @param  array<Component>  $components
+     * @param  array<Component>  $sideComponents
      */
-    public static function make(Form $form, array $components = [], array $sideComponents = []): Form
+    public static function make(Schema $schema, array $components = [], array $sideComponents = []): Schema
     {
 
-        return ComplexForm::make($form, [BasicSection::make($components)], $sideComponents)
-            ->columns($form->getRecord() ? 3 : 2);
+        return ComplexForm::make($schema, [BasicSection::make($components)], $sideComponents)
+            ->columns($schema->getRecord() ? 3 : 2);
     }
 }
