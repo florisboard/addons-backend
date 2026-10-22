@@ -123,8 +123,8 @@ RUN cp ${PHP_INI_DIR}/php.ini-production ${PHP_INI_DIR}/php.ini
 
 USER ${USER}
 
-COPY --link --chown=${USER}:${USER} --from=vendor /usr/bin/composer /usr/bin/composer
-COPY --link --chown=${USER}:${USER} composer.json composer.lock ./
+COPY --link --chown=${WWWUSER}:${WWWGROUP} --from=vendor /usr/bin/composer /usr/bin/composer
+COPY --link --chown=${WWWUSER}:${WWWGROUP} composer.json composer.lock ./
 
 RUN composer install \
     --no-dev \
@@ -134,19 +134,19 @@ RUN composer install \
     --no-scripts \
     --audit
 
-COPY --link --chown=${USER}:${USER} . .
-COPY --link --chown=${USER}:${USER} --from=build ${ROOT}/public public
+COPY --link --chown=${WWWUSER}:${WWWGROUP} . .
+COPY --link --chown=${WWWUSER}:${WWWGROUP} --from=build ${ROOT}/public public
 
 RUN mkdir -p \
     storage/framework/{sessions,views,cache,testing} \
     storage/logs \
     bootstrap/cache && chmod -R a+rw storage
 
-COPY --link --chown=${USER}:${USER} deployment/supervisord.conf /etc/supervisor/
-COPY --link --chown=${USER}:${USER} deployment/octane/Swoole/supervisord.swoole.conf /etc/supervisor/conf.d/
-COPY --link --chown=${USER}:${USER} deployment/supervisord.*.conf /etc/supervisor/conf.d/
-COPY --link --chown=${USER}:${USER} deployment/php.ini ${PHP_INI_DIR}/conf.d/99-octane.ini
-COPY --link --chown=${USER}:${USER} deployment/start-container /usr/local/bin/start-container
+COPY --link --chown=${WWWUSER}:${WWWGROUP} deployment/supervisord.conf /etc/supervisor/
+COPY --link --chown=${WWWUSER}:${WWWGROUP} deployment/octane/Swoole/supervisord.swoole.conf /etc/supervisor/conf.d/
+COPY --link --chown=${WWWUSER}:${WWWGROUP} deployment/supervisord.*.conf /etc/supervisor/conf.d/
+COPY --link --chown=${WWWUSER}:${WWWGROUP} deployment/php.ini ${PHP_INI_DIR}/conf.d/99-octane.ini
+COPY --link --chown=${WWWUSER}:${WWWGROUP} deployment/start-container /usr/local/bin/start-container
 
 RUN composer install \
     --classmap-authoritative \
