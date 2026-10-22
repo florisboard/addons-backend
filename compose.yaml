@@ -18,6 +18,8 @@ services:
       - caddy-config:/config
 
   api:
+    profiles:
+      - api
     dns:
       - 8.8.8.8
       - 8.8.4.4
@@ -39,6 +41,8 @@ services:
       - redis
 
   pgsql:
+    profiles:
+      - api
     image: postgres:16
     restart: unless-stopped
     volumes:
@@ -63,6 +67,8 @@ services:
       timeout: 5s
 
   redis:
+    profiles:
+      - api
     image: redis:alpine
     restart: unless-stopped
     networks:
@@ -78,6 +84,8 @@ services:
       timeout: 5s
 
   minio:
+    profiles:
+      - api
     image: 'minio/minio:latest'
     environment:
       MINIO_ROOT_USER: '${PUBLIC_AWS_ACCESS_KEY_ID}'
