@@ -1,0 +1,26 @@
+{
+#	email {$CADDY_CERT_EMAIL}
+	acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
+}
+
+api.addons.florisboard.org {
+	encode zstd gzip
+	reverse_proxy localhost:8000
+}
+
+beta.addons.florisboard.org {
+	encode zstd gzip
+	reverse_proxy localhost:3000
+}
+
+s3.addons.florisboard.org {
+	reverse_proxy localhost:9000
+	@isFlexFile {
+		path *.flex
+	}
+	header @isFlexFile Content-Type "application/zip"
+}
+
+#minio.addons.florisboard.org {
+#	reverse_proxy localhost:8900
+#}

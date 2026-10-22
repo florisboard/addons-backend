@@ -1,4 +1,18 @@
 services:
+  caddy:
+    image: docker.io/library/caddy:2.11.7-alpine
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./caddy:/etc/caddy
+      - caddy-data:/data
+      - caddy-config:/config
+
   api:
     dns:
       - 8.8.8.8
@@ -19,6 +33,7 @@ services:
     depends_on:
       - pgsql
       - redis
+
   pgsql:
     image: postgres:16
     restart: unless-stopped
@@ -44,6 +59,7 @@ services:
         - '${DB_USERNAME}'
       retries: 3
       timeout: 5s
+
   redis:
     image: redis:alpine
     restart: unless-stopped
@@ -60,6 +76,7 @@ services:
         - ping
       retries: 3
       timeout: 5s
+
   minio:
     image: 'minio/minio:latest'
     ports:
@@ -87,6 +104,8 @@ volumes:
   minio-data:
   pgsql-data:
   redis-data:
+  caddy-data:
+  caddy-config:
 
 networks:
   addons:
