@@ -1,5 +1,7 @@
 services:
   caddy:
+    profiles:
+      - proxy
     image: docker.io/library/caddy:2.11.7-alpine
     restart: unless-stopped
     env_file:
